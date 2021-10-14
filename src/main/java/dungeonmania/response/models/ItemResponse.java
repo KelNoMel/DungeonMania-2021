@@ -1,5 +1,8 @@
 package dungeonmania.response.models;
 
+/**
+ * See Section 7.1
+ */
 public final class ItemResponse {
     private final String id;
     private final String type;

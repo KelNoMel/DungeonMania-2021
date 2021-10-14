@@ -2,6 +2,9 @@ package dungeonmania.response.models;
 
 import dungeonmania.util.Position;
 
+/**
+ * See Section 7.1
+ */
 public final class EntityResponse {
     private final String id;
     private final String type;
