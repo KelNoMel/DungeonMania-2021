@@ -2,6 +2,9 @@ package dungeonmania.response.models;
 
 import java.util.List;
 
+/**
+ * See Section 7.1
+ */
 public class AnimationQueue {
     private final String when;
     private final String entityId;

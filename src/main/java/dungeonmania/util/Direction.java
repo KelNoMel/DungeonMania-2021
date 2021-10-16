@@ -1,5 +1,8 @@
 package dungeonmania.util;
 
+/**
+ * See Section 7.1
+ */
 public enum Direction {
     UP(0, -1),
     DOWN(0, 1),

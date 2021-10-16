@@ -1,5 +1,8 @@
 package dungeonmania.response.models;
 
+/**
+ * See Section 7.1
+ */
 public final class GenericResponseWrapper<T> {
     private final T result;
     private final String errorTitle;

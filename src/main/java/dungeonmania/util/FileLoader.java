@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * See Section 7.1
+ */
 public final class FileLoader {
     /**
      * Loads a resource file given a certain path that is relative to resources/

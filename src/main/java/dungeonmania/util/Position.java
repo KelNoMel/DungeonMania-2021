@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * See Section 7.1
+ */
 public final class Position {
     private final int x, y, layer;
 

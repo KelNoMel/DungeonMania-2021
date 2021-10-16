@@ -3,6 +3,9 @@ package dungeonmania.response.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * See Section 7.1
+ */
 public final class DungeonResponse {
     private final String dungeonId;
     private final String dungeonName;
