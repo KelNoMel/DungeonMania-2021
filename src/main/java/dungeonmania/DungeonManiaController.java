@@ -1,20 +1,24 @@
 package dungeonmania;
 
-import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.FileLoader;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.util.Direction;
+import dungeonmania.util.FileLoader;
+
 /**
  * Contains one method for each command you need to implement.
  */
 public class DungeonManiaController {
+    private Dungeon currentGame;
+    private List<Dungeon> games;
+    
     public DungeonManiaController() {
+        this.games = new ArrayList<Dungeon>();
     }
 
     public String getSkin() {
