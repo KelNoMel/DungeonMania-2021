@@ -7,6 +7,7 @@ import dungeonmania.response.models.EntityResponse;
 public class Entity {
     static private Integer lastId = 0;
     
+    private Dungeon dungeon;
     private String id;
     private String type;
     private Position position;
@@ -22,7 +23,7 @@ public class Entity {
         return String.valueOf(++lastId); 
     }
 
-    // TODO: interactableType() this is dummy code
+    // TODO
     /**
      * Check if the type of the entity is interactable
      * @return boolean of if the type is interactable
@@ -37,11 +38,21 @@ public class Entity {
      * @param type
      * @param position
      */
-    public Entity(String type, Position position) {
+    public Entity(Dungeon dungeon, String type, Position position) {
+        
+        this.dungeon = dungeon;
         this.id = createId();
         this.position = position;
         this.type = type;
         this.isInteractable = interactableType();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getType() {
+        return type;
     }
 
     /**
