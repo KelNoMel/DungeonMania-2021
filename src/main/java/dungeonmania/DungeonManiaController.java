@@ -85,7 +85,7 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        List<Dungeon> game = games.stream()
+    	List<Dungeon> game = games.stream()
             .filter(d -> d.getName().equals(name)).collect(Collectors.toList());
         if (game.size() == 0) {
             throw new IllegalArgumentException("id is not a valid game id");
@@ -117,7 +117,8 @@ public class DungeonManiaController {
      * @throws InvalidActionException If itemUsed is not in the player's inventory
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-        return currentGame.response();
+        currentGame.tick();
+    	return currentGame.response();
     }
     
     // TODO

@@ -47,6 +47,30 @@ public class Dungeon {
         return String.valueOf(++lastId); 
     }
 
+    // TODO: fill in empty attribute fields with proper code
+    /**
+     * Construct a Dungeon object
+     * Initialise attributes to match the map chosen
+     * @param dungeonName
+     * @throws IllegalArgumentException if file (dungeonName) or path does not exist
+     */
+    public Dungeon(String dungeonName, String gameMode)  throws IllegalArgumentException {
+    	this.dungeonId = Dungeon.createId();
+    	this.dungeonName = dungeonName;
+    	this.entities = new ArrayList<Entity>();
+    	try {
+    		this.loadDungeon();
+    	} catch (IOException e) {
+    		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
+    	}
+    	
+    	// this.gameMode = 
+    	// this.goalCondition = 
+    	this.inventory = new ArrayList<Entity>();
+    	this.buildables = new ArrayList<String>();
+    	this.animations = null;
+    }
+    
     /**
      * Add the entities, goals, player to the Dungeon 
      * from the dungeonName specified
@@ -74,30 +98,6 @@ public class Dungeon {
 
         // TODO: set goals
         // this.goals = 
-    }
-
-    // TODO: fill in empty attribute fields with proper code
-    /**
-     * Construct a Dungeon object
-     * Initialise attributes to match the map chosen
-     * @param dungeonName
-     * @throws IllegalArgumentException if file (dungeonName) or path does not exist
-     */
-    public Dungeon(String dungeonName, String gameMode)  throws IllegalArgumentException {
-        this.dungeonId = Dungeon.createId();
-        this.dungeonName = dungeonName;
-        this.entities = new ArrayList<Entity>();
-        try {
-            this.loadDungeon();
-        } catch (IOException e) {
-            throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
-        }
-        
-        // this.gameMode = 
-        // this.goalCondition = 
-        this.inventory = new ArrayList<Entity>();
-        this.buildables = new ArrayList<String>();
-        this.animations = null;
     }
 
     public String getName() {
