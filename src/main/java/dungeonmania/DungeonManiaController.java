@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.ItemResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 

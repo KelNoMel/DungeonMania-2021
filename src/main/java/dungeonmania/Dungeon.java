@@ -123,13 +123,16 @@ public class Dungeon {
             .map(e -> e.response()).collect(Collectors.toList()));
     }
 
+    // TODO: add goals, buildables, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game
      */
     public DungeonResponse response() {
-        return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-            itemResponse(), buildables, goals, animations);
+        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
+        //    itemResponse(), buildables, goals, animations);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+        itemResponse(), new ArrayList<>(), "");
     }
 
     // TODO
