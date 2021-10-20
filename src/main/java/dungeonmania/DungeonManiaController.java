@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
@@ -56,9 +58,13 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If dungeonName is not a dungeon that exists
      */
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
-        return null;
+        Dungeon dgn = new Dungeon(dungeonName, gameMode);
+        games.add(dgn);
+        currentGame = dgn;
+        return dgn.response();
     }
     
+    // TODO
     /**
      * Saves the current game state with the given ID.
      * @param name
@@ -66,7 +72,7 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+        return currentGame.response();
     }
 
     /**
@@ -76,7 +82,14 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        return null;
+        List<Dungeon> game = games.stream()
+            .filter(d -> d.getName().equals(name)).collect(Collectors.toList());
+        if (game.size() == 0) {
+            throw new IllegalArgumentException("id is not a valid game id");
+        } else {
+            currentGame = game.get(0);
+            return currentGame.response();
+        }
     }
 
     /**
@@ -84,9 +97,11 @@ public class DungeonManiaController {
      * @return
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        return new ArrayList<String>(games.stream()
+            .map(g -> g.getName()).collect(Collectors.toList()));
     }
 
+    // TODO
     /**
      * Ticks the game state. When a tick occurs:
      * 1. The player moves in the specified direction one square
@@ -99,9 +114,10 @@ public class DungeonManiaController {
      * @throws InvalidActionException If itemUsed is not in the player's inventory
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        return currentGame.response();
     }
     
+    // TODO
     /**
      * Builds the given entity, where buildable is one of bow and shield.
      * @param entityId
@@ -110,9 +126,10 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have sufficient items to craft the buildable
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        return currentGame.response();
     }
 
+    // TODO
     /**
      * Interacts with a mercenary (where the character bribes the mercenary) or a zombie spawner, where
      * the character destroys the spawner.
@@ -124,6 +141,6 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have a weapon and attempts to destroy a spawner
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        return currentGame.response();
     }
 }
