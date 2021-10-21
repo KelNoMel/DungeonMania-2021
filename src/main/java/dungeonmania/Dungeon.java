@@ -28,14 +28,16 @@ public class Dungeon {
     private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
-    private GoalCondition goalCondition;
-    private ArrayList<Entity> entities;
-    private Entity player;
     
-    private List<Entity> inventory;
-    private List<String> buildables;
+    private ArrayList<Entity> entities = new ArrayList<Entity>();
+    private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
+
+    private Entity player;
+    private List<Entity> inventory = new ArrayList<Entity>();
+    private List<String> buildables = new ArrayList<String>();
+    
     private String goals;
-    private List<AnimationQueue> animations;  
+    private GoalCondition goalCondition;
 
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
@@ -55,20 +57,14 @@ public class Dungeon {
      * @throws IllegalArgumentException if file (dungeonName) or path does not exist
      */
     public Dungeon(String dungeonName, String gameMode)  throws IllegalArgumentException {
-    	this.dungeonId = Dungeon.createId();
     	this.dungeonName = dungeonName;
-    	this.entities = new ArrayList<Entity>();
-    	try {
-    		this.loadDungeon();
-    	} catch (IOException e) {
-    		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
-    	}
     	
-    	// this.gameMode = 
+    	loadDungeonFromFile();
+    	
+    	dungeonId = Dungeon.createId();
+    	
+    	this.gameMode = GameMode.getGameMode(gameMode);
     	// this.goalCondition = 
-    	this.inventory = new ArrayList<Entity>();
-    	this.buildables = new ArrayList<String>();
-    	this.animations = null;
     }
     
     /**
@@ -76,9 +72,15 @@ public class Dungeon {
      * from the dungeonName specified
      * @throws IOException
      */
-    private void loadDungeon() throws IOException {
+    private void loadDungeonFromFile() {
         // throw exception if the dungeonName can not be found
-        String file = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
+    	String file;
+    	try {
+    		file = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
+    	} catch (IOException e) {
+    		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
+    	}
+        
         JSONObject json = new JSONObject(file);
 
         // TODO check the map works
