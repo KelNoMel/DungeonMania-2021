@@ -41,7 +41,7 @@ public class Dungeon {
 
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
-     * Note: This may generate used ids if persistance is added. Use UUID's in 
+     * Note: This may generate used ids if persistence is added. Use UUID's in 
      *       that case.
      * @return new unique dungeon id
      */
@@ -65,6 +65,10 @@ public class Dungeon {
     	
     	this.gameMode = GameMode.getGameMode(gameMode);
     	// this.goalCondition = 
+    }
+    
+    public GameMode getGameMode() {
+    	return gameMode;
     }
     
     /**
