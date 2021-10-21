@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.response.models.DungeonResponse;
+
 public class DungeonTest {
     /**
      * @newGame()
@@ -13,10 +15,23 @@ public class DungeonTest {
     // create a new game
     @Test
     public void testNewGame() {
-        // assertTrue();
+        DungeonManiaController mania = new DungeonManiaController();
+        DungeonResponse response = mania.newGame("maze","Peaceful");
+        //assertTrue(response);
+
+        mania.newGame("boulders","Peaceful");
+        //assertTrue();
+        mania.newGame("advanced","Peaceful");
+        //assertTrue();
     }
 
     // creat a new game where the map doesn't exist
+    @Test
+    public void testNewGameBadMap() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("squid-game","Hard");
+        
+    }
 
     // attempt to create a new game where the map already exists
 
