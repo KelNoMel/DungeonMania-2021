@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
 import dungeonmania.response.models.AnimationQueue;
@@ -141,12 +142,15 @@ public class Dungeon {
         itemResponse(), new ArrayList<>(), "");
     }
 
-    // TODO
     /**
      * Advance the game one tick into the future
+     * @param movementDirection 
+     * @param itemUsed 
      */
-    public void tick() {
-
+    public void tick(String itemUsed, Direction movementDirection) {
+    	for (Entity e : entities) {
+    		e.
+    	}
     }
 
     // TODO
