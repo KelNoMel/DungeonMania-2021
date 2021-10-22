@@ -3,24 +3,34 @@ package dungeonmania;
 import dungeonmania.util.Position;
 import dungeonmania.response.models.EntityResponse;
 
+import java.util;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
-public class Entity {
-    static private Integer lastId = 0;
-    
-    private Dungeon dungeon;
+
+public abstract class Entity {
+    private State state;
+    private Position position;
+
     private String id;
     private String type;
-    private Position position;
     private boolean isInteractable;
 
+    private Dungeon owningDungeon;
+    private HashMap<String, Component> components;
+
+    
+
     /**
-     * Creates a new id by adding 1 to the integer value of the last id created
-     * Note: This may generate used ids if persistance is added. Use UUID's in 
-     *       that case.
+     * Uses UUID generation and converts it into a string
+     * for use
      * @return new unique entity id
      */
     private static String createId() {
-        return String.valueOf(++lastId); 
+        String id = UUID.randomUUID().toString();
+        return id;
     }
 
     // TODO
@@ -30,7 +40,7 @@ public class Entity {
      * @prereq attribute type has been set
      */
     private boolean interactableType() {
-        return true;
+        return isInteractable;
     }
 
     /**
@@ -40,11 +50,42 @@ public class Entity {
      */
     public Entity(Dungeon dungeon, String type, Position position) {
         
-        this.dungeon = dungeon;
-        this.id = createId();
+        this.state = ACTIVE;
         this.position = position;
+        this.id = createId();
         this.type = type;
         this.isInteractable = interactableType();
+        this.dungeon = dungeon;
+        this.components = new ArrayList<Component>(); 
+    }
+
+    public void update() {
+        updateComponents();
+        updateEntity();
+    }
+
+    public void updateComponents() {
+        for (Component comp : components) {
+            comp.update();
+        }
+    }
+
+    public abstract void updateEntity();
+
+    public void addComponent(Component component) {
+        components.add(component);
+    }
+
+    public void removeComponent(Component component) {
+        components.remove(component);
+    }
+    
+    /**
+     * Creates an EntityResponse for this entity
+     * @return EntityrResponse describing the entity
+     */
+    public EntityResponse response() {
+        return new EntityResponse(id, type, position, isInteractable);
     }
 
     public String getId() {
@@ -54,14 +95,5 @@ public class Entity {
     public String getType() {
         return type;
     }
-
-    /**
-     * Creates an EntityrResponse for this entity
-     * @return EntityrResponse describing the entity
-     */
-    public EntityResponse response() {
-        return new EntityResponse(id, type, position, isInteractable);
-    }
-
 
 }
