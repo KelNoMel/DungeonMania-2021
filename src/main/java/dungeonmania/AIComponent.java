@@ -1,11 +1,20 @@
 package dungeonmania;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AIComponent extends Component {
+public class AIComponent extends Component implements Observer {
         private HashMap<String, AIState> stateMap = new HashMap<>();
         private AIState currentState;
 
+
+        /**
+         * constructor for AI component
+         * @param OwningEntity
+         * @param updatedOrder
+         * @param currentState
+         * @param stateName
+         */
         public AIComponent(Entity OwningEntity, int updatedOrder, AIState currentState, 
                         String stateName) {
                 super(OwningEntity, updatedOrder);
@@ -14,17 +23,27 @@ public class AIComponent extends Component {
         }
 
         /**
-         * This method put will replace the value of an existing key 
-         * and will create it if doesn't exist.
-         * Changing the state of an existing AI component
-         * @param name
+         * registering AI state of a component
+         * @param currentState
          */
-        public void changeState(String name) {
-                stateMap.put(name, stateMap.containsKey(name) ? stateMap.get(name) + 1 : 1);
+        public void registerAIState(AIState currentState) {
+                AIState.registerState(currentState);
         }
 
-        public void registerState(AIState state) {
-
+        /**
+         * removing AI State
+         * @param currentState
+         */
+        public void changeAIState(AIState currentState) {
+                AIState.removeState(currentState);
         }
+
+        @Override
+        public void update(Subject componentA) {
+                if(componentA instanceof Component) {
+			this.updatedOrder = ((Component) componentA).getUpdatedOrder();
+		}
+        }
+
 
 }
