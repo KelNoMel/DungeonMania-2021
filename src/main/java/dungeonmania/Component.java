@@ -36,6 +36,8 @@ public abstract class Component implements Subject {
         
         public abstract void update();
 
+        
+        
         @Override
         public void attach(Observer c) {
         	if(!observingComponents.contains(c)) {

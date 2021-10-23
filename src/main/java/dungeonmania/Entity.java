@@ -19,9 +19,23 @@ public abstract class Entity {
     private String type;
     private boolean isInteractable;
 
-    private Dungeon owningDungeon;
+    private Dungeon dungeon;
+    
     private List<Component> components = new ArrayList<Component>();
 
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable) {
+    	this.dungeon = dungeon;
+    	this.state = EntityState.ACTIVE;
+        this.position = position;
+        this.id = createId();
+        this.type = type;
+        this.isInteractable = isInteractable;
+    }
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                        Entity Loading/Construction                       ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Uses UUID generation and converts it into a string
      * for use
@@ -31,69 +45,7 @@ public abstract class Entity {
         String id = UUID.randomUUID().toString();
         return id;
     }
-
-    // TODO
-    /**
-     * Check if the type of the entity is interactable
-     * @return boolean of if the type is interactable
-     * @prereq attribute type has been set
-     */
-    private boolean interactableType() {
-        return isInteractable;
-    }
-
-    /**
-     * Entity constructor
-     * @param type
-     * @param position
-     */
-    public Entity(Dungeon dungeon, String type, Position position) {
-        
-        this.state = EntityState.ACTIVE;
-        this.position = position;
-        this.id = createId();
-        this.type = type;
-        this.isInteractable = interactableType();
-        owningDungeon = dungeon;
-    }
-
-    public void update() {
-        updateComponents();
-        updateEntity();
-    }
-
-    private void updateComponents() {
-        for (Component comp : components) {
-            comp.update();
-        }
-    }
-
-    protected abstract void updateEntity();
-
-    public void addComponent(Component component) {
-        components.add(component);
-    }
-
-    public void removeComponent(Component component) {
-        components.remove(component);
-    }
     
-    /**
-     * Creates an EntityResponse for this entity
-     * @return EntityrResponse describing the entity
-     */
-    public EntityResponse response() {
-        return new EntityResponse(id, type, position, isInteractable);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
     /**
      * Used to construct specific entities given their JSON representation
      * @param ent
@@ -112,4 +64,44 @@ public abstract class Entity {
 //		return Entity.getEntity(this, ent.getString("type"), pos));
 	}
 
+	////////////////////////////////////////////////////////////////////////////////
+	///                            Entity State Change                           ///
+	////////////////////////////////////////////////////////////////////////////////
+
+    public void update() {
+        updateComponents();
+        updateEntity();
+    }
+
+    private void updateComponents() {
+        for (Component comp : components) {
+            comp.update();
+        }
+    }
+
+    protected abstract void updateEntity();
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                                Components                                ///
+	////////////////////////////////////////////////////////////////////////////////
+
+    public void addComponent(Component component) {
+        components.add(component);
+    }
+
+    public void removeComponent(Component component) {
+        components.remove(component);
+    }
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Entity Response                             ///
+	////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Creates an EntityResponse for this entity
+     * @return EntityResponse describing the entity
+     */
+    public EntityResponse response() {
+        return new EntityResponse(id, type, position, isInteractable);
+    }
 }
