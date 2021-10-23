@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.json.JSONObject;
+
 
 public abstract class Entity {
     private EntityState state;
@@ -91,5 +93,18 @@ public abstract class Entity {
     public String getType() {
         return type;
     }
+
+	public static Entity getEntity(JSONObject ent) {
+		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
+        
+		switch (ent.getString("type")) {
+//			case "wall":
+//				return new Wall();
+			default:
+				return null;
+		}
+		
+//		return Entity.getEntity(this, ent.getString("type"), pos));
+	}
 
 }

@@ -24,9 +24,9 @@ import dungeonmania.response.models.AnimationQueue;
 
 
 /**
- * Dungeon class describes all aspects of a dungeonmania game
+ * Dungeon class describes all aspects of a DungeonMania game
  * @author Matthew Johnstone
- * Class Invarients:
+ * Class Invariants:
  * No two Entities will have the same id
  */
 public class Dungeon {
@@ -46,16 +46,6 @@ public class Dungeon {
     private String goals;
     private GoalCondition goalCondition;
 
-    /**
-     * Creates a new id by adding 1 to the integer value of the last id created
-     * Note: This may generate used ids if persistence is added. Use UUID's in 
-     *       that case.
-     * @return new unique dungeon id
-     */
-    private static String createId() {
-        return String.valueOf(++lastId); 
-    }
-
     // TODO: fill in empty attribute fields with proper code
     /**
      * Construct a Dungeon object
@@ -63,15 +53,46 @@ public class Dungeon {
      * @param dungeonName
      * @throws IllegalArgumentException if file (dungeonName) or path does not exist
      */
-    public Dungeon(String dungeonName, String gameMode)  throws IllegalArgumentException {
+    public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
     	this.dungeonName = dungeonName;
+    	this.gameMode = GameMode.getGameMode(gameMode);
     	
-    	loadDungeonFromFile();
+    	// Load file
+    	JSONObject newDungeonData = loadDungeonJSON(dungeonName);
+    	
+    	// Add the entities
+        loadEntities(newDungeonData);        
+        
+        // TODO: set goals
+        // this.goals = 
     	
     	dungeonId = Dungeon.createId();
-    	
-    	this.gameMode = GameMode.getGameMode(gameMode);
     	// this.goalCondition = 
+    }
+    
+    private JSONObject loadDungeonJSON(String dungeonName) throws IllegalArgumentException {
+    	try {
+    		return new JSONObject(
+    				FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json")
+    				);
+    		
+    	} catch (IOException e) {
+    		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
+    	}
+    }
+
+    private void loadEntities(JSONObject dungeonData) {
+    	JSONArray loadEntities = dungeonData.getJSONArray("entities");
+
+    	int numEntities = loadEntities.length();
+    	for (int i = 0; i < numEntities; i++) {
+    		JSONObject ent = loadEntities.getJSONObject(i);
+    		
+    		// this.player =  // TODO: properly add the player (here?)
+    		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
+            // Entity construction function
+    		entities.add(Entity.getEntity(ent));
+    	}
     }
     
     public Dungeon(File loadFile) {
@@ -81,47 +102,28 @@ public class Dungeon {
 		} catch (IOException e) {
 			System.out.println("Unabke to read file " + loadFile + " information");
 		}
-    	System.out.println("Loading is not yet implemented!");
-    }
-
-	public GameMode getGameMode() {
-    	return gameMode;
+    	System.out.println("Loading saved files is not yet implemented!");
     }
     
     /**
-     * Add the entities, goals, player to the Dungeon 
-     * from the dungeonName specified
-     * @throws IOException
+     * Creates a new id by adding 1 to the integer value of the last id created
+     * Note: This may generate used ids if persistence is added. Use UUID's in 
+     *       that case.
+     * @return new unique dungeon id
      */
-    private void loadDungeonFromFile() {
-        // throw exception if the dungeonName can not be found
-    	String file;
-    	try {
-    		file = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
-    	} catch (IOException e) {
-    		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
-    	}
-        
-        JSONObject json = new JSONObject(file);
-
-        // TODO check the map works
-
-        // add the entities
-        JSONArray jsonEntities = json.getJSONArray("entities");
-
-        for (Object entity : jsonEntities) {
-            if (entity instanceof JSONObject) {
-                // this.player =  // TODO: properly add the player
-
-                JSONObject ent = (JSONObject)entity;
-                Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-//                this.entities.add(new Entity(this, ent.getString("type"), pos));
-            }
-        }
-
-        // TODO: set goals
-        // this.goals = 
+    private static String createId() {
+        return String.valueOf(++lastId); 
     }
+    
+    public void saveGame(File saveFile) {
+		try {
+			saveFile.createNewFile();
+		} catch (IOException e) {
+			System.out.println("File save error");
+		}
+	}
+    
+    
 
     public String getName() {
         return dungeonName;
@@ -177,13 +179,9 @@ public class Dungeon {
     private boolean checkGoalState() {
         return false;
     }
-
-	public void saveGame(File saveFile) {
-		try {
-			saveFile.createNewFile();
-		} catch (IOException e) {
-			System.out.println("File save error");
-		}
-	}
+	
+	public GameMode getGameMode() {
+    	return gameMode;
+    }
 
 }
