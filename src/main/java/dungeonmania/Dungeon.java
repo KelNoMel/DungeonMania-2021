@@ -70,6 +70,20 @@ public class Dungeon {
     	// this.goalCondition = 
     }
     
+    public Dungeon(File loadFile) {
+    	String fileData;
+    	try {
+			fileData = new String(Files.readAllBytes(loadFile.toPath()));
+		} catch (IOException e) {
+			System.out.println("Unabke to read file " + loadFile + " information");
+		}
+    	System.out.println("Loading saved files is not yet implemented!");
+    }
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                       Dungeon Loading/Construction                       ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     private JSONObject loadDungeonJSON(String dungeonName) throws IllegalArgumentException {
     	try {
     		return new JSONObject(
@@ -95,16 +109,6 @@ public class Dungeon {
     	}
     }
     
-    public Dungeon(File loadFile) {
-    	String fileData;
-    	try {
-			fileData = new String(Files.readAllBytes(loadFile.toPath()));
-		} catch (IOException e) {
-			System.out.println("Unabke to read file " + loadFile + " information");
-		}
-    	System.out.println("Loading saved files is not yet implemented!");
-    }
-    
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
      * Note: This may generate used ids if persistence is added. Use UUID's in 
@@ -115,6 +119,10 @@ public class Dungeon {
         return String.valueOf(++lastId); 
     }
     
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Dungeon Saving                              ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     public void saveGame(File saveFile) {
 		try {
 			saveFile.createNewFile();
@@ -123,42 +131,9 @@ public class Dungeon {
 		}
 	}
     
-    
-
-    public String getName() {
-        return dungeonName;
-    }
-
-    /**
-     * Create a list of ItemRespones for each item in the player's inventory
-     * @return list of all ItemResponses for the inventory
-     */
-    private List<ItemResponse> itemResponse() {
-        return new ArrayList<ItemResponse>(inventory.stream()
-        .map(e -> new ItemResponse(e.getId(), e.getType()))
-        .collect(Collectors.toList()));
-    }
-
-    /**
-     * Create a list of EntityResponse for each entity on the map
-     * @return list of EntityResponse for all entities
-     */
-    private List<EntityResponse> entityResponse() {
-        return new ArrayList<EntityResponse>(entities.stream()
-            .map(e -> e.response()).collect(Collectors.toList()));
-    }
-
-    // TODO: add goals, buildables, animations
-    /**
-     * Create a DungeonResponse for the current Dungeon
-     * @return DungeonResponse describing the currennt state of the game
-     */
-    public DungeonResponse response() {
-        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-        //    itemResponse(), buildables, goals, animations);
-        return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), "");
-    }
+	////////////////////////////////////////////////////////////////////////////////
+	///                           Dungeon State Change                           ///
+	////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Advance the game one tick into the future
@@ -180,8 +155,39 @@ public class Dungeon {
         return false;
     }
 	
-	public GameMode getGameMode() {
-    	return gameMode;
-    }
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///                             Dungeon Response                             ///
+	////////////////////////////////////////////////////////////////////////////////
 
+	// TODO: add goals, buildables, animations
+    /**
+     * Create a DungeonResponse for the current Dungeon
+     * @return DungeonResponse describing the currennt state of the game
+     */
+    public DungeonResponse response() {
+        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
+        //    itemResponse(), buildables, goals, animations);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+        itemResponse(), new ArrayList<>(), "");
+    }
+    
+    /**
+     * Create a list of EntityResponse for each entity on the map
+     * @return list of EntityResponse for all entities
+     */
+    private List<EntityResponse> entityResponse() {
+        return new ArrayList<EntityResponse>(entities.stream()
+            .map(e -> e.response()).collect(Collectors.toList()));
+    }
+	
+	/**
+     * Create a list of ItemRespones for each item in the player's inventory
+     * @return list of all ItemResponses for the inventory
+     */
+    private List<ItemResponse> itemResponse() {
+        return new ArrayList<ItemResponse>(inventory.stream()
+        .map(e -> new ItemResponse(e.getId(), e.getType()))
+        .collect(Collectors.toList()));
+    }
 }

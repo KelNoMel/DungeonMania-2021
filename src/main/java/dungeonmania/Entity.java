@@ -94,6 +94,11 @@ public abstract class Entity {
         return type;
     }
 
+    /**
+     * Used to construct specific entities given their JSON representation
+     * @param ent
+     * @return
+     */
 	public static Entity getEntity(JSONObject ent) {
 		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
         
