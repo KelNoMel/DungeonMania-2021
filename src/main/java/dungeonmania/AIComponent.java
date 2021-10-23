@@ -17,9 +17,9 @@ public class AIComponent extends Component implements Observer {
          */
         public AIComponent(Entity OwningEntity, int updatedOrder, AIState currentState, 
                         String stateName) {
-                super(OwningEntity, updatedOrder);
-                this.currentState = currentState;
-                stateMap.put(stateName, currentState);
+            super(OwningEntity, updatedOrder);
+            this.currentState = currentState;
+            stateMap.put(stateName, currentState);
         }
 
         /**
@@ -27,7 +27,7 @@ public class AIComponent extends Component implements Observer {
          * @param currentState
          */
         public void registerAIState(AIState currentState) {
-                AIState.registerState(currentState);
+            AIState.registerState(currentState);
         }
 
         /**
@@ -35,15 +35,20 @@ public class AIComponent extends Component implements Observer {
          * @param currentState
          */
         public void changeAIState(AIState currentState) {
-                AIState.removeState(currentState);
+            AIState.removeState(currentState);
         }
 
         @Override
         public void update(Subject componentA) {
-                if(componentA instanceof Component) {
-			this.updatedOrder = ((Component) componentA).getUpdatedOrder();
-		}
+            if(componentA instanceof Component) {
+            	this.updatedOrder = ((Component) componentA).getUpdatedOrder();
+            }
         }
+
+		@Override
+		public void update() {
+			// TODO Auto-generated method stub
+		}
 
 
 }

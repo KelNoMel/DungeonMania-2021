@@ -3,7 +3,13 @@ package dungeonmania;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -68,7 +74,17 @@ public class Dungeon {
     	// this.goalCondition = 
     }
     
-    public GameMode getGameMode() {
+    public Dungeon(File loadFile) {
+    	String fileData;
+    	try {
+			fileData = new String(Files.readAllBytes(loadFile.toPath()));
+		} catch (IOException e) {
+			System.out.println("Unabke to read file " + loadFile + " information");
+		}
+    	System.out.println("Loading is not yet implemented!");
+    }
+
+	public GameMode getGameMode() {
     	return gameMode;
     }
     
@@ -99,7 +115,7 @@ public class Dungeon {
 
                 JSONObject ent = (JSONObject)entity;
                 Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-                this.entities.add(new Entity(this, ent.getString("type"), pos));
+//                this.entities.add(new Entity(this, ent.getString("type"), pos));
             }
         }
 
@@ -149,7 +165,7 @@ public class Dungeon {
      */
     public void tick(String itemUsed, Direction movementDirection) {
     	for (Entity e : entities) {
-    		e.
+    		e.update();
     	}
     }
 
@@ -161,5 +177,13 @@ public class Dungeon {
     private boolean checkGoalState() {
         return false;
     }
+
+	public void saveGame(File saveFile) {
+		try {
+			saveFile.createNewFile();
+		} catch (IOException e) {
+			System.out.println("File save error");
+		}
+	}
 
 }

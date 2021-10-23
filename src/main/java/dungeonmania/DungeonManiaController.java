@@ -1,17 +1,16 @@
 package dungeonmania;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.ItemResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 
@@ -19,37 +18,16 @@ import dungeonmania.util.FileLoader;
  * Contains one method for each command you need to implement.
  */
 public class DungeonManiaController {
-    private Dungeon currentGame;
-    private List<Dungeon> games;
+    
+	private Dungeon game;
     
     public DungeonManiaController() {
-        this.games = new ArrayList<Dungeon>();
+
     }
 
-    public String getSkin() {
-        return "default";
-    }
-
-    public String getLocalisation() {
-        return "en_US";
-    }
-
-    public List<String> getGameModes() {
-        return Arrays.asList("Standard", "Peaceful", "Hard");
-    }
-
-    /**
-     * /dungeons
-     * 
-     * Done for you.
-     */
-    public static List<String> dungeons() {
-        try {
-            return FileLoader.listFileNamesInResourceDirectory("/dungeons");
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
-    }
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Game Management                             ///
+	////////////////////////////////////////////////////////////////////////////////
     
     /**
      * Creates a new game, where dungeonName is the name of the dungeon map (corresponding to
@@ -61,38 +39,40 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If dungeonName is not a dungeon that exists
      */
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
-        Dungeon dgn = new Dungeon(dungeonName, gameMode);
-        games.add(dgn);
-        currentGame = dgn;
-        return dgn.response();
+    	System.out.println(dungeonName);
+    	game = new Dungeon(dungeonName, gameMode);
+        return game.response();
     }
+    
+    private static File getSaveFile(String saveName) throws IllegalArgumentException {
+		try {
+			return FileLoader.getFolderPath("/dungeonSaves").resolve(saveName).toFile();
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException("Invalid save name");
+		}
+	}
     
     // TODO
     /**
      * Saves the current game state with the given ID.
-     * @param name
+     * @param saveName
      * @return
      * @throws IllegalArgumentException If id is not a valid game id
      */
-    public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return currentGame.response();
+    public DungeonResponse saveGame(String saveName) throws IllegalArgumentException {
+		game.saveGame(getSaveFile(saveName));
+    	return game.response();
     }
 
     /**
-     * Loads the game with the given id.
-     * @param name
+     * Loads the game with the given save name.
+     * @param loadName
      * @return
      * @throws IllegalArgumentException If id is not a valid game id
      */
-    public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-    	List<Dungeon> game = games.stream()
-            .filter(d -> d.getName().equals(name)).collect(Collectors.toList());
-        if (game.size() == 0) {
-            throw new IllegalArgumentException("id is not a valid game id");
-        } else {
-            currentGame = game.get(0);
-            return currentGame.response();
-        }
+    public DungeonResponse loadGame(String loadName) throws IllegalArgumentException {
+		game = new Dungeon(getSaveFile(loadName));
+    	return game.response();
     }
 
     /**
@@ -100,10 +80,18 @@ public class DungeonManiaController {
      * @return
      */
     public List<String> allGames() {
-        return new ArrayList<String>(games.stream()
-            .map(g -> g.getName()).collect(Collectors.toList()));
+		try {
+			return FileLoader.listFileNamesInResourceDirectory("/dungeonSaves");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
     }
-
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                             Game State Change                            ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     // TODO
     /**
      * Ticks the game state. When a tick occurs:
@@ -117,8 +105,8 @@ public class DungeonManiaController {
      * @throws InvalidActionException If itemUsed is not in the player's inventory
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-        currentGame.tick(itemUsed, movementDirection);
-    	return currentGame.response();
+        game.tick(itemUsed, movementDirection);
+    	return game.response();
     }
     
     // TODO
@@ -130,7 +118,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have sufficient items to craft the buildable
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return currentGame.response();
+        return game.response();
     }
 
     // TODO
@@ -145,6 +133,32 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have a weapon and attempts to destroy a spawner
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return currentGame.response();
+        return game.response();
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ///                            Provided Functions                            ///
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    public String getSkin() {
+        return "default";
+    }
+
+    public String getLocalisation() {
+        return "en_US";
+    }
+
+    public List<String> getGameModes() {
+        return Arrays.asList("Standard", "Peaceful", "Hard");
+    }
+
+    public static List<String> dungeons() {
+        try {
+            return FileLoader.listFileNamesInResourceDirectory("/dungeons");
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
+    }
+    
+    
 }

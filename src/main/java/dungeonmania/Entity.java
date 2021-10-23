@@ -3,15 +3,14 @@ package dungeonmania;
 import dungeonmania.util.Position;
 import dungeonmania.response.models.EntityResponse;
 
-import java.util;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 
 public abstract class Entity {
-    private State state;
+    private EntityState state;
     private Position position;
 
     private String id;
@@ -19,9 +18,7 @@ public abstract class Entity {
     private boolean isInteractable;
 
     private Dungeon owningDungeon;
-    private HashMap<String, Component> components;
-
-    
+    private List<Component> components = new ArrayList<Component>();
 
     /**
      * Uses UUID generation and converts it into a string
@@ -50,13 +47,12 @@ public abstract class Entity {
      */
     public Entity(Dungeon dungeon, String type, Position position) {
         
-        this.state = ACTIVE;
+        this.state = EntityState.ACTIVE;
         this.position = position;
         this.id = createId();
         this.type = type;
         this.isInteractable = interactableType();
-        this.dungeon = dungeon;
-        this.components = new ArrayList<Component>(); 
+        owningDungeon = dungeon;
     }
 
     public void update() {
@@ -64,13 +60,13 @@ public abstract class Entity {
         updateEntity();
     }
 
-    public void updateComponents() {
+    private void updateComponents() {
         for (Component comp : components) {
             comp.update();
         }
     }
 
-    public abstract void updateEntity();
+    protected abstract void updateEntity();
 
     public void addComponent(Component component) {
         components.add(component);
