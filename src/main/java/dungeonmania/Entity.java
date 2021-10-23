@@ -1,15 +1,13 @@
 package dungeonmania;
 
 import dungeonmania.util.Position;
+import dungeonmania.entities.Wall;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import org.json.JSONObject;
-
 
 public abstract class Entity {
     private EntityState state;
@@ -30,6 +28,8 @@ public abstract class Entity {
         this.id = createId();
         this.type = type;
         this.isInteractable = isInteractable;
+        
+        dungeon.addEntity(this);
     }
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -45,24 +45,6 @@ public abstract class Entity {
         String id = UUID.randomUUID().toString();
         return id;
     }
-    
-    /**
-     * Used to construct specific entities given their JSON representation
-     * @param ent
-     * @return
-     */
-	public static Entity getEntity(JSONObject ent) {
-		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-        
-		switch (ent.getString("type")) {
-//			case "wall":
-//				return new Wall();
-			default:
-				return null;
-		}
-		
-//		return Entity.getEntity(this, ent.getString("type"), pos));
-	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity State Change                           ///

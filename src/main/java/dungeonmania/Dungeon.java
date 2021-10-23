@@ -20,6 +20,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import dungeonmania.entities.Wall;
 import dungeonmania.response.models.AnimationQueue;
 
 
@@ -99,9 +100,31 @@ public class Dungeon {
     		// this.player =  // TODO: properly add the player (here?)
     		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
             // Entity construction function
-    		entities.add(Entity.getEntity(ent));
+    		createEntity(ent);
     	}
     }
+    
+    /**
+     * Used to construct specific entities given their JSON representation
+     * @param ent
+     * @return
+     */
+	public Entity createEntity(JSONObject ent) {
+		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
+	
+		switch (ent.getString("type")) {
+			case "wall":
+				return new Wall(this, pos);
+			default:
+				return null;
+		}
+		
+//		return Entity.getEntity(this, ent.getString("type"), pos));
+	}
+	
+	public void addEntity(Entity e) {
+		entities.add(e);
+	}
     
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
