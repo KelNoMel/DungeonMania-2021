@@ -1,5 +1,5 @@
 package dungeonmania;
 
-public enum State {
+public enum EntityState {
     ACTIVE, DEAD; 
 }

@@ -3,26 +3,39 @@ package dungeonmania;
 import dungeonmania.util.Position;
 import dungeonmania.response.models.EntityResponse;
 
-import java.util;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+
+import org.json.JSONObject;
 
 
 public abstract class Entity {
-    private State state;
+    private EntityState state;
     private Position position;
 
     private String id;
     private String type;
     private boolean isInteractable;
 
-    private Dungeon owningDungeon;
-    private HashMap<String, Component> components;
-
+    private Dungeon dungeon;
     
+    private List<Component> components = new ArrayList<Component>();
 
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable) {
+    	this.dungeon = dungeon;
+    	this.state = EntityState.ACTIVE;
+        this.position = position;
+        this.id = createId();
+        this.type = type;
+        this.isInteractable = isInteractable;
+    }
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                        Entity Loading/Construction                       ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Uses UUID generation and converts it into a string
      * for use
@@ -32,45 +45,45 @@ public abstract class Entity {
         String id = UUID.randomUUID().toString();
         return id;
     }
-
-    // TODO
+    
     /**
-     * Check if the type of the entity is interactable
-     * @return boolean of if the type is interactable
-     * @prereq attribute type has been set
+     * Used to construct specific entities given their JSON representation
+     * @param ent
+     * @return
      */
-    private boolean interactableType() {
-        return isInteractable;
-    }
-
-    /**
-     * Entity constructor
-     * @param type
-     * @param position
-     */
-    public Entity(Dungeon dungeon, String type, Position position) {
+	public static Entity getEntity(JSONObject ent) {
+		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
         
-        this.state = ACTIVE;
-        this.position = position;
-        this.id = createId();
-        this.type = type;
-        this.isInteractable = interactableType();
-        this.dungeon = dungeon;
-        this.components = new ArrayList<Component>(); 
-    }
+		switch (ent.getString("type")) {
+//			case "wall":
+//				return new Wall();
+			default:
+				return null;
+		}
+		
+//		return Entity.getEntity(this, ent.getString("type"), pos));
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                            Entity State Change                           ///
+	////////////////////////////////////////////////////////////////////////////////
 
     public void update() {
         updateComponents();
         updateEntity();
     }
 
-    public void updateComponents() {
+    private void updateComponents() {
         for (Component comp : components) {
             comp.update();
         }
     }
 
-    public abstract void updateEntity();
+    protected abstract void updateEntity();
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                                Components                                ///
+	////////////////////////////////////////////////////////////////////////////////
 
     public void addComponent(Component component) {
         components.add(component);
@@ -80,20 +93,15 @@ public abstract class Entity {
         components.remove(component);
     }
     
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Entity Response                             ///
+	////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Creates an EntityResponse for this entity
-     * @return EntityrResponse describing the entity
+     * @return EntityResponse describing the entity
      */
     public EntityResponse response() {
         return new EntityResponse(id, type, position, isInteractable);
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
 }
