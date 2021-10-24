@@ -1,7 +1,8 @@
-package dungeonmania.entities;
+package dungeonmania.entities.statics;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
 public class Wall extends Entity {

@@ -3,7 +3,7 @@ package dungeonmania.entities;
 import dungeonmania.util.Position;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.entities.components.Component;
+import dungeonmania.components.Component;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;

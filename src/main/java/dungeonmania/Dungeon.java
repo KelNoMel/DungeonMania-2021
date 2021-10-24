@@ -23,7 +23,7 @@ import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.Wall;
+import dungeonmania.entities.statics.Wall;
 import dungeonmania.response.models.AnimationQueue;
 
 

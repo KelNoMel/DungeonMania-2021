@@ -5,6 +5,7 @@ import java.util.List;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.entities.statics.Wall;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {

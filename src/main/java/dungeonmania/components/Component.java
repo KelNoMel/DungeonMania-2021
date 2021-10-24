@@ -1,4 +1,4 @@
-package dungeonmania.entities.components;
+package dungeonmania.components;
 
 import java.util.ArrayList;
 
