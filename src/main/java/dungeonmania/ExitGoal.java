@@ -7,7 +7,7 @@ public class ExitGoal extends Goal{
 
     }
 
-    @Override
+    
     public boolean checkGoal() {
         //TODO:
         return false;
