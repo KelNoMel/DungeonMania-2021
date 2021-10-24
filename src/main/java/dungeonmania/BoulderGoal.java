@@ -6,7 +6,7 @@ public class BoulderGoal extends Goal{
 
     }
 
-    @Override
+    
     public boolean checkGoal() {
         //TODO:
         return false;
