@@ -7,7 +7,7 @@ public class TreasureGoal extends Goal{
 
     }
 
-    @Override
+    
     public boolean checkGoal() {
         //TODO:
         return false;
