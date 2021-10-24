@@ -13,7 +13,7 @@ Location:        Online
 
 ## Discussion Points
 - Saved games are now files are saved in json format
-- tick -> ItemState(item, direction) -> process ->
+- tick -> ItemState(item, direction) -> processInput for each entity -> update each entity
 - Do we trust the map json files given to us? e.g. Don't contain 2 players
 - possible error from double comparison in ```getEntitiesInRadius()```
 - Components effect its Entity which can effect other Components within the Entity
