@@ -67,6 +67,7 @@ public class Dungeon {
     	
     	dungeonId = Dungeon.createId();
     	// this.goalCondition = 
+        // GoalCondition.AND // GoalCondition.OR
     }
     
     public Dungeon(File loadFile) {
