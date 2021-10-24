@@ -20,6 +20,9 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityState;
+import dungeonmania.entities.Player;
 import dungeonmania.entities.Wall;
 import dungeonmania.response.models.AnimationQueue;
 
@@ -46,6 +49,11 @@ public class Dungeon {
     
     private String goals;
     private GoalCondition goalCondition;
+       
+    // Stuff used for adding entities
+    private boolean updatingActors = false;
+    private ArrayList<Entity> newEntities = new ArrayList<>();
+    private ArrayList<Entity> deadEntities = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -115,6 +123,8 @@ public class Dungeon {
 		switch (ent.getString("type")) {
 			case "wall":
 				return new Wall(this, pos);
+			case "player":
+				return (player = new Player(this, pos));
 			default:
 				return null;
 		}
@@ -123,7 +133,11 @@ public class Dungeon {
 	}
 	
 	public void addEntity(Entity e) {
-		entities.add(e);
+		if (updatingActors) {
+			newEntities.add(e);
+		} else {			
+			entities.add(e);
+		}
 	}
     
     /**
@@ -158,9 +172,32 @@ public class Dungeon {
      * @param itemUsed 
      */
     public void tick(String itemUsed, Direction movementDirection) {
+    	processInput(new InputState(itemUsed, movementDirection));
+    	updateGame();
+    }
+    
+    private void processInput(InputState inputState) {
+    	updatingActors = true;
+    	for (Entity e : entities) {
+    		e.processInput(inputState);
+    	}
+    	updatingActors = false;
+    }
+    
+    private void updateGame() {
+    	updatingActors = true;
     	for (Entity e : entities) {
     		e.update();
     	}
+    	updatingActors = false;
+    	
+    	for (Entity e : entities) {
+    		if (e.getState() == EntityState.DEAD) {
+    			deadEntities.add(e);
+    		}
+    	}
+    	entities.removeAll(deadEntities);    	
+    	deadEntities.clear();
     }
 
     // TODO

@@ -1,7 +1,7 @@
 package dungeonmania.entities;
 
 import dungeonmania.Dungeon;
-import dungeonmania.Entity;
+import dungeonmania.InputState;
 import dungeonmania.util.Position;
 
 public class Wall extends Entity {
@@ -11,5 +11,7 @@ public class Wall extends Entity {
 	}
 
 	protected void updateEntity() {}
+
+	protected void inputEntity(InputState inputState) {}
 
 }

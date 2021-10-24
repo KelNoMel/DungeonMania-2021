@@ -1,7 +1,9 @@
-package dungeonmania;
+package dungeonmania.entities;
 
 import dungeonmania.util.Position;
-import dungeonmania.entities.Wall;
+import dungeonmania.Dungeon;
+import dungeonmania.InputState;
+import dungeonmania.entities.components.Component;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public abstract class Entity {
     private String type;
     private boolean isInteractable;
 
-    private Dungeon dungeon;
+    protected Dungeon dungeon;
     
     private List<Component> components = new ArrayList<Component>();
 
@@ -50,17 +52,27 @@ public abstract class Entity {
 	///                            Entity State Change                           ///
 	////////////////////////////////////////////////////////////////////////////////
 
+    public void processInput(InputState inputState) {
+    	for (Component c : components) {
+    		c.processInput(inputState);
+    	}
+    	
+    	inputEntity(inputState);
+    }
+    
+    protected abstract void inputEntity(InputState inputState);
+    
     public void update() {
         updateComponents();
         updateEntity();
     }
-
+    
     private void updateComponents() {
-        for (Component comp : components) {
-            comp.update();
-        }
+    	for (Component comp : components) {
+    		comp.updateComponent();
+    	}
     }
-
+    
     protected abstract void updateEntity();
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +90,12 @@ public abstract class Entity {
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Entity Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
+    
+    public EntityState getState() { return state; }
+    public void setState(EntityState s) { state = s; }
+    public Position getPosition() { return position; }
+    public void setPosition(Position p) { position = p; } 
+    
     
     /**
      * Creates an EntityResponse for this entity

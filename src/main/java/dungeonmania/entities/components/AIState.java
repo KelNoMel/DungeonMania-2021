@@ -1,4 +1,4 @@
-package dungeonmania;
+package dungeonmania.entities.components;
 
 public abstract class AIState {
     protected AIComponent owner;
