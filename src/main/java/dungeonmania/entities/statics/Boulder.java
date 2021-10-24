@@ -8,7 +8,7 @@ import dungeonmania.util.Position;
 public class Boulder extends Entity {
 
 	public Boulder(Dungeon dungeon, Position position) {
-		super(dungeon, "boulder", position, true);
+		super(dungeon, "boulder", position, false);
 	}
 
 	protected void inputEntity(InputState inputState) {
