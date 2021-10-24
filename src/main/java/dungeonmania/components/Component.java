@@ -16,6 +16,8 @@ public abstract class Component implements Subject {
     public Component(Entity owningEntity, int updateOrder) {
         this.owningEntity = owningEntity;
         this.updateOrder = updateOrder;
+        
+        owningEntity.addComponent(this);
     }
 
     /**
