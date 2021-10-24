@@ -14,14 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.ItemResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.FileLoader;
-import dungeonmania.util.Position;
 import dungeonmania.response.models.AnimationQueue;
-
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.*;
+import dungeonmania.entities.*;
+import dungeonmania.entities.statics.*;
+import dungeonmania.entities.moving.*;
+import dungeonmania.entities.collectables.*;
+import dungeonmania.entities.collectables.rare.*;
+import dungeonmania.entities.buildable.*;
 
 /**
  * Dungeon class describes all aspects of a DungeonMania game
@@ -45,6 +48,11 @@ public class Dungeon {
     
     private String goals;
     private GoalCondition goalCondition;
+       
+    // Stuff used for adding entities
+    private boolean updatingActors = false;
+    private ArrayList<Entity> newEntities = new ArrayList<>();
+    private ArrayList<Entity> deadEntities = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -69,7 +77,7 @@ public class Dungeon {
     	try {
 			fileData = new String(Files.readAllBytes(loadFile.toPath()));
 		} catch (IOException e) {
-			System.out.println("Unabke to read file " + loadFile + " information");
+			System.out.println("Unable to read file " + loadFile + " information");
 		}
     	System.out.println("Loading saved files is not yet implemented!");
     }
@@ -99,9 +107,17 @@ public class Dungeon {
     		// this.player =  // TODO: properly add the player (here?)
     		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
             // Entity construction function
-    		entities.add(Entity.getEntity(ent));
+    		createEntity(ent);
     	}
     }
+    
+	public void addEntity(Entity e) {
+		if (updatingActors) {
+			newEntities.add(e);
+		} else {			
+			entities.add(e);
+		}
+	}
     
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
@@ -135,9 +151,32 @@ public class Dungeon {
      * @param itemUsed 
      */
     public void tick(String itemUsed, Direction movementDirection) {
+    	processInput(new InputState(itemUsed, movementDirection));
+    	updateGame();
+    }
+    
+    private void processInput(InputState inputState) {
+    	updatingActors = true;
+    	for (Entity e : entities) {
+    		e.processInput(inputState);
+    	}
+    	updatingActors = false;
+    }
+    
+    private void updateGame() {
+    	updatingActors = true;
     	for (Entity e : entities) {
     		e.update();
     	}
+    	updatingActors = false;
+    	
+    	for (Entity e : entities) {
+    		if (e.getState() == EntityState.DEAD) {
+    			deadEntities.add(e);
+    		}
+    	}
+    	entities.removeAll(deadEntities);    	
+    	deadEntities.clear();
     }
 
     // TODO
@@ -154,6 +193,20 @@ public class Dungeon {
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
+    public ArrayList<Entity> getEntities() {
+    	return entities;
+    }
+    
+    public ArrayList<Entity> getEntitiesInRadius(Position origin, int radius) {
+    	ArrayList<Entity> radEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (Position.calculatePositionBetween(origin, e.getPosition()).getLength() <= radius) {
+    			radEnts.add(e);
+    		}
+    	}
+    	return radEnts;
+    }
+    
 	// TODO: add goals, buildables, animations
     /**
      * Create a DungeonResponse for the current Dungeon
@@ -186,4 +239,84 @@ public class Dungeon {
 //        .map(e -> new ItemResponse(e.getId(), e.getType()))
 //        .collect(Collectors.toList()));
     }
+	    
+	////////////////////////////////////////////////////////////////////////////////
+	///                            Entity Construction                           ///
+	////////////////////////////////////////////////////////////////////////////////
+    
+    // TODO: Research better way to do this
+    
+    /**
+     * Used to construct specific entities given their JSON representation
+     * @param ent
+     * @return
+     */
+	public Entity createEntity(JSONObject ent) {
+		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
+	
+		switch (ent.getString("type")) {
+			case "player":
+				return (player = new Player(this, pos));
+			// Statics
+			case "wall":
+				return new Wall(this, pos);
+			case "exit":
+				return new Exit(this, pos);
+			case "boulder":
+				return new Boulder(this, pos);
+			case "switch":
+				return new FloorSwitch(this, pos);
+			case "door":
+				return new Door(this, pos);
+			case "portal":
+				return new Portal(this, pos);
+			case "spawner":
+				return new ZombieToastSpawner(this, pos);
+			
+			// Moving
+			case "spider":
+				return new Spider(this, pos);
+			case "zombie":
+				return new ZombieToast(this, pos);
+			case "mercenary":
+				return new Mercenary(this, pos);
+				
+			// Collectable
+			case "treasure":
+				return new Treasure(this, pos);
+			case "key":
+				return new Key(this, pos);
+			case "health_potion":
+				return new HealthPotion(this, pos);
+			case "invincibility_potion":
+				return new InvincibilityPotion(this, pos);
+			case "invisibility_potion":
+				return new InvisibilityPotion(this, pos);
+			case "wood":
+				return new Wood(this, pos);
+			case "arrows":
+				return new Arrows(this, pos);
+			case "bomb":
+				return new Bomb(this, pos);
+			case "sword":
+				return new Sword(this, pos);
+			case "armour":
+				return new Armour(this, pos);
+				
+			// Rare Collectable
+			case "the_one_ring":
+				return new TheOneRing(this, pos);
+				
+			/// Buildable
+			case "bow":
+				return new Bow(this, pos);
+			case "shield":
+				return new Shield(this, pos);
+				
+			// Type is not correct or has not been implemented
+			default:
+				System.out.println(ent.getString("type") + " has not been implemented");
+				return null;
+		}
+	}
 }

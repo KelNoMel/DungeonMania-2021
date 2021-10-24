@@ -1,9 +1,25 @@
 package dungeonmania;
 
+import java.util.ArrayList;
+
 public interface Subject {
+	
+	final ArrayList<Observer> listObservers = new ArrayList<Observer>();
         
-    public void attach(Observer o);
-	public void detach(Observer o);
-	public void notifyObservers();
+    default void attach(Observer o) {
+    	if (!listObservers.contains(o)) {
+    		listObservers.add(o);
+    	}
+    }
+    
+	default void detach(Observer o) {
+		listObservers.remove(o);
+	}
+	
+	default void notifyObservers() {
+		for (Observer o : listObservers) {
+			o.updateObserver(this);
+		}
+	}
 
 }

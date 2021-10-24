@@ -2,7 +2,7 @@ package dungeonmania;
 
 public interface Observer {
 	
-	public void update(Subject obj);
+	public abstract void updateObserver(Subject sub);
 	
 }
 

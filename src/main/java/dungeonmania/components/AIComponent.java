@@ -1,24 +1,29 @@
-package dungeonmania;
+package dungeonmania.components;
 
 import java.util.HashMap;
+
+import dungeonmania.InputState;
+import dungeonmania.Observer;
+import dungeonmania.Subject;
+import dungeonmania.entities.Entity;
 
 public class AIComponent extends Component implements Observer {
     
 	private HashMap<String, AIState> stateMap = new HashMap<>();
     private AIState currentState;
 
-    public AIComponent(Entity OwningEntity, int updateOrder, AIState currentState, 
+    public AIComponent(Entity owningEntity, int updateOrder, AIState currentState, 
                     String stateName) {
-        super(OwningEntity, updateOrder);
+        super(owningEntity, updateOrder);
         this.currentState = currentState;
         stateMap.put(stateName, currentState);
     }
     
-    public void update() {
+    public void updateComponent() {
 		currentState.update();
 	}
     
-    public void update(Subject componentA) {
+    public void updateObserver(Subject componentA) {
         if (componentA instanceof Component) {
         	updateOrder = ((Component) componentA).getUpdatedOrder();
         }
@@ -43,4 +48,6 @@ public class AIComponent extends Component implements Observer {
     public void registerState(AIState state) {
         stateMap.put(state.getName(), state);
     }
+
+	public void processInput(InputState inputState) {}
 }

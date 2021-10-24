@@ -105,7 +105,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException If itemUsed is not in the player's inventory
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-        game.tick(itemUsed, movementDirection);
+    	game.tick(itemUsed, movementDirection);
     	return game.response();
     }
     

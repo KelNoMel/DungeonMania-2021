@@ -1,15 +1,15 @@
-package dungeonmania;
+package dungeonmania.entities;
 
 import dungeonmania.util.Position;
+import dungeonmania.Dungeon;
+import dungeonmania.InputState;
+import dungeonmania.components.Component;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import org.json.JSONObject;
-
 
 public abstract class Entity {
     private EntityState state;
@@ -19,7 +19,7 @@ public abstract class Entity {
     private String type;
     private boolean isInteractable;
 
-    private Dungeon dungeon;
+    protected Dungeon dungeon;
     
     private List<Component> components = new ArrayList<Component>();
 
@@ -30,6 +30,8 @@ public abstract class Entity {
         this.id = createId();
         this.type = type;
         this.isInteractable = isInteractable;
+        
+        dungeon.addEntity(this);
     }
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -45,40 +47,32 @@ public abstract class Entity {
         String id = UUID.randomUUID().toString();
         return id;
     }
-    
-    /**
-     * Used to construct specific entities given their JSON representation
-     * @param ent
-     * @return
-     */
-	public static Entity getEntity(JSONObject ent) {
-		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-        
-		switch (ent.getString("type")) {
-//			case "wall":
-//				return new Wall();
-			default:
-				return null;
-		}
-		
-//		return Entity.getEntity(this, ent.getString("type"), pos));
-	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity State Change                           ///
 	////////////////////////////////////////////////////////////////////////////////
 
+    public void processInput(InputState inputState) {
+    	for (Component c : components) {
+    		c.processInput(inputState);
+    	}
+    	
+    	inputEntity(inputState);
+    }
+    
+    protected abstract void inputEntity(InputState inputState);
+    
     public void update() {
         updateComponents();
         updateEntity();
     }
-
+    
     private void updateComponents() {
-        for (Component comp : components) {
-            comp.update();
-        }
+    	for (Component comp : components) {
+    		comp.updateComponent();
+    	}
     }
-
+    
     protected abstract void updateEntity();
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +90,12 @@ public abstract class Entity {
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Entity Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
+    
+    public EntityState getState() { return state; }
+    public void setState(EntityState s) { state = s; }
+    public Position getPosition() { return position; }
+    public void setPosition(Position p) { position = p; } 
+    
     
     /**
      * Creates an EntityResponse for this entity

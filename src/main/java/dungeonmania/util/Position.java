@@ -69,6 +69,10 @@ public final class Position {
         return new Position(this.x + position.x, this.y + position.y, this.layer + position.layer);
     }
 
+    public final double getLength() {
+    	return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+    
     // (Note: doesn't include z)
 
     /**
