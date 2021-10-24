@@ -214,6 +214,20 @@ public class Dungeon {
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
+    public ArrayList<Entity> getEntities() {
+    	return entities;
+    }
+    
+    public ArrayList<Entity> getEntitiesInRadius(Position origin, int radius) {
+    	ArrayList<Entity> radEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (Position.calculatePositionBetween(origin, e.getPosition()).getLength() <= radius) {
+    			radEnts.add(e);
+    		}
+    	}
+    	return radEnts;
+    }
+    
 	// TODO: add goals, buildables, animations
     /**
      * Create a DungeonResponse for the current Dungeon
