@@ -1,6 +1,10 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.IllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,20 +20,23 @@ public class DungeonTest {
     @Test
     public void testNewGame() {
         DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse response = mania.newGame("maze","Peaceful");
-        //assertTrue(response);
-
+        DungeonResponse response1 = mania.newGame("maze","Peaceful");
+        //assertTrue();
+        //assertDoesNotThrow(() -> ));
+        
         mania.newGame("boulders","Peaceful");
         //assertTrue();
         mania.newGame("advanced","Peaceful");
         //assertTrue();
     }
 
-    // creat a new game where the map doesn't exist
+    // create a new game where the map doesn't exist
     @Test
     public void testNewGameBadMap() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("squid-game","Hard");
+        assertThrows(IllegalArgumentException.class, () -> {
+            mania.newGame("squid-game","Hard");
+        });
         
     }
 

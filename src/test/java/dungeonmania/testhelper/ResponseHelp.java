@@ -30,7 +30,7 @@ public class ResponseHelp {
     }
     
     /**
-     * Compare EntityResponse ignoring layer
+     * Compare EntityResponse ignoring id
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
@@ -44,7 +44,7 @@ public class ResponseHelp {
     }
 
     /**
-     * Compare EntityResponse ignoring id
+     * Compare EntityResponse ignoring layer
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
@@ -104,6 +104,8 @@ public class ResponseHelp {
     /**
      * Compare two DungeonResponse ignoring animations, id, entity layers
      *  and ordering of lists
+     * Assumption: all entities are unique for comparing lists
+     *             all items are unique for comparing lists
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
@@ -156,6 +158,8 @@ public class ResponseHelp {
 
     /**
      * Compare two DungeonResponse ignoring animations, id and ordering of lists
+     * Assumption: all entities are unique for comparing lists
+     *             all items are unique for comparing lists
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
@@ -179,6 +183,8 @@ public class ResponseHelp {
 
     /**
      * Compare two DungeonResponse ignoring animations, id and ordering of lists
+     * Assumption: all entities are unique for comparing lists
+     *             all items are unique for comparing lists
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
@@ -203,7 +209,7 @@ public class ResponseHelp {
             }
         }
 
-        // compare entities list ignoring order
+        // compare entities list ignoring order and layers
         ArrayList<EntityResponse> ents1 = new ArrayList<EntityResponse>(res1.getEntities());
         ArrayList<EntityResponse> ents2 = new ArrayList<EntityResponse>(res2.getEntities());
         Collections.sort(ents1, new EntityResponseComparator());
@@ -222,8 +228,8 @@ public class ResponseHelp {
 
     /**
      * Compare two DungeonResponse ignoring animations and ordering of lists
-     * Assumption: all entities will have different ids for comparing lists
-     *             all items will have different ids for comparing lists
+     * Assumption: all entities are unique for comparing lists
+     *             all items are unique for comparing lists
      * @param res1
      * @param res2
      * @return true if responses are equivalent, false otherwise
