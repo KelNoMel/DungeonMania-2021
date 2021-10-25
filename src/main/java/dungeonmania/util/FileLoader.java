@@ -30,7 +30,11 @@ public final class FileLoader {
             throw new FileNotFoundException(path);
         }
     }
-
+    
+    public static Path getFolderPath(String directory) throws URISyntaxException {
+    	return Paths.get(FileLoader.class.getResource(directory).toURI());
+    }
+    
     /**
      * Lists file names (without extension) within a specified resource directory.
      * 
@@ -45,7 +49,8 @@ public final class FileLoader {
         if (!directory.startsWith("/"))
             directory = "/" + directory;
         try {
-            Path root = Paths.get(FileLoader.class.getResource(directory).toURI());
+            Path root = getFolderPath(directory);
+            
             return Files.walk(root).filter(Files::isRegularFile).map(x -> {
                 String nameAndExt = x.toFile().getName();
                 int extIndex = nameAndExt.lastIndexOf('.');
