@@ -1,4 +1,6 @@
-package dungeonmania;
+package dungeonmania.goals;
+
+import dungeonmania.Dungeon;
 
 public class EnemiesGoal extends Goal{
 

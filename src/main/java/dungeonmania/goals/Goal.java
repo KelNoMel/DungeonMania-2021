@@ -1,4 +1,6 @@
-package dungeonmania;
+package dungeonmania.goals;
+
+import dungeonmania.Dungeon;
 
 public abstract class Goal {
     private String goalType;
