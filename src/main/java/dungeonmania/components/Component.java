@@ -1,6 +1,7 @@
 package dungeonmania.components;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dungeonmania.InputState;
 import dungeonmania.Observer;
@@ -11,7 +12,7 @@ public abstract class Component implements Subject {
     
 	private Entity owningEntity;
     protected int updateOrder;
-    private ArrayList<Observer> observingComponents = new ArrayList<Observer>();
+    private List<Observer> observingComponents = new ArrayList<Observer>();
 
     public Component(Entity owningEntity, int updateOrder) {
         this.owningEntity = owningEntity;

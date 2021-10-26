@@ -39,7 +39,7 @@ public class Dungeon {
     private String dungeonName;
     private GameMode gameMode;
     
-    private ArrayList<Entity> entities = new ArrayList<Entity>();
+    private List<Entity> entities = new ArrayList<Entity>();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
     private Entity player;
@@ -51,8 +51,8 @@ public class Dungeon {
        
     // Stuff used for adding entities
     private boolean updatingActors = false;
-    private ArrayList<Entity> newEntities = new ArrayList<>();
-    private ArrayList<Entity> deadEntities = new ArrayList<>();
+    private List<Entity> newEntities = new ArrayList<>();
+    private List<Entity> deadEntities = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -195,12 +195,12 @@ public class Dungeon {
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
-    public ArrayList<Entity> getEntities() {
+    public List<Entity> getEntities() {
     	return entities;
     }
     
-    public ArrayList<Entity> getEntitiesInRadius(Position origin, int radius) {
-    	ArrayList<Entity> radEnts = new ArrayList<>();
+    public List<Entity> getEntitiesInRadius(Position origin, int radius) {
+    	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
     		if (Position.calculatePositionBetween(origin, e.getPosition()).getLength() <= radius) {
     			radEnts.add(e);

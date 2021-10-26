@@ -18,7 +18,7 @@ public class Player extends Entity {
 	}
 	
 	protected void inputEntity(InputState inputState) {
-		ArrayList<Entity> closeEntities = dungeon.getEntitiesInRadius(getPosition(), 1);
+		List<Entity> closeEntities = dungeon.getEntitiesInRadius(getPosition(), 1);
 
 		Position moveLocation = getPosition().translateBy(inputState.getMovementDirection());
 		Entity moveEntity = null;
