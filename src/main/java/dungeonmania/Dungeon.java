@@ -30,6 +30,7 @@ import dungeonmania.entities.buildable.*;
  */
 public class Dungeon {
     static private Integer lastId = 0;
+    static private final double epsilon = 0.001;
     
     private String dungeonId;
     private String dungeonName;
@@ -198,11 +199,21 @@ public class Dungeon {
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
-    		if (Position.calculatePositionBetween(origin, e.getPosition()).getLength() <= radius) {
+    		if (Math.abs(Position.calculatePositionBetween(origin, e.getPosition()).getLength() - radius) <= epsilon) {
     			radEnts.add(e);
     		}
     	}
     	return radEnts;
+    }
+    
+    public List<Entity> getEntitiesAtPosition(Position checkPosition) {
+    	List<Entity> posEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (e.getPosition().equals(checkPosition)) {
+    			posEnts.add(e);
+    		}
+    	}
+    	return posEnts;
     }
     
 	// TODO: add goals, buildables, animations
