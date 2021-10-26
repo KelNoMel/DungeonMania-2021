@@ -2,6 +2,7 @@ package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.IllegalArgumentException;
@@ -9,6 +10,9 @@ import java.lang.IllegalArgumentException;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.testhelper.ResponseHelp;
+import dungeonmania.util.Direction;
 
 public class DungeonTest {
     /**
@@ -84,7 +88,19 @@ public class DungeonTest {
      * DungeonResponse tick(String itemUsedId, Direction movementDirection)
      * throws IllegalArgumentException, InvalidActionException
      */
+    // move player
+    @Test
+    public void testInteract() {
+        DungeonManiaController mania = new DungeonManiaController();
+        DungeonResponse response = mania.newGame("maze","Peaceful");
+        EntityResponse playerRes = ResponseHelp.getEntityOfType(response, "player");
+        response = mania.tick(null, Direction.DOWN);
+        EntityResponse newPlayerRes = ResponseHelp.getEntityOfType(response, "player");
+        assertEquals(playerRes.getPosition().getY()+1, newPlayerRes.getPosition().getY());
+    }
+
     // use an item and move
+    
 
     // attempt to use an item that doesn't exist
 
