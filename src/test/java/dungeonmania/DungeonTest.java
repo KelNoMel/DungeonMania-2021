@@ -3,6 +3,7 @@ package dungeonmania;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.IllegalArgumentException;
@@ -91,12 +92,19 @@ public class DungeonTest {
     // move player
     @Test
     public void testInteract() {
+        // create game
         DungeonManiaController mania = new DungeonManiaController();
         DungeonResponse response = mania.newGame("maze","Peaceful");
-        EntityResponse playerRes = ResponseHelp.getEntityOfType(response, "player");
+        // find player
+        EntityResponse res1 = ResponseHelp.getEntityOfType(response, "player");
         response = mania.tick(null, Direction.DOWN);
-        EntityResponse newPlayerRes = ResponseHelp.getEntityOfType(response, "player");
-        assertEquals(playerRes.getPosition().getY()+1, newPlayerRes.getPosition().getY());
+        // find player again after tick
+        EntityResponse res2 = ResponseHelp.getEntityOfType(response, "player");
+        assertEquals(res1.getPosition().getY() + 1, res2.getPosition().getY());
+        // check if player is still in the same position after not moving
+        response = mania.tick(null, Direction.NONE);
+        EntityResponse res3 = ResponseHelp.getEntity(response, res2);
+        assertNotEquals(null, res3);
     }
 
     // use an item and move
