@@ -250,4 +250,14 @@ public class ResponseHelp {
 
         return dungeonEqualWithId(res1, res2);
     }
+    
+    
+    public static boolean entityInDungeon(EntityResponse res1, DungeonResponse res2) {
+    	for (EntityResponse eres : res2.getEntities()) {
+    		if (entityEqual(eres, res1)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
