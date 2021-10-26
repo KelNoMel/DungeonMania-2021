@@ -7,8 +7,13 @@ import dungeonmania.util.Position;
 
 public class Door extends Entity {
 
-	public Door(Dungeon dungeon, Position position) {
+	private boolean isUnlocked;
+	private String doorId;
+
+	public Door(Dungeon dungeon, Position position, String doorId) {
 		super(dungeon, "door", position, true);
+		isUnlocked = false;
+		this.doorId = doorId;
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -16,7 +21,13 @@ public class Door extends Entity {
 	}
 
 	protected void updateEntity() {
-
+		isUnlocked = true;
 	}
+
+	protected String getDoorId() {
+		return doorId;
+	}
+
+	// if statics.door.isUnlocked = true {move}
 
 }
