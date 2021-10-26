@@ -3,11 +3,9 @@ package dungeonmania.components;
 import java.util.HashMap;
 
 import dungeonmania.InputState;
-import dungeonmania.Observer;
-import dungeonmania.Subject;
 import dungeonmania.entities.Entity;
 
-public class AIComponent extends Component implements Observer {
+public class AIComponent extends Component {
     
 	private HashMap<String, AIState> stateMap = new HashMap<>();
     private AIState currentState;
@@ -22,12 +20,6 @@ public class AIComponent extends Component implements Observer {
     public void updateComponent() {
 		currentState.update();
 	}
-    
-    public void updateObserver(Subject componentA) {
-        if (componentA instanceof Component) {
-        	updateOrder = ((Component) componentA).getUpdatedOrder();
-        }
-    }
     
     /**
      * Transition between states
