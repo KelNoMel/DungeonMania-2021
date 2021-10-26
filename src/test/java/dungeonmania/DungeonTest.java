@@ -2,6 +2,8 @@ package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.IllegalArgumentException;
@@ -9,6 +11,9 @@ import java.lang.IllegalArgumentException;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.testhelper.ResponseHelp;
+import dungeonmania.util.Direction;
 
 public class DungeonTest {
     /**
@@ -84,7 +89,26 @@ public class DungeonTest {
      * DungeonResponse tick(String itemUsedId, Direction movementDirection)
      * throws IllegalArgumentException, InvalidActionException
      */
+    // move player
+    @Test
+    public void testInteract() {
+        // create game
+        DungeonManiaController mania = new DungeonManiaController();
+        DungeonResponse response = mania.newGame("maze","Peaceful");
+        // find player
+        EntityResponse res1 = ResponseHelp.getEntityOfType(response, "player");
+        response = mania.tick(null, Direction.DOWN);
+        // find player again after tick
+        EntityResponse res2 = ResponseHelp.getEntityOfType(response, "player");
+        assertEquals(res1.getPosition().getY() + 1, res2.getPosition().getY());
+        // check if player is still in the same position after not moving
+        response = mania.tick(null, Direction.NONE);
+        EntityResponse res3 = ResponseHelp.getEntity(response, res2);
+        assertNotEquals(null, res3);
+    }
+
     // use an item and move
+    
 
     // attempt to use an item that doesn't exist
 

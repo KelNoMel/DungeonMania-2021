@@ -1,6 +1,7 @@
 package dungeonmania.testhelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 import dungeonmania.response.models.DungeonResponse;
@@ -249,5 +250,45 @@ public class ResponseHelp {
         }
 
         return dungeonEqualWithId(res1, res2);
+    }
+
+    /**
+     * Get an EntityResponse of the first instance with a matching type in the
+     * DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return EntityResponse of first instance with a matching type or if not
+     *         found it returns null
+     */
+    public static EntityResponse getEntityOfType (DungeonResponse dgnRes,
+        String type) {
+        List<EntityResponse> entities = dgnRes.getEntities();
+        for (EntityResponse entity : entities) {
+            if (entity.getType().equals(type)) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the EntityResponse of the first Entity matching the type and position
+     * of the EntityResponse entRes.
+     * Note: the Entity found may have a different id and layer as those are 
+     * ignored.
+     * @param dgnRes the DungeonResponse that is searched
+     * @param entRes the EntityResponse that is being searched for
+     * @return EntityResponse of first instance with a matching type and 
+     *         position as entRes or if not found it returns null
+     */
+    public static EntityResponse getEntity
+        (DungeonResponse dgnRes, EntityResponse entRes) {
+        List<EntityResponse> entities = dgnRes.getEntities();
+        for (EntityResponse entity : entities) {
+            if (ResponseHelp.entityEqual(entity, entRes)) {
+                return entity;
+            }
+        }
+        return null;
     }
 }
