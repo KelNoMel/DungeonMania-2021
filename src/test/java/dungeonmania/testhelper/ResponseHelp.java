@@ -259,7 +259,8 @@ public class ResponseHelp {
     		}
     	}
     	return false;
-
+    }
+    	
     /**
      * Get an EntityResponse of the first instance with a matching type in the
      * DungeonResponse
