@@ -177,6 +177,8 @@ public class Dungeon {
     	}
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
+    	entities.addAll(newEntities);
+    	newEntities.clear();
     }
 
     // TODO
