@@ -12,6 +12,7 @@ public class ExitGoal extends Goal{
     
     public boolean checkGoal() {
         //TODO:
+        // getEntitiesAtPosition()
         return false;
     }
     
