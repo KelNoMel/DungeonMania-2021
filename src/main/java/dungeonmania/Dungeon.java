@@ -216,6 +216,10 @@ public class Dungeon {
     	}
     	return posEnts;
     }
+
+	public Entity getPlayer() {
+		return player;
+	}
     
 	// TODO: add goals, buildables, animations
     /**
