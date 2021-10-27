@@ -1,5 +1,7 @@
 package dungeonmania.entities.statics;
 
+import java.util.ArrayList;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -9,11 +11,13 @@ public class Door extends Entity {
 
 	private boolean isUnlocked;
 	private String doorId;
+	private static ArrayList<String> DoorList = new ArrayList<String>();
 
 	public Door(Dungeon dungeon, Position position, String doorId) {
 		super(dungeon, "door", position, true);
 		isUnlocked = false;
 		this.doorId = doorId;
+		DoorList.add(doorId);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -21,12 +25,21 @@ public class Door extends Entity {
 	}
 
 	protected void updateEntity() {
-		isUnlocked = true;
 	}
 
-	protected String getDoorId() {
+	public String getDoorId() {
 		return doorId;
 	}
+
+	public boolean isUnlocked() {
+		isUnlocked = true;
+		return isUnlocked;
+	}
+
+	public static ArrayList<String> getDoorList() {
+		return DoorList;
+	}
+
 
 	// if statics.door.isUnlocked = true {move}
 
