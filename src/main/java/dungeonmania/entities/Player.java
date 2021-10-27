@@ -13,6 +13,7 @@ public class Player extends Entity {
 	
 	private int health = 10;
 	private int attackDamage = 10;
+	public static List<Entity> collectables = new ArrayList<Entity>();
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);

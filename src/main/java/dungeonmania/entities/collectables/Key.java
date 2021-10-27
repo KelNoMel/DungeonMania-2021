@@ -1,9 +1,12 @@
 package dungeonmania.entities.collectables;
 
+import java.util.List;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.Player;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.util.Position;
 
@@ -22,17 +25,32 @@ public class Key extends Entity {
 	}
 
 	protected void updateEntity() {
+		Position position = getPosition();
+		List<Entity> Entities = dungeon.getEntitiesAtPosition(position);
 		
+		for (Entity e : Entities) {
+			if (e instanceof Door) {
+				unlockDoor();
+			}
+			if (e instanceof Player) {
+				Player.collectables.add(this);
+			}
+		}
+		if (unlockDoor() == true) {
+			used = true;
+		}
 	}
 
-	private boolean unlockDoor() {
+	public boolean unlockDoor() {
 		if (Door.getDoorList().stream().filter(id -> id == keyId) != null) {
-			updateEntity();
+			Door.isUnlocked();
 			return true;
 		} else {
 			return false;
 		}
 		
 	}
+
+	 
 
 }
