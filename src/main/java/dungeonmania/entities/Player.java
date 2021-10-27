@@ -5,6 +5,7 @@ import java.util.List;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.util.Position;
 
@@ -18,21 +19,32 @@ public class Player extends Entity {
 	}
 	
 	protected void inputEntity(InputState inputState) {
-		List<Entity> closeEntities = dungeon.getEntitiesInRadius(getPosition(), 1);
-
 		Position moveLocation = getPosition().translateBy(inputState.getMovementDirection());
-		Entity moveEntity = null;
-		for (Entity e : closeEntities) {
-			if (e.getPosition().equals(moveLocation)) {
-				moveEntity = e;
+		
+		List<Entity> moveEntities = dungeon.getEntitiesAtPosition(moveLocation);
+		
+		// Attempt to move if boulder in move location
+		boolean boulderMoved = true;
+		boolean isWall = false;
+		for (Entity e : moveEntities) {
+			if (e instanceof Boulder) {				
+				boulderMoved = ((Boulder)e).moveBoulder(inputState.getMovementDirection());
+				break;
+			} else if (e instanceof Wall) {
+				isWall = true;
 				break;
 			}
 		}
 		
-		if (moveEntity == null || !(moveEntity instanceof Wall)) {
+		// Instead for boulder a collisionless raycast could be passed down the checking chain?
+		
+		// Only move if move space is not covered by a wall or an unmovable boulder
+		if (!(isWall) && boulderMoved) {
 			setPosition(getPosition().translateBy(inputState.getMovementDirection()));			
-		}	
+		}
 	}
 
-	protected void updateEntity() {}
+	protected void updateEntity() {
+
+	}
 }

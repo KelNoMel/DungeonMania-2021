@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import dungeonmania.response.models.AnimationQueue;
@@ -30,6 +31,7 @@ import dungeonmania.entities.buildable.*;
  */
 public class Dungeon {
     static private Integer lastId = 0;
+    static private final double epsilon = 0.001;
     
     private String dungeonId;
     private String dungeonName;
@@ -198,11 +200,30 @@ public class Dungeon {
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
-    		if (Position.calculatePositionBetween(origin, e.getPosition()).getLength() <= radius) {
+    		if (Math.abs(Position.calculatePositionBetween(origin, e.getPosition()).getLength() - radius) <= epsilon) {
     			radEnts.add(e);
     		}
     	}
     	return radEnts;
+    }
+    
+    public List<Entity> getEntitiesAtPosition(Position checkPosition) {
+    	List<Entity> posEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (e.getPosition().equals(checkPosition)) {
+    			posEnts.add(e);
+    		}
+    	}
+    	return posEnts;
+    }
+    
+    public Entity getEntityFromId(String id) {
+    	for (Entity e : entities) {
+    		if (e.getId().equals(id)) {
+    			return e;
+    		}
+    	}
+    	return null;
     }
     
 	// TODO: add goals, buildables, animations
@@ -251,65 +272,73 @@ public class Dungeon {
      */
 	public Entity createEntity(JSONObject ent) {
 		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-	
+		
+		int topLayer = 3;
+		int movingLayer = 2;
+		int itemLayer = 1;
+		int bottomLayer = 0;
+		
 		switch (ent.getString("type")) {
 			case "player":
-				return (player = new Player(this, pos));
+				player = new Player(this, pos.asLayer(topLayer));
+				// Make sure player is updated first
+				Collections.swap(entities, 0, entities.indexOf(player));
+				return player;
 			// Statics
 			case "wall":
-				return new Wall(this, pos);
+				return new Wall(this, pos.asLayer(bottomLayer));
 			case "exit":
-				return new Exit(this, pos);
+				return new Exit(this, pos.asLayer(bottomLayer));
 			case "boulder":
-				return new Boulder(this, pos);
+				return new Boulder(this, pos.asLayer(bottomLayer));
 			case "switch":
-				return new FloorSwitch(this, pos);
+				return new FloorSwitch(this, pos.asLayer(bottomLayer));
 			case "door":
-				return new Door(this, pos);
+				return new Door(this, pos.asLayer(bottomLayer));
 			case "portal":
-				return new Portal(this, pos);
+				return new Portal(this, pos.asLayer(bottomLayer), ent.getString("colour"));
 			case "spawner":
-				return new ZombieToastSpawner(this, pos);
+				return new ZombieToastSpawner(this, pos.asLayer(bottomLayer));
 			
 			// Moving
 			case "spider":
-				return new Spider(this, pos);
+				return new Spider(this, pos.asLayer(movingLayer));
 			case "zombie":
-				return new ZombieToast(this, pos);
+				return new ZombieToast(this, pos.asLayer(movingLayer));
 			case "mercenary":
-				return new Mercenary(this, pos);
+				return new Mercenary(this, pos.asLayer(movingLayer));
 				
 			// Collectable
 			case "treasure":
-				return new Treasure(this, pos);
+				return new Treasure(this, pos.asLayer(itemLayer));
 			case "key":
-				return new Key(this, pos);
+				return new Key(this, pos.asLayer(itemLayer));
 			case "health_potion":
-				return new HealthPotion(this, pos);
+				return new HealthPotion(this, pos.asLayer(itemLayer));
 			case "invincibility_potion":
-				return new InvincibilityPotion(this, pos);
+				return new InvincibilityPotion(this, pos.asLayer(itemLayer));
 			case "invisibility_potion":
-				return new InvisibilityPotion(this, pos);
+				return new InvisibilityPotion(this, pos.asLayer(itemLayer));
 			case "wood":
-				return new Wood(this, pos);
+				return new Wood(this, pos.asLayer(itemLayer));
 			case "arrows":
-				return new Arrows(this, pos);
+				return new Arrows(this, pos.asLayer(itemLayer));
 			case "bomb":
-				return new Bomb(this, pos);
+				return new Bomb(this, pos.asLayer(itemLayer));
 			case "sword":
-				return new Sword(this, pos);
+				return new Sword(this, pos.asLayer(itemLayer));
 			case "armour":
-				return new Armour(this, pos);
+				return new Armour(this, pos.asLayer(itemLayer));
 				
 			// Rare Collectable
 			case "the_one_ring":
-				return new TheOneRing(this, pos);
+				return new TheOneRing(this, pos.asLayer(itemLayer));
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos);
+				return new Bow(this, pos.asLayer(itemLayer));
 			case "shield":
-				return new Shield(this, pos);
+				return new Shield(this, pos.asLayer(itemLayer));
 				
 			// Type is not correct or has not been implemented
 			default:
