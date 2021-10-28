@@ -47,10 +47,12 @@ public class Dungeon {
     private String goals;
     private GoalCondition goalCondition;
        
-    // Stuff used for adding entities
+    // Stuff used for adding entities and inventory
     private boolean updatingActors = false;
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
+    private List<Entity> newInventory = new ArrayList<>();
+    private List<Entity> deadInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -116,6 +118,14 @@ public class Dungeon {
 			entities.add(e);
 		}
 	}
+
+	public void addInventory(Entity e) {
+		if (updatingActors) {
+			newInventory.add(e);
+		} else {			
+			inventory.add(e);
+		}
+	}
     
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
@@ -158,6 +168,9 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.processInput(inputState);
     	}
+		for (Entity i : inventory) {
+    		i.processInput(inputState);
+    	}
     	updatingActors = false;
     }
     
@@ -166,17 +179,31 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
+		for (Entity i : inventory) {
+    		i.update();
+    	}
     	updatingActors = false;
     	
     	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD) {
+    		if (e.getState() == EntityState.DEAD 
+				|| e.getState() == EntityState.INVENTORY) {
     			deadEntities.add(e);
     		}
     	}
+		for (Entity i : inventory) {
+    		if (i.getState() == EntityState.DEAD) {
+    			deadInventory.add(i);
+    		}
+    	}
+
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
+		inventory.addAll(newInventory);
+    	newInventory.clear();
+		inventory.removeAll(deadInventory);    	
+    	deadInventory.clear();
     }
 
     // TODO
@@ -346,4 +373,21 @@ public class Dungeon {
 				return null;
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Helper Methods                              ///
+	////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Check if the player is in a position
+	 * Assumes only one player always exists and it is stored as the first 
+	 * entity in entities
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return entities.get(0).getPosition().equals(pos);
+	}
 }
+
+
