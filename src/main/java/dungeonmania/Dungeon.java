@@ -202,7 +202,7 @@ public class Dungeon {
     	newEntities.clear();
 		inventory.addAll(newInventory);
     	newInventory.clear();
-		inventory.removeAll(deadEntities);    	
+		inventory.removeAll(deadInventory);    	
     	deadInventory.clear();
     }
 
