@@ -3,7 +3,6 @@ package dungeonmania;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,8 +39,6 @@ public class Dungeon {
     private List<Entity> entities = new ArrayList<Entity>();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
-    private Player player;
-    private List<Entity> inventory = new ArrayList<Entity>();
     private List<String> buildables = new ArrayList<String>();
     
     private String goals;
@@ -52,7 +49,6 @@ public class Dungeon {
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
     private List<Entity> newInventory = new ArrayList<>();
-    private List<Entity> deadInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -104,7 +100,6 @@ public class Dungeon {
     	for (int i = 0; i < numEntities; i++) {
     		JSONObject ent = loadEntities.getJSONObject(i);
     		
-    		// this.player =  // TODO: properly add the player (here?)
     		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
             // Entity construction function
     		createEntity(ent);
@@ -122,8 +117,8 @@ public class Dungeon {
 	public void addInventory(Entity e) {
 		if (updatingActors) {
 			newInventory.add(e);
-		} else {			
-			inventory.add(e);
+		} else {
+			getPlayer().addToInventory(e);
 		}
 	}
     
@@ -168,9 +163,7 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.processInput(inputState);
     	}
-		for (Entity i : inventory) {
-    		i.processInput(inputState);
-    	}
+		
     	updatingActors = false;
     }
     
@@ -179,9 +172,7 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
-		for (Entity i : inventory) {
-    		i.update();
-    	}
+		
     	updatingActors = false;
     	
     	for (Entity e : entities) {
@@ -190,20 +181,13 @@ public class Dungeon {
     			deadEntities.add(e);
     		}
     	}
-		for (Entity i : inventory) {
-    		if (i.getState() == EntityState.DEAD) {
-    			deadInventory.add(i);
-    		}
-    	}
-
+		
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
-		inventory.addAll(newInventory);
+		newInventory.forEach(e -> getPlayer().addToInventory(e));
     	newInventory.clear();
-		inventory.removeAll(deadInventory);    	
-    	deadInventory.clear();
     }
 
     // TODO
@@ -287,7 +271,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return player.getInventory();
+        return getPlayer().getInventory();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -311,7 +295,7 @@ public class Dungeon {
 		
 		switch (ent.getString("type")) {
 			case "player":
-				player = new Player(this, pos.asLayer(topLayer));
+				Entity player = new Player(this, pos.asLayer(topLayer));
 				// Make sure player is updated first
 				Collections.swap(entities, 0, entities.indexOf(player));
 				return player;
@@ -383,14 +367,22 @@ public class Dungeon {
 	////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Check if the player is in a position
+	 * Get the player
 	 * Assumes only one player always exists and it is stored as the first 
 	 * entity in entities
+	 * @return player
+	 */
+	public Player getPlayer() {
+		return (Player)entities.get(0);
+	}
+
+	/**
+	 * Check if the player is in a position
 	 * @param pos
 	 * @return true if player is at the (x,y) location. False otherwise.
 	 */
 	public boolean isPlayerHere(Position pos) {
-		return entities.get(0).getPosition().equals(pos);
+		return getPlayer().getPosition().equals(pos);
 	}
 }
 
