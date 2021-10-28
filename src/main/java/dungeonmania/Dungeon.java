@@ -172,9 +172,7 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
-		for (Entity i : inventory) {
-    		i.update();
-    	}
+		
     	updatingActors = false;
     	
     	for (Entity e : entities) {
