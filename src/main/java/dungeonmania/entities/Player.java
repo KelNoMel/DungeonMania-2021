@@ -2,6 +2,7 @@ package dungeonmania.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
@@ -44,10 +45,16 @@ public class Player extends Entity {
 		if (!(isWall) && boulderMoved) {
 			setPosition(getPosition().translateBy(inputState.getMovementDirection()));			
 		}
+
+		for (Entity i : inventoryList) {
+    		i.processInput(inputState);
+    	}
 	}
 
 	protected void updateEntity() {
-
+		for (Entity i : inventoryList) {
+    		i.update();
+    	}
 	}
 
 	public void addToInventory(Entity Item) {
@@ -59,7 +66,7 @@ public class Player extends Entity {
 	}
 
 	public ArrayList<ItemResponse> getInventory() {
-		return new ArrayList<ItemResponse>(inventory.stream()
+		return new ArrayList<ItemResponse>(inventoryList.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
 	}
