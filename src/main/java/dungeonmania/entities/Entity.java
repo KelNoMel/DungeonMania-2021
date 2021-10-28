@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Entity base class representing most objects found in the game.
+ * Class Invariants:
+ * Each Entity will have type that is not null
+ */
 public abstract class Entity {
     private EntityState state;
     private Position position;

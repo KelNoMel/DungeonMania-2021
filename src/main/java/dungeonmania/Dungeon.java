@@ -277,7 +277,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventory();
+        return getPlayer().inventoryResponse();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -369,20 +369,7 @@ public class Dungeon {
 	}
 
 	public void build(String buildable) {
-		// Assuming all buildibles become an item in the inventory with 
-		// arbitrary position
-		Position pos = new Position(0, 0);
-		// TODO move this switch into buildable component
-		switch(buildable) {
-			case "bow":
-				inventory.add(new Bow(this, pos.asLayer(0)));
-				return;
-			case "shield":
-				inventory.add(new Shield(this, pos.asLayer(0)));
-				return;
-			default:
-				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
-		}
+		getPlayer().build(buildable);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

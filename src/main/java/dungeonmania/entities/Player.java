@@ -6,16 +6,18 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.Subject;
+import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
-public class Player extends Entity {
+public class Player extends Entity implements Subject {
 	
 	private int health = 10;
 	private int attackDamage = 10;
-	private List<Entity> inventoryList = new ArrayList<>();
+	private ArrayList<Entity> inventoryList = new ArrayList<>();
 	private List<Entity> deadInventory = new ArrayList<>();
 
 	public Player(Dungeon dungeon, Position position) {
@@ -67,17 +69,34 @@ public class Player extends Entity {
     	deadInventory.clear();
 	}
 
-	public void addToInventory(Entity Item) {
-		inventoryList.add(Item);
+	public void build(String buildable) {
+		inventoryList.add(BuildableFactory.build(buildable, dungeon));
 	}
 
-	public void removeFromInventory(Entity Item) {
-		inventoryList.remove(Item);
+	public void addToInventory(Entity item) {
+		inventoryList.add(item);
 	}
 
-	public ArrayList<ItemResponse> getInventory() {
+	public void removeTypeFromInventory(String item) {
+		for (Entity i : inventoryList) {
+			if (i.getType().equals(item)) {
+				inventoryList.remove(i);
+				return;
+			}
+		}
+	}
+
+	public void removeFromInventory(Entity item) {
+		inventoryList.remove(item);
+	}
+
+	public ArrayList<ItemResponse> inventoryResponse() {
 		return new ArrayList<ItemResponse>(inventoryList.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
+	}
+
+	public ArrayList<Entity> getInventory() {
+		return inventoryList;
 	}
 }
