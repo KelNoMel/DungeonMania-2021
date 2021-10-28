@@ -40,7 +40,7 @@ public class Dungeon {
     private List<Entity> entities = new ArrayList<Entity>();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
-    private Entity player;
+    private Player player;
     private List<Entity> inventory = new ArrayList<Entity>();
     private List<String> buildables = new ArrayList<String>();
     
@@ -223,6 +223,14 @@ public class Dungeon {
     public List<Entity> getEntities() {
     	return entities;
     }
+
+	public List<Entity> getDeadInventory() {
+		return deadEntities
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
     
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();

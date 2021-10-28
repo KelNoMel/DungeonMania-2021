@@ -63,4 +63,16 @@ public class Player extends Entity {
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
 	}
+
+	// Used to subtract players health by a value, used when taking damage
+	public int takeDamage(int dmg) {
+		health = health - dmg;
+		return health;
+	}
+
+	// Used to set players health, currently used to restore full health on heal
+	public int setHealth(int hp) {
+		health = hp;
+		return health;
+	}
 }

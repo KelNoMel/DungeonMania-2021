@@ -6,3 +6,6 @@ Portals
 
 Player
 - There exists a single player on the map at all times
+
+Potions
+- Players cannot consume more than one potion a tick (verified???)

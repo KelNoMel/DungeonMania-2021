@@ -13,11 +13,17 @@ public class HealthPotion extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {
-
+		// Check if a health potion was already used in this tick
+		boolean alreadyUsed = dungeon.getDeadInventory().contains("health_potion");
+		
+		if (inputState.getItemUsed() == "health_potion" && alreadyUsed == false) {
+			dungeon.getPlayer().setHealth(10);
+			this.state == EntityState.DEAD;
+		}
 	}
 
 	protected void updateEntity() {
-
+		if (dungeon.isPlayerHere(position))
 	}
 
 }
