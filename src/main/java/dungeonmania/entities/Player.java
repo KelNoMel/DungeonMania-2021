@@ -57,4 +57,10 @@ public class Player extends Entity {
 	public void removeFromInventory(Entity Item) {
 		inventoryList.remove(Item);
 	}
+
+	public ArrayList<ItemResponse> getInventory() {
+		return new ArrayList<ItemResponse>(inventory.stream()
+        .map(e -> new ItemResponse(e.getId(), e.getType()))
+        .collect(Collectors.toList()));
+	}
 }
