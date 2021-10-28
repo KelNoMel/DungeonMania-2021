@@ -47,10 +47,11 @@ public class Dungeon {
     private String goals;
     private GoalCondition goalCondition;
        
-    // Stuff used for adding entities
+    // Stuff used for adding entities and inventory
     private boolean updatingActors = false;
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
+    private List<Entity> newInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -116,6 +117,14 @@ public class Dungeon {
 			entities.add(e);
 		}
 	}
+
+	public void addInventory(Entity e) {
+		if (updatingActors) {
+			newInventory.add(e);
+		} else {			
+			inventory.add(e);
+		}
+	}
     
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
@@ -177,6 +186,8 @@ public class Dungeon {
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
+		inventory.addAll(newInventory);
+    	newInventory.clear();
     }
 
     // TODO
@@ -346,4 +357,21 @@ public class Dungeon {
 				return null;
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Helper Methods                              ///
+	////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Check if the player is in a position
+	 * Assumes only one player always exists and it is stored as the first 
+	 * entity in entities
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return entities.get(0).getPosition().equals(pos);
+	}
 }
+
+
