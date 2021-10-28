@@ -7,12 +7,14 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	
 	private int health = 10;
 	private int attackDamage = 10;
+	private List<Entity> inventoryList;
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
@@ -46,5 +48,19 @@ public class Player extends Entity {
 
 	protected void updateEntity() {
 
+	}
+
+	public void addToInventory(Entity Item) {
+		inventoryList.add(Item);
+	}
+
+	public void removeFromInventory(Entity Item) {
+		inventoryList.remove(Item);
+	}
+
+	public ArrayList<ItemResponse> getInventory() {
+		return new ArrayList<ItemResponse>(inventory.stream()
+        .map(e -> new ItemResponse(e.getId(), e.getType()))
+        .collect(Collectors.toList()));
 	}
 }

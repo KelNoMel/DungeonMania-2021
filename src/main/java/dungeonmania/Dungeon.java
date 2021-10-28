@@ -279,11 +279,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-    	return new ArrayList<ItemResponse>();
-    	// Yet to be properly implemented
-//        return new ArrayList<ItemResponse>(inventory.stream()
-//        .map(e -> new ItemResponse(e.getId(), e.getType()))
-//        .collect(Collectors.toList()));
+        return player.getInventory();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
