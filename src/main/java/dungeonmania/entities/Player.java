@@ -2,6 +2,7 @@ package dungeonmania.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
@@ -14,7 +15,8 @@ public class Player extends Entity {
 	
 	private int health = 10;
 	private int attackDamage = 10;
-	private List<Entity> inventoryList;
+	private List<Entity> inventoryList = new ArrayList<>();
+	private List<Entity> deadInventory = new ArrayList<>();
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
@@ -44,10 +46,25 @@ public class Player extends Entity {
 		if (!(isWall) && boulderMoved) {
 			setPosition(getPosition().translateBy(inputState.getMovementDirection()));			
 		}
+
+		// process input for each entity in the inventory
+		for (Entity i : inventoryList) {
+    		i.processInput(inputState);
+    	}
 	}
 
 	protected void updateEntity() {
+		for (Entity i : inventoryList) {
+    		i.update();
+    	}
 
+		for (Entity i : inventoryList) {
+			if (i.getState() == EntityState.DEAD || i.getState() == EntityState.ACTIVE) {
+				deadInventory.add(i);
+			}
+		}
+		inventoryList.removeAll(deadInventory);
+    	deadInventory.clear();
 	}
 
 	public void addToInventory(Entity Item) {
@@ -59,7 +76,7 @@ public class Player extends Entity {
 	}
 
 	public ArrayList<ItemResponse> getInventory() {
-		return new ArrayList<ItemResponse>(inventory.stream()
+		return new ArrayList<ItemResponse>(inventoryList.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
 	}
