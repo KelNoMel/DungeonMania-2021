@@ -17,6 +17,9 @@ public class Player extends Entity {
 	private int attackDamage = 10;
 	private List<Entity> inventoryList = new ArrayList<>();
 	private List<Entity> deadInventory = new ArrayList<>();
+	// For input stage, to track entities consumed/used in crafting
+	// Can swap with deadInventory and make deadInventory a method only field?
+	public ArrayList<String> usedList = new ArrayList<String>();
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
@@ -51,6 +54,7 @@ public class Player extends Entity {
 		for (Entity i : inventoryList) {
     		i.processInput(inputState);
     	}
+		usedList.clear();
 	}
 
 	protected void updateEntity() {
@@ -79,6 +83,10 @@ public class Player extends Entity {
 		return new ArrayList<ItemResponse>(inventoryList.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
+	}
+
+	public ArrayList<String> getUsedList() {
+		return usedList;
 	}
 
 	// Used to subtract players health by a value, used when taking damage

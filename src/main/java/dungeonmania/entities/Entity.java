@@ -52,8 +52,8 @@ public abstract class Entity {
 	////////////////////////////////////////////////////////////////////////////////
 
     public void processInput(InputState inputState) {
-    	for (Component c : components) {
-    		c.processInput(inputState);
+    	for (Component comp : components) {
+    		comp.processInput(inputState);
     	}
     	
     	inputEntity(inputState);
