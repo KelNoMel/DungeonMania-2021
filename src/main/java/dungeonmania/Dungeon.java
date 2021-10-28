@@ -52,6 +52,7 @@ public class Dungeon {
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
     private List<Entity> newInventory = new ArrayList<>();
+    private List<Entity> deadInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -167,6 +168,9 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.processInput(inputState);
     	}
+		for (Entity i : inventory) {
+    		i.processInput(inputState);
+    	}
     	updatingActors = false;
     }
     
@@ -175,19 +179,31 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
+		for (Entity i : inventory) {
+    		i.update();
+    	}
     	updatingActors = false;
     	
     	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD) {
+    		if (e.getState() == EntityState.DEAD 
+				|| e.getState() == EntityState.INVENTORY) {
     			deadEntities.add(e);
     		}
     	}
+		for (Entity i : inventory) {
+    		if (i.getState() == EntityState.DEAD) {
+    			deadInventory.add(i);
+    		}
+    	}
+
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
 		inventory.addAll(newInventory);
     	newInventory.clear();
+		inventory.removeAll(deadEntities);    	
+    	deadInventory.clear();
     }
 
     // TODO
