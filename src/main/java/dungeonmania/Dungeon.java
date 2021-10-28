@@ -25,7 +25,6 @@ import dungeonmania.entities.buildable.*;
 
 /**
  * Dungeon class describes all aspects of a DungeonMania game
- * @author Matthew Johnstone
  * Class Invariants:
  * No two Entities will have the same id
  */
@@ -225,6 +224,21 @@ public class Dungeon {
     	}
     	return null;
     }
+
+	// TODO
+	/**
+	 * Get the types of buildables possible
+	 * @return list of strings for each type of buildable
+	 */
+	public List<String> buildableResponse() {
+		// ArrayList<String> newBuildables = new ArrayList<>();
+		// for (buildableType : buildableTypes) {
+		// 	if (buildableType.hasResources()) {
+		// 		buildableType.name();
+		// 	}
+		// }
+		return new ArrayList<>();
+	}
     
 	// TODO: add goals, buildables, animations
     /**
@@ -235,7 +249,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), "");
+        itemResponse(), buildableResponse(), "");
     }
     
     /**
@@ -344,6 +358,23 @@ public class Dungeon {
 			default:
 				System.out.println(ent.getString("type") + " has not been implemented");
 				return null;
+		}
+	}
+
+	public void build(String buildable) {
+		// Assuming all buildibles become an item in the inventory with 
+		// arbitrary position
+		Position pos = new Position(0, 0);
+		// TODO move this switch into buildable component
+		switch(buildable) {
+			case "bow":
+				inventory.add(new Bow(this, pos.asLayer(0)));
+				return;
+			case "shield":
+				inventory.add(new Shield(this, pos.asLayer(0)));
+				return;
+			default:
+				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}
 	}
 }
