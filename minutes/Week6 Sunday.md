@@ -1,5 +1,5 @@
 # Meeting Minutes Week 6 Sunday Elderberry
-Time: 8:30pm @ 9:30pm
+Time: 8:30pm - 9:30pm
 Location:        Online
 
 ## AGENDA
