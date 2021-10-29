@@ -31,7 +31,9 @@ import dungeonmania.entities.buildable.*;
 public class Dungeon {
     static private Integer lastId = 0;
     static private final double epsilon = 0.001;
+    static private final int maxMercenarySpawners = 1;
     
+    private int numMercenarySpawners = 0;
     private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
@@ -328,8 +330,10 @@ public class Dungeon {
 			
 			// Non spec-defined
 			case "mercenary_spawner":
-				return MercenarySpawner.createMercSpawner(this, pos);
-				
+				if (numMercenarySpawners < 1) {
+					return new MercenarySpawner(this, pos);					
+				}
+				return null;
 			// Type is not correct or has not been implemented
 			default:
 				System.out.println(ent.getString("type") + " has not been implemented");

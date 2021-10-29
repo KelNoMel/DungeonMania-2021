@@ -25,7 +25,6 @@ public class MercenaryTest {
         assertDoesNotThrow(()->mania.interact(mercID));
         
         mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.UP);
         mania.tick(null, Direction.LEFT);
         mania.tick(null, Direction.LEFT);
         mania.tick(null, Direction.LEFT);
