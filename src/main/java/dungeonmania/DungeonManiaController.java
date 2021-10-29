@@ -20,7 +20,7 @@ public class DungeonManiaController {
 	private Dungeon game;
     
     public DungeonManiaController() {
-
+    	FileLoader.initialiseSaves();
     }
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public class DungeonManiaController {
     // TODO
     /**
      * Builds the given entity, where buildable is one of bow and shield.
-     * @param entityId
+     * @param buildable
      * @return
      * @throws IllegalArgumentException If buildable is not one of bow, shield
      * @throws InvalidActionException If the player does not have sufficient items to craft the buildable
@@ -123,7 +123,7 @@ public class DungeonManiaController {
     /**
      * Interacts with a mercenary (where the character bribes the mercenary) or a zombie spawner, where
      * the character destroys the spawner.
-     * @param buildable
+     * @param entityId
      * @return
      * @throws IllegalArgumentException If entityId is not a valid entity ID
      * @throws InvalidActionException If the player is not cardinally adjacent to the given entity

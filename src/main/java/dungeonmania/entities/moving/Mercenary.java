@@ -20,7 +20,9 @@ public class Mercenary extends Entity {
 		aiComponent.changeState("MercAttack");
 	}
 
-	protected void inputEntity(InputState inputState) {}
+	protected void inputEntity(InputState inputState) {
+		
+	}
 
 	protected void updateEntity() {}
 }

@@ -20,8 +20,8 @@ public class HealthPotion extends Entity {
 
 	protected void inputEntity(InputState inputState) {
 		// Check if item was queued to be used
-		if (dungeon.getPlayer().getUsedList().containsKey(getId())) {
-			dungeon.getPlayer().setHealth(10);
+		if (getDungeon().getPlayer().getUsedList().containsKey(getId())) {
+			getDungeon().getPlayer().setHealth(10);
 			setState(EntityState.DEAD);
 		}
 	}
