@@ -176,8 +176,7 @@ public class Dungeon {
     	updatingActors = false;
     	
     	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD 
-				|| e.getState() == EntityState.INVENTORY) {
+    		if (e.getState() == EntityState.DEAD) {
     			deadEntities.add(e);
     		}
     	}
@@ -186,8 +185,8 @@ public class Dungeon {
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
-		newInventory.forEach(e -> getPlayer().addToInventory(e));
-    	newInventory.clear();
+		
+    	
     }
 
     // TODO
@@ -208,14 +207,6 @@ public class Dungeon {
     	return entities;
     }
 
-	public List<Entity> getDeadInventory() {
-		return deadEntities
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-    
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
@@ -271,7 +262,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventory();
+        return getPlayer().getInventoryResponse();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -383,6 +374,11 @@ public class Dungeon {
 	 */
 	public boolean isPlayerHere(Position pos) {
 		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		entities.remove(e);
+		getPlayer().addToInventory(e);
 	}
 }
 

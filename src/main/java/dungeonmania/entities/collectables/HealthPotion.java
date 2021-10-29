@@ -2,22 +2,23 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectibleComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityState;
 import dungeonmania.util.Position;
 
 public class HealthPotion extends Entity {
 
 	public HealthPotion(Dungeon dungeon, Position position) {
 		super(dungeon, "health_potion", position, false);
-		this.components.add(new CollectableComponent(this, 1, dungeon));
+		addComponent(new CollectibleComponent(this, 1));
 	}
 
 	protected void inputEntity(InputState inputState) {
 		// Check if item was queued to be used
-		if (dungeon.getPlayer.getUsedList.containsKey(this.id)) {
+		if (dungeon.getPlayer().getUsedList().containsKey(getId())) {
 			dungeon.getPlayer().setHealth(10);
-			this.state == EntityState.DEAD;
+			setState(EntityState.DEAD);
 		}
 	}
 

@@ -20,7 +20,7 @@ public class Player extends Entity {
 	private List<Entity> deadInventory = new ArrayList<>();
 	// For input stage, to track entities consumed/used in crafting
 	// Can swap with deadInventory and make deadInventory a method only field?
-	public HashMap<String, String> usedList = new HashMap<String, String>
+	public HashMap<String, String> usedList = new HashMap<String, String>();
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
@@ -64,7 +64,7 @@ public class Player extends Entity {
     	}
 
 		for (Entity i : inventoryList) {
-			if (i.getState() == EntityState.DEAD || i.getState() == EntityState.ACTIVE) {
+			if (i.getState() == EntityState.DEAD) {
 				deadInventory.add(i);
 			}
 		}
@@ -80,13 +80,13 @@ public class Player extends Entity {
 		inventoryList.remove(Item);
 	}
 
-	public ArrayList<ItemResponse> getInventory() {
+	public ArrayList<ItemResponse> getInventoryResponse() {
 		return new ArrayList<ItemResponse>(inventoryList.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
 	}
 
-	public ArrayList<String> getUsedList() {
+	public HashMap<String,String> getUsedList() {
 		return usedList;
 	}
 
@@ -100,5 +100,9 @@ public class Player extends Entity {
 	public int setHealth(int hp) {
 		health = hp;
 		return health;
+	}
+
+	public List<Entity> getInventory() {
+		return inventoryList;
 	}
 }
