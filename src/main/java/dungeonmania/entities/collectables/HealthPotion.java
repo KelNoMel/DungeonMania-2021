@@ -11,6 +11,7 @@ public class HealthPotion extends Entity {
 	public HealthPotion(Dungeon dungeon, Position position) {
 		super(dungeon, "health_potion", position, false);
 		this.components.add(new CollectableComponent(this, 1, dungeon));
+		this.components.add(new CollectableComponent(this, 1, dungeon, 1, 1));
 	}
 
 	protected void inputEntity(InputState inputState) {
