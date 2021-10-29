@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static dungeonmania.testhelper.OtherHelp.removeSaves;
 
 import java.lang.IllegalArgumentException;
@@ -26,7 +25,7 @@ public class DungeonTest {
     @Test
     public void testNewGame() {
         DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse response1 = mania.newGame("maze","Peaceful");
+        mania.newGame("maze","Peaceful");
         //assertTrue();
         //assertDoesNotThrow(() -> ));
         
@@ -92,7 +91,7 @@ public class DungeonTest {
     @Test
     public void testNoGame() {
         DungeonManiaController mania = new DungeonManiaController();
-        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        assertThrows(IllegalArgumentException.class, ()->mania.saveGame("SaveFile"));
         removeSaves();
     }
 

@@ -58,7 +58,8 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse saveGame(String saveName) throws IllegalArgumentException {
-		game.saveGame(getSaveFile(saveName));
+    	if (game == null) throw new IllegalArgumentException("You must create a game first!");
+    	game.saveGame(getSaveFile(saveName));
     	return game.response();
     }
 
