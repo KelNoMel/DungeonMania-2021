@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static dungeonmania.testhelper.OtherHelp.removeSaves;
 
 import java.lang.IllegalArgumentException;
 
@@ -42,7 +43,7 @@ public class DungeonTest {
         assertThrows(IllegalArgumentException.class, () -> {
             mania.newGame("squid-game","Hard");
         });
-        
+        removeSaves();
     }
 
     // attempt to create a new game where the map already exists
@@ -61,6 +62,7 @@ public class DungeonTest {
         DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("advanced","Peaceful");
         assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        removeSaves();
     }
     
     // save a game using the same name again
@@ -70,6 +72,7 @@ public class DungeonTest {
         mania.newGame("advanced","Peaceful");
         mania.saveGame("SaveFile");
         assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        removeSaves();
     }
     
     // save multiple games
@@ -82,6 +85,7 @@ public class DungeonTest {
         assertDoesNotThrow(()->mania.saveGame("SaveFile2"));
         mania.newGame("maze","Standard");
         assertDoesNotThrow(()->mania.saveGame("SaveFile3"));
+        removeSaves();
     }
 
     // attempt to save a game before starting any games
@@ -89,6 +93,7 @@ public class DungeonTest {
     public void testNoGame() {
         DungeonManiaController mania = new DungeonManiaController();
         assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        removeSaves();
     }
 
     /**
