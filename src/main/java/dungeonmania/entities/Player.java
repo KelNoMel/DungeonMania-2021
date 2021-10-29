@@ -18,7 +18,8 @@ public class Player extends Entity {
 	private int attackDamage = 10;
 	private List<Entity> inventoryList = new ArrayList<>();
 	private List<Entity> deadInventory = new ArrayList<>();
-	// For input stage, to track entities consumed/used in crafting
+	// Hashmap that tracks which items are used in input tick
+	// Key is itemId, and value is itemType
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
