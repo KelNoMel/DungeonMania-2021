@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -14,14 +15,26 @@ public class MercenaryTest {
 	
     // Succeed at moving a boulder with nothing behind it
     @Test
-    public void testMoveBoulder() {
+    public void testBasicMerc() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("boulders","Peaceful");
+        mania.newGame("mercenary-bribe","Standard");
         
-        DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
-
-        // Check that the player and boulder moved
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(3, 2), false), movedResponse));
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "boulder", new Position(4, 2), false), movedResponse));
+        DungeonResponse d = mania.tick(null, Direction.RIGHT);
+        String mercID = ResponseHelp.getEntityOfType(d, "mercenary").getId();
+        
+        assertDoesNotThrow(()->mania.interact(mercID));
+        
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.UP);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        // Spawn!
+        d = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 0), true), d));
     }
 }

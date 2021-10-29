@@ -26,7 +26,7 @@ public final class FileLoader {
             path = "/" + path;
         try {
             return new String(Files.readAllBytes(Path.of(FileLoader.class.getResource(path).toURI())));
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             throw new FileNotFoundException(path);
         }
     }
