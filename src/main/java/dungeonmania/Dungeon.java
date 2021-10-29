@@ -104,6 +104,28 @@ public class Dungeon {
             // Entity construction function
     		createEntity(ent);
     	}
+    	
+    	// If no merc spawner, load in
+    	if (!isMercSpawner()) {
+    		createEntity(createMercSpawner());
+    	}
+    }
+    
+    private JSONObject createMercSpawner() {
+    	JSONObject newMercSpawner = new JSONObject();
+    	newMercSpawner.put("x", getPlayer().getPosition().getX());
+    	newMercSpawner.put("y", getPlayer().getPosition().getY());
+    	newMercSpawner.put("type", "mercenary_spawner");
+    	return newMercSpawner;
+    }
+    
+    private boolean isMercSpawner() {
+    	for (Entity e : entities) {
+    		if (e instanceof MercenarySpawner) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
 	public void addEntity(Entity e) {
@@ -198,8 +220,7 @@ public class Dungeon {
     private boolean checkGoalState() {
         return false;
     }
-	
-	
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -346,6 +367,10 @@ public class Dungeon {
 				return new Bow(this, pos.asLayer(itemLayer));
 			case "shield":
 				return new Shield(this, pos.asLayer(itemLayer));
+			
+			// Non spec-defined
+			case "mercenary_spawner":
+				return MercenarySpawner.createMercSpawner(this, pos);
 				
 			// Type is not correct or has not been implemented
 			default:

@@ -25,7 +25,7 @@ public class Player extends Entity {
 	protected void inputEntity(InputState inputState) {
 		Position moveLocation = getPosition().translateBy(inputState.getMovementDirection());
 		
-		List<Entity> moveEntities = dungeon.getEntitiesAtPosition(moveLocation);
+		List<Entity> moveEntities = getDungeon().getEntitiesAtPosition(moveLocation);
 		
 		// Attempt to move if boulder in move location
 		boolean boulderMoved = true;
