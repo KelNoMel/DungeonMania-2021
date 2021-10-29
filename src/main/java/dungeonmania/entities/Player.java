@@ -2,6 +2,7 @@ package dungeonmania.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
@@ -19,7 +20,7 @@ public class Player extends Entity {
 	private List<Entity> deadInventory = new ArrayList<>();
 	// For input stage, to track entities consumed/used in crafting
 	// Can swap with deadInventory and make deadInventory a method only field?
-	public ArrayList<String> usedList = new ArrayList<String>();
+	public HashMap<String, String> usedList = new HashMap<String, String>
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);

@@ -14,15 +14,10 @@ public class HealthPotion extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {
-		// Check if a health potion was already used in this tick
-		boolean alreadyUsed = dungeon.getPlayer().getUsedList().contains("health_potion");
-		
-		// Would "consumable" be a valid component?
-		if (inputState.getItemUsed() == "health_potion" && alreadyUsed == false) {
+		// Check if item was queued to be used
+		if (dungeon.getPlayer.getUsedList.containsKey(this.id)) {
 			dungeon.getPlayer().setHealth(10);
 			this.state == EntityState.DEAD;
-
-			dungeon.getPlayer().getUsedList().add("health_potion");
 		}
 	}
 

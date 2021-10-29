@@ -13,7 +13,16 @@ public class InvincibilityPotion extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {
+		// Check if a health potion was already used in this tick
+		boolean alreadyUsed = dungeon.getPlayer().getUsedList().contains("invincibility_potion");
+		
+		// Would "consumable" be a valid component?
+		if (inputState.getItemUsed() == "invincibility_potion" && alreadyUsed == false) {
+			dungeon.getPlayer().setHealth(10);
+			this.state == EntityState.DEAD;
 
+			dungeon.getPlayer().getUsedList().add("invincibility_potion");
+		}
 	}
 
 	protected void updateEntity() {
