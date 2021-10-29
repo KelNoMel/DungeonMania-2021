@@ -20,7 +20,7 @@ public class MoveComponent extends Component {
 	}
 
 	public void processInput(InputState inputState) {
-		moveDirection = inputState.getMovementDirection();
+		
 	}
 
 	public void updateComponent() {

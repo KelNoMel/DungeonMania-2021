@@ -8,6 +8,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
+import dungeonmania.components.PlayerComponent;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.response.models.ItemResponse;
@@ -20,6 +21,7 @@ public class Player extends Entity {
 	private List<Entity> inventoryList = new ArrayList<>();
 	private List<Entity> deadInventory = new ArrayList<>();
 	
+	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
 	public Player(Dungeon dungeon, Position position) {

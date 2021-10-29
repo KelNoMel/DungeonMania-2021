@@ -20,11 +20,7 @@ public class Mercenary extends Entity {
 		aiComponent.changeState("MercAttack");
 	}
 
-	protected void inputEntity(InputState inputState) {
-		moveComponent.setMoveDirection(inputState.getMovementDirection());
-	}
+	protected void inputEntity(InputState inputState) {}
 
-	protected void updateEntity() {
-		
-	}
+	protected void updateEntity() {}
 }

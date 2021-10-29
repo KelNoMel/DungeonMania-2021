@@ -5,6 +5,7 @@ import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class AIMercAttack extends AIState {
 
@@ -21,6 +22,19 @@ public class AIMercAttack extends AIState {
 		Direction mercMoveDirection = inputState.getMovementDirection();
 		// Actual pathfinding should also work with the following line???
 		// merc.getDungeon().getPlayer().getPosition();
+		
+		Position mercToPlayer = Position.calculatePositionBetween(merc.getDungeon().getPlayer().getPosition(), merc.getPosition());
+		System.out.println(mercToPlayer.toString());
+		if (mercToPlayer.getY() > 0) {
+			mercMoveDirection = Direction.UP;
+		} else if (mercToPlayer.getX() > 0) {
+			mercMoveDirection = Direction.LEFT;
+		} else if (mercToPlayer.getY() < 0) {
+			mercMoveDirection = Direction.DOWN;
+		} else if (mercToPlayer.getX() < 0) {
+			mercMoveDirection = Direction.RIGHT;
+		}
+		
 		merc.moveComponent.setMoveDirection(mercMoveDirection);
 	}
 
