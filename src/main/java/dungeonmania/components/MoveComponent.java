@@ -19,9 +19,13 @@ public class MoveComponent extends Component {
 		this.movementType = movementType;
 	}
 
-	public void processInput(InputState inputState) {}
+	public void processInput(InputState inputState) {
+		moveDirection = inputState.getMovementDirection();
+	}
 
 	public void updateComponent() {
+		if (moveDirection == null) return;
+		
 		// Portal so needs to happen in processInput?????/
 		Entity parentEntity = getEntity();
 		Position newPosition = parentEntity.getPosition();

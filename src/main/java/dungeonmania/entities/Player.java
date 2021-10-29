@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.MoveComponent;
+import dungeonmania.components.MovementType;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.response.models.ItemResponse;
@@ -17,41 +19,14 @@ public class Player extends Entity {
 	private int attackDamage = 10;
 	private List<Entity> inventoryList = new ArrayList<>();
 	private List<Entity> deadInventory = new ArrayList<>();
+	
+	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
 	}
 	
-	protected void inputEntity(InputState inputState) {
-		Position moveLocation = getPosition().translateBy(inputState.getMovementDirection());
-		
-		List<Entity> moveEntities = getDungeon().getEntitiesAtPosition(moveLocation);
-		
-		// Attempt to move if boulder in move location
-		boolean boulderMoved = true;
-		boolean isWall = false;
-		for (Entity e : moveEntities) {
-			if (e instanceof Boulder) {				
-				boulderMoved = ((Boulder)e).moveBoulder(inputState.getMovementDirection());
-				break;
-			} else if (e instanceof Wall) {
-				isWall = true;
-				break;
-			}
-		}
-		
-		// Instead for boulder a collisionless raycast could be passed down the checking chain?
-		
-		// Only move if move space is not covered by a wall or an unmovable boulder
-		if (!(isWall) && boulderMoved) {
-			setPosition(getPosition().translateBy(inputState.getMovementDirection()));			
-		}
-
-		// process input for each entity in the inventory
-		for (Entity i : inventoryList) {
-    		i.processInput(inputState);
-    	}
-	}
+	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {
 		for (Entity i : inventoryList) {
