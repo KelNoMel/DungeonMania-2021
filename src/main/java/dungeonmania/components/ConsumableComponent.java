@@ -13,8 +13,7 @@ public class ConsumableComponent extends Component {
     private int numObjUsed;
 
 
-    public ConsumableComponent(Entity owningEntity, int updateOrder,
-                            Dungeon dungeon, int durability, int uses) {
+    public ConsumableComponent(Entity owningEntity, int updateOrder, int durability, int uses) {
         super(owningEntity, updateOrder);
         this.curDurability = durability;
         this.numObjUsed = uses;

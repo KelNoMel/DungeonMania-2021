@@ -17,7 +17,8 @@ public abstract class Entity {
     private String id;
     private String type;
     private boolean isInteractable;
-
+    private boolean shouldDisplay = true;
+    	
     protected Dungeon dungeon;
     
     private List<Component> components = new ArrayList<Component>();
@@ -97,13 +98,17 @@ public abstract class Entity {
     public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }
+    public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
     
     /**
      * Creates an EntityResponse for this entity
      * @return EntityResponse describing the entity
      */
     public EntityResponse response() {
-        return new EntityResponse(getId(), type, position, isInteractable);
+        if (shouldDisplay) {
+        	return new EntityResponse(getId(), type, position, isInteractable);
+        }
+        return new EntityResponse(getId(), "blank", position, isInteractable);
     }
 
 }

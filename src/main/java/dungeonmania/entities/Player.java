@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
+import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
@@ -16,8 +17,8 @@ public class Player extends Entity {
 	
 	private int health = 10;
 	private int attackDamage = 10;
-	private List<Entity> inventoryList = new ArrayList<>();
-	private List<Entity> deadInventory = new ArrayList<>();
+	private EntityList inventory = new EntityList();
+
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
 	// Can swap with deadInventory and make deadInventory a method only field?
@@ -53,36 +54,22 @@ public class Player extends Entity {
 		}
 
 		// process input for each entity in the inventory
-		for (Entity i : inventoryList) {
+		for (Entity i : inventory) {
     		i.processInput(inputState);
     	}
 		usedList.clear();
 	}
 
 	protected void updateEntity() {
-		for (Entity i : inventoryList) {
-    		i.update();
-    	}
-
-		for (Entity i : inventoryList) {
-			if (i.getState() == EntityState.DEAD) {
-				deadInventory.add(i);
-			}
-		}
-		inventoryList.removeAll(deadInventory);
-    	deadInventory.clear();
+		inventory.updateEntities();
 	}
 
-	public void addToInventory(Entity Item) {
-		inventoryList.add(Item);
-	}
-
-	public void removeFromInventory(Entity Item) {
-		inventoryList.remove(Item);
+	public void addToInventory(Entity item) {
+		inventory.add(item);
 	}
 
 	public ArrayList<ItemResponse> getInventoryResponse() {
-		return new ArrayList<ItemResponse>(inventoryList.stream()
+		return new ArrayList<ItemResponse>(inventory.stream()
         .map(e -> new ItemResponse(e.getId(), e.getType()))
         .collect(Collectors.toList()));
 	}
@@ -103,7 +90,7 @@ public class Player extends Entity {
 		return health;
 	}
 
-	public List<Entity> getInventory() {
-		return inventoryList;
+	public EntityList getInventory() {
+		return inventory;
 	}
 }

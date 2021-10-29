@@ -2,7 +2,6 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.util.Position;
@@ -23,7 +22,7 @@ public class InvincibilityPotion extends Entity {
 			
 			setState(EntityState.DEAD);
 
-			dungeon.getPlayer().getUsedList().put("invincibility_potion");
+			dungeon.getPlayer().getUsedList().put("invincibility_potion", null);
 		}
 	}
 	
