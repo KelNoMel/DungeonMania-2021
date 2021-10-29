@@ -82,7 +82,7 @@ public class Dungeon {
     				FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json")
     				);
     		
-    	} catch (IOException e) {
+    	} catch (Exception e) {
     		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
     	}
     }
