@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Strongly typed tuple structure for keeping buildable resource requirements
+ * MAY NOT GET USED becuase it is unnecessary
  */
 public class BuildableRequirement {
     private String requiredType;

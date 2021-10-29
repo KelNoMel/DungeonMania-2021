@@ -7,36 +7,38 @@ import java.util.Collections;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.entities.Player;
 
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.buildable.BuildableRequirements;
 
 public abstract class Buildable extends Entity {
-    protected Player player = null;
+    protected Player player;
+	protected BuildableRequirements required;
+
 
     public Buildable(Dungeon dungeon, String type, Position position,  
         boolean isInteractable, Player player, ArrayList<ArrayList<String>> requiredTypeConfigs, 
 		ArrayList<ArrayList<Integer>> requiredFreqConfigs) {
         super(dungeon, type, position, isInteractable);
         this.player = player;
-        checkRequirements(requiredTypeConfigs, requiredFreqConfigs);
+		this.required = new BuildableRequirements(requiredTypeConfigs, requiredFreqConfigs);
+        checkRequirements();
     }
 
-    protected boolean checkRequirements(ArrayList<ArrayList<String>> requiredTypeConfigs, 
-		ArrayList<ArrayList<Integer>> requiredFreqConfigs) {
-		// Note this is not an efficient method as it gets a new inventory multiple times
+    protected boolean checkRequirements() throws InvalidActionException {
+		ArrayList<ArrayList<String>> requiredTypeConfigs = required.getTypes(); 
+		ArrayList<ArrayList<Integer>> requiredFreqConfigs = required.getFreqs();
 		
 		// count each type required and use the first acceptable configuration
 		int configLength = requiredTypeConfigs.size();
 		for (int j = 0; j < configLength; j++) {
-			// ideally this would be tuples
-			// get the list of all types 
 			final Integer jj = j;
 			ArrayList<String> requiredTypes = requiredTypeConfigs.get(jj);
 			ArrayList<Integer> requiredFreq = requiredFreqConfigs.get(jj);
+			// Note this is not a time efficient method as it gets a new inventory multiple times
 			ArrayList<Entity> available = new ArrayList<>(player.getInventory().stream()
 				.filter(e -> requiredTypes.contains(e.getType())).collect(Collectors.toList()));
 				

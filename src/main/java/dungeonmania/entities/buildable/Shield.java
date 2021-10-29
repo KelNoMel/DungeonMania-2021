@@ -1,6 +1,7 @@
 package dungeonmania.entities.buildable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
@@ -10,14 +11,22 @@ import dungeonmania.util.Position;
 import dungeonmania.entities.Player;
 
 public class Shield extends Buildable {
-	Player player = null;
 	// durability for the number of times a shield can take a hit
-
+	private int durability = 5;
 	// decrease the effect of enemy attacks by 2 damage
+	private int armour = 2;
 	
 	public Shield(Dungeon dungeon, Position position) {
-		super(dungeon, "shield", position, false, null, new ArrayList<ArrayList<String>>(), 
-		new ArrayList<ArrayList<Integer>>());
+		super(dungeon, "shield", position, false, null, 
+			new ArrayList<ArrayList<String>>(Arrays.asList(
+				new ArrayList<>(Arrays.asList("wood","treasure")), 
+				new ArrayList<>(Arrays.asList("wood","key")) 
+			)), 
+			new ArrayList<ArrayList<Integer>>(Arrays.asList(
+				new ArrayList<>(Arrays.asList(2,1)), 
+				new ArrayList<>(Arrays.asList(2,1))
+			))
+		);
 	}
 
 

@@ -21,18 +21,20 @@ import dungeonmania.entities.Player;
  * Bow Entity can shoot from a range
  */
 public class Bow extends Buildable {
-	private Player player = null;
-
 	public Bow(Dungeon dungeon, Position position) {
-		super(dungeon, "bow", position, false);
+		this(dungeon, position, null);
 	}
 
 	public Bow(Dungeon dungeon, Position position, Player player) {
-		super(dungeon, "bow", position, false);
-		this.player = player;
+		super(dungeon, "bow", position, false, player,
+			new ArrayList<ArrayList<String>>(Arrays.asList(
+				new ArrayList<>(Arrays.asList("arrows","wood")) 
+			)), 
+			new ArrayList<ArrayList<Integer>>(Arrays.asList(
+				new ArrayList<>(Arrays.asList(3,1))
+			))
+		);
 
-		// ArrayList<String> requiredTypes = new ArrayList<>(Arrays.asList("wood", "arrow"));
-		// ArrayList<Integer> requiredFreq = new ArrayList<>(Arrays.asList(1,3));
 	}
 
 	protected void inputEntity(InputState inputState) {
