@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.statics.Boulder;
+import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
@@ -30,12 +31,17 @@ public class Player extends Entity {
 		// Attempt to move if boulder in move location
 		boolean boulderMoved = true;
 		boolean isWall = false;
+		boolean isDoor = false;
 		for (Entity e : moveEntities) {
 			if (e instanceof Boulder) {				
 				boulderMoved = ((Boulder)e).moveBoulder(inputState.getMovementDirection());
 				break;
 			} else if (e instanceof Wall) {
 				isWall = true;
+				break;
+			}
+			if (e instanceof Door) {
+				isDoor = true;
 				break;
 			}
 		}
@@ -45,6 +51,11 @@ public class Player extends Entity {
 		// Only move if move space is not covered by a wall or an unmovable boulder
 		if (!(isWall) && boulderMoved) {
 			setPosition(getPosition().translateBy(inputState.getMovementDirection()));			
+		}
+
+		// Move if door is open 
+		if (isDoor && Door.isUnlocked()) {
+			setPosition(getPosition().translateBy(inputState.getMovementDirection()));
 		}
 
 		// process input for each entity in the inventory

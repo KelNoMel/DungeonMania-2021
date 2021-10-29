@@ -33,7 +33,7 @@ public class Key extends Entity {
 				unlockDoor();
 			}
 			if (e instanceof Player) {
-				Player.collectables.add(this);
+				// addInventory(this);
 			}
 		}
 		if (unlockDoor() == true) {
