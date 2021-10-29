@@ -1,5 +1,5 @@
-# Meeting Minutes Week 5 Thursday Elderberry
-Time: 12:00pm @ 1:00pm
+# Meeting Minutes Week 6 Thursday Elderberry
+Time: 12:00pm - 1:00pm
 Location:        Online
 
 ## AGENDA

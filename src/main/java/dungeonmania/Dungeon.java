@@ -3,7 +3,6 @@ package dungeonmania;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,17 +39,16 @@ public class Dungeon {
     private List<Entity> entities = new ArrayList<Entity>();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
-    private Entity player;
-    private List<Entity> inventory = new ArrayList<Entity>();
     private List<String> buildables = new ArrayList<String>();
     
     private String goals;
     private GoalCondition goalCondition;
        
-    // Stuff used for adding entities
+    // Stuff used for adding entities and inventory
     private boolean updatingActors = false;
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
+    private List<Entity> newInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -102,7 +100,6 @@ public class Dungeon {
     	for (int i = 0; i < numEntities; i++) {
     		JSONObject ent = loadEntities.getJSONObject(i);
     		
-    		// this.player =  // TODO: properly add the player (here?)
     		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
             // Entity construction function
     		createEntity(ent);
@@ -114,6 +111,14 @@ public class Dungeon {
 			newEntities.add(e);
 		} else {			
 			entities.add(e);
+		}
+	}
+
+	public void addInventory(Entity e) {
+		if (updatingActors) {
+			newInventory.add(e);
+		} else {
+			getPlayer().addToInventory(e);
 		}
 	}
     
@@ -158,6 +163,7 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.processInput(inputState);
     	}
+		
     	updatingActors = false;
     }
     
@@ -166,17 +172,22 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
+		
     	updatingActors = false;
     	
     	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD) {
+    		if (e.getState() == EntityState.DEAD 
+				|| e.getState() == EntityState.INVENTORY) {
     			deadEntities.add(e);
     		}
     	}
+		
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
+		newInventory.forEach(e -> getPlayer().addToInventory(e));
+    	newInventory.clear();
     }
 
     // TODO
@@ -252,11 +263,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-    	return new ArrayList<ItemResponse>();
-    	// Yet to be properly implemented
-//        return new ArrayList<ItemResponse>(inventory.stream()
-//        .map(e -> new ItemResponse(e.getId(), e.getType()))
-//        .collect(Collectors.toList()));
+        return getPlayer().getInventory();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +287,7 @@ public class Dungeon {
 		
 		switch (ent.getString("type")) {
 			case "player":
-				player = new Player(this, pos.asLayer(topLayer));
+				Entity player = new Player(this, pos.asLayer(topLayer));
 				// Make sure player is updated first
 				Collections.swap(entities, 0, entities.indexOf(player));
 				return player;
@@ -346,4 +353,29 @@ public class Dungeon {
 				return null;
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Helper Methods                              ///
+	////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Get the player
+	 * Assumes only one player always exists and it is stored as the first 
+	 * entity in entities
+	 * @return player
+	 */
+	public Player getPlayer() {
+		return (Player)entities.get(0);
+	}
+
+	/**
+	 * Check if the player is in a position
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return getPlayer().getPosition().equals(pos);
+	}
 }
+
+
