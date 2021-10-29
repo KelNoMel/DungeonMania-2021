@@ -32,9 +32,10 @@ public class ConsumableComponent extends Component {
             }
         }
 
+        
         // Item is in inventory, matches input item type and
         // not enough of the item is used yet
-        if (getEntity().getState() == EntityState.INVENTORY
+        if (owningDungeon.getPlayer().getInventory().hasKey(owningEntity.getId())
             && input.getItemUsed() == getEntity().getType() 
             && frequency < numObjUsed) {
             
