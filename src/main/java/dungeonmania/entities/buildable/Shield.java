@@ -16,11 +16,13 @@ public class Shield extends Buildable {
 	// decrease the effect of enemy attacks by 2 damage
 	private int armour = 2;
 	
-	public Shield(Dungeon dungeon, Position position) {
-		super(dungeon, "shield", position, false, null, 
-			new ArrayList<ArrayList<String>>(Arrays.asList(
-				new ArrayList<>(Arrays.asList("wood","treasure")), 
-				new ArrayList<>(Arrays.asList("wood","key")) 
+	
+	
+	public Shield(Dungeon dungeon, Position position, Player player) {
+		super(dungeon, "shield", position, false, player, 
+		new ArrayList<ArrayList<String>>(Arrays.asList(
+			new ArrayList<>(Arrays.asList("wood","treasure")), 
+			new ArrayList<>(Arrays.asList("wood","key")) 
 			)), 
 			new ArrayList<ArrayList<Integer>>(Arrays.asList(
 				new ArrayList<>(Arrays.asList(2,1)), 
@@ -29,12 +31,8 @@ public class Shield extends Buildable {
 		);
 	}
 
-
-	public Shield(Dungeon dungeon, Position position, Player player) {
-		super(dungeon, "shield", position, false, player, new ArrayList<ArrayList<String>>(), 
-		new ArrayList<ArrayList<Integer>>());
-		this.player = player;
-
+	public Shield(Dungeon dungeon, Position position) {
+		this(dungeon, position, null);
 	}
 
 	protected void inputEntity(InputState inputState) {
