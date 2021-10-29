@@ -17,6 +17,7 @@ import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
+import dungeonmania.goals.*;
 import dungeonmania.entities.moving.*;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.rare.*;
@@ -45,6 +46,7 @@ public class Dungeon {
     
     private String goals;
     private GoalCondition goalCondition;
+	private List<Goal> goalsList = new ArrayList<Goal>();
        
     // Stuff used for adding entities
     private boolean updatingActors = false;
@@ -62,12 +64,10 @@ public class Dungeon {
     	// Add the entities
         loadEntities(newDungeonData);        
         
-        // TODO: set goals
-        // this.goals = 
+		// Adds goals and sets goal condition
+		loadGoals(newDungeonData);
     	
     	dungeonId = Dungeon.createId();
-    	// this.goalCondition = 
-        // GoalCondition.AND // GoalCondition.OR
     }
     
     public Dungeon(File loadFile) {
@@ -126,6 +126,49 @@ public class Dungeon {
     private static String createId() {
         return String.valueOf(++lastId); 
     }
+
+	private void loadGoals(JSONObject dungeonData) {
+		JSONObject goalData = dungeonData.getJSONObject("goal-condition");
+
+		//JSONObject goalCondition = goalData.getJSONObject("goal");
+		switch (goalData.getString("goal")) {
+			case "AND":
+				goalCondition = GoalCondition.AND;
+				break;
+			case "OR":
+				goalCondition = GoalCondition.OR;
+				break;
+			default:
+				goalsList.add(createGoal(goalData.getString("goal")));
+				return;
+		}
+
+		// casewhere goalCondition = AND, OR, goaloptions
+		JSONArray subGoals = goalData.getJSONArray("subgoals");
+		
+		int numGoals = subGoals.length();
+    	for (int i = 0; i < numGoals; i++) {
+    		JSONObject goal = subGoals.getJSONObject(i);
+    		goalsList.add(createGoal(goal.getString("goal")));
+    	}
+
+	}
+
+	public Goal createGoal(String goalType) {
+		switch (goalType) {
+			case "exit":
+				return new ExitGoal(this);
+			case "treasure":
+				return new TreasureGoal(this);
+			case "boulder":
+				return new BoulderGoal(this);
+			case "enemies":
+				return new EnemiesGoal(this);
+			default: 
+				System.out.println(goalType + " goal has not been implemented yet.");
+				return null;
+		}
+	}
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Dungeon Saving                              ///
@@ -185,7 +228,20 @@ public class Dungeon {
      * @return
      */
     private boolean checkGoalState() {
-        return false;
+		switch (goalCondition) {
+			case AND:
+				for (Goal goal : goalsList) {
+					if (goal.checkGoal() == false) return false;
+				}
+				return true;
+			case OR:
+				for (Goal goal : goalsList) {
+					if (goal.checkGoal() == true) return true;
+				}
+				return false;
+			default:
+				return goalsList.get(0).checkGoal();
+		}
     }
 	
 	

@@ -4,7 +4,7 @@ import dungeonmania.Dungeon;
 
 public abstract class Goal {
     private String goalType;
-    private Dungeon dungeon;
+    protected Dungeon dungeon;
 
     public Goal (Dungeon dungeon, String goalType) {
         this.goalType = goalType;

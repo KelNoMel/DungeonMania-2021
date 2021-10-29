@@ -4,8 +4,8 @@ import dungeonmania.Dungeon;
 
 public class TreasureGoal extends Goal{
     
-    public TreasureGoal (Dungeon dungeon, String goalType) {
-        super(dungeon, goalType);
+    public TreasureGoal (Dungeon dungeon) {
+        super(dungeon, "treasure");
 
     }
 

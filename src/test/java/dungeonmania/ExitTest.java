@@ -10,6 +10,7 @@ import java.lang.IllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.entities.statics.Exit;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
@@ -94,7 +95,8 @@ public class ExitTest {
         //assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(18, 16), false), movedResponse));
         //assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "exit", new Position(18, 16), false), movedResponse));
 
-
+        //Exit exit = ResponseHelp.getEntityOfType(movedResponse, "exit");
+        assertTrue(); //.checkGoal();
         // check that Exit.playerAtExit() returns true // TODO: check via goal condition being met. 
 
     }
