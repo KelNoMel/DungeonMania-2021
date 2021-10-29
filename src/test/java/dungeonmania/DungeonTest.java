@@ -55,13 +55,41 @@ public class DungeonTest {
      * DungeonResponse saveGame(String id)
      * throws IllegalArgumentException
      */
-    // save a game
-
+    // No errors thrown by basic save
+    @Test
+    public void testSaveNoError() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+    }
+    
     // save a game using the same name again
-
+    @Test
+    public void testSameName() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        mania.saveGame("SaveFile");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+    }
+    
     // save multiple games
+    @Test
+    public void testMultipleSaves() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile1"));
+        mania.newGame("portals","Hard");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile2"));
+        mania.newGame("maze","Standard");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile3"));
+    }
 
     // attempt to save a game before starting any games
+    @Test
+    public void testNoGame() {
+        DungeonManiaController mania = new DungeonManiaController();
+        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+    }
 
     /**
      * @loadGame()
