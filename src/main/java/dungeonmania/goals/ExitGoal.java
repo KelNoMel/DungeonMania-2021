@@ -13,7 +13,6 @@ public class ExitGoal extends Goal{
 
     
     public boolean checkGoal() {
-        //TODO:
         Exit exit;
         for (Entity entity : dungeon.getEntities()) { 
             if (entity instanceof Exit) {

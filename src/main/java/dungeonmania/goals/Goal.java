@@ -3,7 +3,7 @@ package dungeonmania.goals;
 import dungeonmania.Dungeon;
 
 public abstract class Goal {
-    private String goalType;
+    protected String goalType;
     protected Dungeon dungeon;
 
     public Goal (Dungeon dungeon, String goalType) {
@@ -11,8 +11,5 @@ public abstract class Goal {
         this.dungeon = dungeon;
     }
 
-    public boolean checkGoal () {
-        // TODO: 
-        return false;
-    }
+    public abstract boolean checkGoal();
 }
