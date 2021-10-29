@@ -20,6 +20,7 @@ public abstract class Entity {
     private boolean isInteractable;
 
     private Dungeon dungeon;
+    private boolean shouldDisplay = true;
     
     private List<Component> components = new ArrayList<Component>();
 
@@ -53,8 +54,8 @@ public abstract class Entity {
 	////////////////////////////////////////////////////////////////////////////////
 
     public void processInput(InputState inputState) {
-    	for (Component c : components) {
-    		c.processInput(inputState);
+    	for (Component comp : components) {
+    		comp.processInput(inputState);
     	}
     	
     	inputEntity(inputState);
@@ -106,19 +107,20 @@ public abstract class Entity {
     public void setState(EntityState s) { state = s; }
     public Position getPosition() { return position; }
     public void setPosition(Position p) { position = p.asLayer(position.getLayer()); } 
+    public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }
-    
-    public Dungeon getDungeon() {
-    	return dungeon;
-    }
+    public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
     
     /**
      * Creates an EntityResponse for this entity
      * @return EntityResponse describing the entity
      */
     public EntityResponse response() {
-        return new EntityResponse(getId(), type, position, isInteractable);
+        if (shouldDisplay) {
+        	return new EntityResponse(getId(), type, position, isInteractable);
+        }
+        return new EntityResponse(getId(), "blank", position, isInteractable);
     }
 
 }

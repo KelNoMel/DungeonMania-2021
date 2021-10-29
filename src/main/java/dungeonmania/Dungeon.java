@@ -36,7 +36,7 @@ public class Dungeon {
     private String dungeonName;
     private GameMode gameMode;
     
-    private List<Entity> entities = new ArrayList<Entity>();
+    private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
     private List<String> buildables = new ArrayList<String>();
@@ -44,12 +44,6 @@ public class Dungeon {
     private String goals;
     private GoalCondition goalCondition;
        
-    // Stuff used for adding entities and inventory
-    private boolean updatingActors = false;
-    private List<Entity> newEntities = new ArrayList<>();
-    private List<Entity> deadEntities = new ArrayList<>();
-    private List<Entity> newInventory = new ArrayList<>();
-
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
     	this.dungeonName = dungeonName;
@@ -129,21 +123,9 @@ public class Dungeon {
     }
     
 	public void addEntity(Entity e) {
-		if (updatingActors) {
-			newEntities.add(e);
-		} else {			
-			entities.add(e);
-		}
+		entities.add(e);
 	}
 
-	public void addInventory(Entity e) {
-		if (updatingActors) {
-			newInventory.add(e);
-		} else {
-			getPlayer().addToInventory(e);
-		}
-	}
-    
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
      * Note: This may generate used ids if persistence is added. Use UUID's in 
@@ -181,37 +163,13 @@ public class Dungeon {
     }
     
     private void processInput(InputState inputState) {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.processInput(inputState);
-    	}
-		
-    	updatingActors = false;
+    	entities.processInput(inputState);
     }
     
     private void updateGame() {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.update();
-    	}
-		
-    	updatingActors = false;
-    	
-    	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD 
-				|| e.getState() == EntityState.INVENTORY) {
-    			deadEntities.add(e);
-    		}
-    	}
-		
-    	entities.removeAll(deadEntities);    	
-    	deadEntities.clear();
-    	entities.addAll(newEntities);
-    	newEntities.clear();
-		newInventory.forEach(e -> getPlayer().addToInventory(e));
-    	newInventory.clear();
+    	entities.updateEntities();
     }
-
+    
     // TODO
     /**
      * Checks if the goal has been reached to complete the game
@@ -228,7 +186,7 @@ public class Dungeon {
     public List<Entity> getEntities() {
     	return entities;
     }
-    
+
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
@@ -284,7 +242,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventory();
+        return getPlayer().getInventoryResponse();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -400,6 +358,11 @@ public class Dungeon {
 	 */
 	public boolean isPlayerHere(Position pos) {
 		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		e.toggleDisplay(false);
+		entities.transferEntity(getPlayer().getInventory(), e);
 	}
 }
 
