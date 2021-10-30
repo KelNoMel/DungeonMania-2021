@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import java.util.List;
+import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.File;
@@ -15,8 +16,10 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
+import dungeonmania.Dungeon.Bounds;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
+import dungeonmania.goals.*;
 import dungeonmania.entities.moving.*;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.rare.*;
@@ -24,32 +27,27 @@ import dungeonmania.entities.buildable.*;
 
 /**
  * Dungeon class describes all aspects of a DungeonMania game
- * @author Matthew Johnstone
  * Class Invariants:
  * No two Entities will have the same id
  */
 public class Dungeon {
     static private Integer lastId = 0;
-    static private final double epsilon = 0.001;
+    static private final int maxMercenarySpawners = 1;
     
+    private int numMercenarySpawners = 0;
     private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
     
-    private List<Entity> entities = new ArrayList<Entity>();
+    private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
     private List<String> buildables = new ArrayList<String>();
     
     private String goals;
     private GoalCondition goalCondition;
+	private List<Goal> goalsList = new ArrayList<Goal>();
        
-    // Stuff used for adding entities and inventory
-    private boolean updatingActors = false;
-    private List<Entity> newEntities = new ArrayList<>();
-    private List<Entity> deadEntities = new ArrayList<>();
-    private List<Entity> newInventory = new ArrayList<>();
-
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
     	this.dungeonName = dungeonName;
@@ -61,11 +59,10 @@ public class Dungeon {
     	// Add the entities
         loadEntities(newDungeonData);        
         
-        // TODO: set goals
-        // this.goals = 
+		// Adds goals and sets goal condition
+		loadGoals(newDungeonData);
     	
     	dungeonId = Dungeon.createId();
-    	// this.goalCondition = 
     }
     
     public Dungeon(File loadFile) {
@@ -88,7 +85,7 @@ public class Dungeon {
     				FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json")
     				);
     		
-    	} catch (IOException e) {
+    	} catch (Exception e) {
     		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
     	}
     }
@@ -104,24 +101,40 @@ public class Dungeon {
             // Entity construction function
     		createEntity(ent);
     	}
+    	
+    	// If no merc spawner, load in
+    	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
+    		Position p = getPlayer().getPosition();
+    		createEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"));
+    	}
+    	
+    	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
+    		createEntity(newEntityJSON(0, 0, "spider_spawner"));
+    	}
+    }
+    
+    private JSONObject newEntityJSON(int x, int y, String entType) {
+    	JSONObject newMercSpawner = new JSONObject();
+    	newMercSpawner.put("x", getPlayer().getPosition().getX());
+    	newMercSpawner.put("y", getPlayer().getPosition().getY());
+    	newMercSpawner.put("type", entType);
+    	return newMercSpawner;
+    }
+
+    public int numEntitiesOfType(Class<?> classType) {
+    	int numOfType = 0;
+    	for (Entity e : entities) {
+    		if (classType.isInstance(e)) {
+    			numOfType++;
+    		}
+    	}
+    	return numOfType;
     }
     
 	public void addEntity(Entity e) {
-		if (updatingActors) {
-			newEntities.add(e);
-		} else {			
-			entities.add(e);
-		}
+		entities.add(e);
 	}
 
-	public void addInventory(Entity e) {
-		if (updatingActors) {
-			newInventory.add(e);
-		} else {
-			getPlayer().addToInventory(e);
-		}
-	}
-    
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
      * Note: This may generate used ids if persistence is added. Use UUID's in 
@@ -131,6 +144,57 @@ public class Dungeon {
     private static String createId() {
         return String.valueOf(++lastId); 
     }
+
+	private void loadGoals(JSONObject dungeonData) {
+		JSONObject goalData = dungeonData.getJSONObject("goal-condition");
+
+		String goalString = goalData.getString("goal");
+		//JSONObject goalCondition = goalData.getJSONObject("goal");
+		switch (goalString) {
+			case "AND":
+				goalCondition = GoalCondition.AND;
+				break;
+			case "OR":
+				goalCondition = GoalCondition.OR;
+				break;
+			default:
+				goalsList.add(createGoal(goalString));
+				goals = ":" + goalString;
+				return;
+		}
+
+		// casewhere goalCondition = AND, OR, goaloptions
+		JSONArray subGoals = goalData.getJSONArray("subgoals");
+		
+		int numGoals = subGoals.length();
+    	for (int i = 0; i < numGoals; i++) {
+    		JSONObject goal = subGoals.getJSONObject(i);
+    		goalsList.add(createGoal(goal.getString("goal")));
+			if (i != 0) {
+				goals += goalString + " ";
+			}
+			goals += ":" + goal.getString("goal") + " ";
+			
+    	}
+		checkGoalState();
+
+	}
+
+	public Goal createGoal(String goalType) {
+		switch (goalType) {
+			case "exit":
+				return new ExitGoal(this);
+			case "treasure":
+				return new TreasureGoal(this);
+			case "boulders":
+				return new BoulderGoal(this);
+			case "enemies":
+				return new EnemiesGoal(this);
+			default: 
+				System.out.println(goalType + " goal has not been implemented yet.");
+				return null;
+		}
+	}
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Dungeon Saving                              ///
@@ -153,53 +217,43 @@ public class Dungeon {
      * @param movementDirection 
      * @param itemUsed 
      */
-    public void tick(String itemUsed, Direction movementDirection) {
-    	processInput(new InputState(itemUsed, movementDirection));
+    public void tick(InputState inputState) {
+    	processInput(inputState);
     	updateGame();
     }
     
     private void processInput(InputState inputState) {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.processInput(inputState);
-    	}
-		
-    	updatingActors = false;
+    	entities.processInput(inputState);
     }
     
     private void updateGame() {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.update();
-    	}
-		
-    	updatingActors = false;
-    	
-    	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD 
-				|| e.getState() == EntityState.INVENTORY) {
-    			deadEntities.add(e);
-    		}
-    	}
-		
-    	entities.removeAll(deadEntities);    	
-    	deadEntities.clear();
-    	entities.addAll(newEntities);
-    	newEntities.clear();
-		newInventory.forEach(e -> getPlayer().addToInventory(e));
-    	newInventory.clear();
+    	entities.updateEntities();
+		if (checkGoalState() == true) goals = "";
     }
-
+    
     // TODO
     /**
      * Checks if the goal has been reached to complete the game
      * @return
      */
     private boolean checkGoalState() {
-        return false;
+		if (goalCondition == null) return goalsList.get(0).checkGoal();
+		switch (goalCondition) {
+			case AND:
+				for (Goal goal : goalsList) {
+					if (goal.checkGoal() == false) return false;
+				}
+				return true;
+			case OR:
+				for (Goal goal : goalsList) {
+					if (goal.checkGoal() == true) return true;
+				}
+				return false;
+			default:
+				return goalsList.get(0).checkGoal();
+		}
     }
-	
-	
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -207,11 +261,11 @@ public class Dungeon {
     public List<Entity> getEntities() {
     	return entities;
     }
-    
+
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
-    		if (Math.abs(Position.calculatePositionBetween(origin, e.getPosition()).getLength() - radius) <= epsilon) {
+    		if (Position.withinRange(origin, e.getPosition(), radius)) {
     			radEnts.add(e);
     		}
     	}
@@ -236,8 +290,17 @@ public class Dungeon {
     	}
     	return null;
     }
+
+	// TODO
+	/**
+	 * Get the types of buildables possible
+	 * @return list of strings for each type of buildable
+	 */
+	public List<String> buildableResponse() {
+		return Buildable.response(getPlayer());
+	}
     
-	// TODO: add goals, buildables, animations
+	// TODO: add goals, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game
@@ -246,7 +309,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), "");
+        itemResponse(), buildableResponse(), goals);
     }
     
     /**
@@ -263,7 +326,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventory();
+        return getPlayer().getInventoryResponse();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -343,10 +406,20 @@ public class Dungeon {
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos.asLayer(itemLayer));
+				Bow bow = new Bow(this, pos.asLayer(itemLayer));
+				transferToInventory(bow);
+				return bow;
 			case "shield":
-				return new Shield(this, pos.asLayer(itemLayer));
-				
+				Shield shield = new Shield(this, pos.asLayer(itemLayer));
+				transferToInventory(shield);
+				return shield;
+			
+			// Non spec-defined
+			case "mercenary_spawner":
+				return new MercenarySpawner(this, pos, 10);
+			case "spider_spawner":
+				// TODO load spawner info from save
+				return new SpiderSpawner(this, pos, 5);
 			// Type is not correct or has not been implemented
 			default:
 				System.out.println(ent.getString("type") + " has not been implemented");
@@ -354,9 +427,15 @@ public class Dungeon {
 		}
 	}
 
+	public void build(String buildable) {
+		getPlayer().build(buildable);
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
+	
+	
 	
 	/**
 	 * Get the player
@@ -367,6 +446,53 @@ public class Dungeon {
 	public Player getPlayer() {
 		return (Player)entities.get(0);
 	}
+	
+	public class Bounds {
+		private Position minBounds;
+		private Position maxBounds;
+		
+		public Bounds(Position minBounds, Position maxBounds) {
+			this.minBounds = minBounds;
+			this.maxBounds = maxBounds;
+		}
+		
+		public Position getMinBounds() {
+			return minBounds;
+		}
+		
+		public Position getMaxBounds() {
+			return maxBounds;
+		}
+	}
+	
+	public Bounds getBounds() {
+		Position startPos = entities.get(0).getPosition();
+		int minX = startPos.getX();
+		int maxX = startPos.getX();
+		int minY = startPos.getY();
+		int maxY = startPos.getY();
+		
+		for (Entity e : entities) {
+			Position entPos = e.getPosition();
+			int checkX = entPos.getX();
+			int checkY = entPos.getY();
+
+			
+			if (checkX < minX) {
+				minX = checkX;
+			} else if (checkX > maxX) {
+				maxX = checkX;
+			}
+			
+			if (checkY < minY) {
+				minY = checkY;
+			} else if (checkY > maxY) {
+				maxY = checkY;
+			}
+		}
+		
+		return new Bounds(new Position(minX, minY), new Position(maxX, maxY));
+	}
 
 	/**
 	 * Check if the player is in a position
@@ -375,6 +501,11 @@ public class Dungeon {
 	 */
 	public boolean isPlayerHere(Position pos) {
 		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		e.toggleDisplay(false);
+		entities.transferEntity(getPlayer().getInventory(), e);
 	}
 }
 

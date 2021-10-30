@@ -25,7 +25,7 @@ public class Boulder extends Entity {
 	public boolean moveBoulder(Direction d) {
 		Position desiredMovePosition = getPosition().translateBy(d);
 		
-		List<Entity> moveEntities = dungeon.getEntitiesAtPosition(desiredMovePosition);
+		List<Entity> moveEntities = getDungeon().getEntitiesAtPosition(desiredMovePosition);
 		
 		for (Entity e : moveEntities) {
 			if (e instanceof Boulder || e instanceof Wall) {

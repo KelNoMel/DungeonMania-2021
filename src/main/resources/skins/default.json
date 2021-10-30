@@ -32,6 +32,7 @@
         "portal-BLUE": "images/tileset/entities/portal_00.png",
         "portal-RED": "images/tileset/entities/portal_04.png",
         "portal-ORANGE": "images/tileset/entities/portal_08.png",
-        "portal-GREY": "images/tileset/entities/portal_12.png"
+        "portal-GREY": "images/tileset/entities/portal_12.png",
+		"mercenary_spawner": "images/tileset/entities/blank.png"
     }
 }

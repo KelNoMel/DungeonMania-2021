@@ -20,7 +20,7 @@ public class DungeonManiaController {
 	private Dungeon game;
     
     public DungeonManiaController() {
-
+    	FileLoader.initialiseSaves();
     }
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,8 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse saveGame(String saveName) throws IllegalArgumentException {
-		game.saveGame(getSaveFile(saveName));
+		if (game == null) return null;
+    	game.saveGame(getSaveFile(saveName));
     	return game.response();
     }
 
@@ -90,6 +91,23 @@ public class DungeonManiaController {
 	///                             Game State Change                            ///
 	////////////////////////////////////////////////////////////////////////////////
     
+ // TODO
+    /**
+     * Ticks the game state. When a tick occurs:
+     * 1. The player moves in the specified direction one square
+     * 2. All enemies move respectively
+     * 3. Any items which are used are 'actioned' and interact with the relevant entity
+     * @param itemUsed
+     * @param movementDirection
+     * @return
+     * @throws IllegalArgumentException If itemUsed is not one of bomb, invincibility_potion, invisibility_potion
+     * @throws InvalidActionException If itemUsed is not in the player's inventory
+     */
+    public DungeonResponse tickActual(InputState inputState) throws IllegalArgumentException, InvalidActionException {
+    	game.tick(inputState);
+    	return game.response();
+    }
+    
     // TODO
     /**
      * Ticks the game state. When a tick occurs:
@@ -103,27 +121,26 @@ public class DungeonManiaController {
      * @throws InvalidActionException If itemUsed is not in the player's inventory
      */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-    	game.tick(itemUsed, movementDirection);
-    	return game.response();
+    	return tickActual(new InputState(itemUsed, movementDirection, null));
     }
     
-    // TODO
     /**
      * Builds the given entity, where buildable is one of bow and shield.
-     * @param entityId
+     * @param buildable
      * @return
      * @throws IllegalArgumentException If buildable is not one of bow, shield
      * @throws InvalidActionException If the player does not have sufficient items to craft the buildable
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        game.build(buildable);
         return game.response();
     }
-
+    
     // TODO
     /**
      * Interacts with a mercenary (where the character bribes the mercenary) or a zombie spawner, where
      * the character destroys the spawner.
-     * @param buildable
+     * @param entityId
      * @return
      * @throws IllegalArgumentException If entityId is not a valid entity ID
      * @throws InvalidActionException If the player is not cardinally adjacent to the given entity
@@ -131,7 +148,7 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have a weapon and attempts to destroy a spawner
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return game.response();
+        return tickActual(new InputState(null, null, entityId));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

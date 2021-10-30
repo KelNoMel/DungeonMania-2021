@@ -2,8 +2,8 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityState;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Entity {
@@ -13,9 +13,19 @@ public class InvincibilityPotion extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {
+		// Check if a health potion was already used in this tick
+		boolean alreadyUsed = getDungeon().getPlayer().getUsedList().containsKey("invincibility_potion");
+		
+		// Would "consumable" be a valid component?
+		if (inputState.getItemUsed() == "invincibility_potion" && alreadyUsed == false) {
+			getDungeon().getPlayer().setHealth(10);
+			
+			setState(EntityState.DEAD);
 
+			getDungeon().getPlayer().getUsedList().put("invincibility_potion", null);
+		}
 	}
-
+	
 	protected void updateEntity() {
 
 	}
