@@ -42,7 +42,7 @@ public class Portal extends Entity {
 	}
 
 	protected void updateEntity() {
-		List<Entity> entitiesOnThisPortal = dungeon.getEntitiesAtPosition(getPosition());
+		List<Entity> entitiesOnThisPortal = getDungeon().getEntitiesAtPosition(getPosition());
 
 		entitiesOnThisPortal.remove(this);
 		// Only teleport entities that haven't already been teleported this tick

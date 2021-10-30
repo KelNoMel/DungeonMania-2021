@@ -6,3 +6,10 @@ Portals
 
 Player
 - There exists a single player on the map at all times
+
+Potions
+- Players cannot consume more than one potion a tick (verified???)
+
+Mercenary
+- The player requires one coin to bribe them
+- The mercenary can be bribed through any entity, as long as they are within range

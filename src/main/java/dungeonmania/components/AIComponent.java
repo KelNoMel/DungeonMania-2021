@@ -8,17 +8,21 @@ import dungeonmania.entities.Entity;
 public class AIComponent extends Component {
     
 	private HashMap<String, AIState> stateMap = new HashMap<>();
-    private AIState currentState;
+    private AIState currentState = null;
 
-    public AIComponent(Entity owningEntity, int updateOrder, AIState currentState, 
-                    String stateName) {
+    public AIComponent(Entity owningEntity, int updateOrder) {
         super(owningEntity, updateOrder);
-        this.currentState = currentState;
-        stateMap.put(stateName, currentState);
     }
     
+    public void processInput(InputState inputState) {
+		if (currentState == null) return;
+    	// garbage dirt-brain level pathfinding
+		currentState.processInput(inputState);
+	}
+    
     public void updateComponent() {
-		currentState.update();
+    	if (currentState == null) return;
+    	currentState.updateState();
 	}
     
     /**
@@ -26,7 +30,9 @@ public class AIComponent extends Component {
      * @param currentState
      */
     public void changeState(String newState) {
-        currentState.onExit();
+        if (currentState != null) {
+        	currentState.onExit();        	
+        }
     	
         if ((currentState = stateMap.get(newState)) != null) {
         	currentState.onEnter();
@@ -40,6 +46,4 @@ public class AIComponent extends Component {
     public void registerState(AIState state) {
         stateMap.put(state.getName(), state);
     }
-
-	public void processInput(InputState inputState) {}
 }

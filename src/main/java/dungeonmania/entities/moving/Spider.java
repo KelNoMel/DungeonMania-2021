@@ -8,7 +8,7 @@ import dungeonmania.util.Position;
 
 public class Spider extends Entity {
 
-	AIComponent aiComponent = new AIComponent(this, 100, null, null);
+	AIComponent aiComponent = new AIComponent(this, 100);
 	
 	public Spider(Dungeon dungeon, Position position) {
 		super(dungeon, "spider", position, false);

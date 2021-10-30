@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static dungeonmania.testhelper.OtherHelp.removeSaves;
 
 import java.lang.IllegalArgumentException;
 
@@ -25,7 +26,7 @@ public class DungeonTest {
     @Test
     public void testNewGame() {
         DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse response1 = mania.newGame("maze","Peaceful");
+        mania.newGame("maze","Peaceful");
         //assertTrue();
         //assertDoesNotThrow(() -> ));
         
@@ -42,7 +43,7 @@ public class DungeonTest {
         assertThrows(IllegalArgumentException.class, () -> {
             mania.newGame("squid-game","Hard");
         });
-        
+        removeSaves();
     }
 
     // attempt to create a new game where the map already exists
@@ -55,13 +56,46 @@ public class DungeonTest {
      * DungeonResponse saveGame(String id)
      * throws IllegalArgumentException
      */
-    // save a game
-
+    // No errors thrown by basic save
+    @Test
+    public void testSaveNoError() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        removeSaves();
+    }
+    
     // save a game using the same name again
-
+    @Test
+    public void testSameName() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        mania.saveGame("SaveFile");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile"));
+        removeSaves();
+    }
+    
     // save multiple games
+    @Test
+    public void testMultipleSaves() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile1"));
+        mania.newGame("portals","Hard");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile2"));
+        mania.newGame("maze","Standard");
+        assertDoesNotThrow(()->mania.saveGame("SaveFile3"));
+        removeSaves();
+    }
 
     // attempt to save a game before starting any games
+    @Test
+    public void testNoGame() {
+        DungeonManiaController mania = new DungeonManiaController();
+        DungeonResponse d = mania.saveGame("SaveFile");
+        assertNull(d);
+        removeSaves();
+    }
 
     /**
      * @loadGame()

@@ -8,7 +8,7 @@ import dungeonmania.util.Position;
 
 public class ZombieToast extends Entity {
 
-	AIComponent aiComponent = new AIComponent(this, 100, null, null);
+	AIComponent aiComponent = new AIComponent(this, 100);
 	
 	public ZombieToast(Dungeon dungeon, Position position) {
 		super(dungeon, "zombie", position, false);
