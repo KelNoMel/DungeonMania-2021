@@ -3,11 +3,11 @@ package dungeonmania;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import dungeonmania.response.models.AnimationQueue;
@@ -40,18 +40,17 @@ public class Dungeon {
     private List<Entity> entities = new ArrayList<Entity>();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
-    private Entity player;
-    private List<Entity> inventory = new ArrayList<Entity>();
     private List<String> buildables = new ArrayList<String>();
     
     private String goals;
     private GoalCondition goalCondition;
 	private List<Goal> goalsList = new ArrayList<Goal>();
        
-    // Stuff used for adding entities
+    // Stuff used for adding entities and inventory
     private boolean updatingActors = false;
     private List<Entity> newEntities = new ArrayList<>();
     private List<Entity> deadEntities = new ArrayList<>();
+    private List<Entity> newInventory = new ArrayList<>();
 
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
@@ -102,7 +101,6 @@ public class Dungeon {
     	for (int i = 0; i < numEntities; i++) {
     		JSONObject ent = loadEntities.getJSONObject(i);
     		
-    		// this.player =  // TODO: properly add the player (here?)
     		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
             // Entity construction function
     		createEntity(ent);
@@ -114,6 +112,14 @@ public class Dungeon {
 			newEntities.add(e);
 		} else {			
 			entities.add(e);
+		}
+	}
+
+	public void addInventory(Entity e) {
+		if (updatingActors) {
+			newInventory.add(e);
+		} else {
+			getPlayer().addToInventory(e);
 		}
 	}
     
@@ -201,6 +207,7 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.processInput(inputState);
     	}
+		
     	updatingActors = false;
     }
     
@@ -209,17 +216,22 @@ public class Dungeon {
     	for (Entity e : entities) {
     		e.update();
     	}
+		
     	updatingActors = false;
     	
     	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD) {
+    		if (e.getState() == EntityState.DEAD 
+				|| e.getState() == EntityState.INVENTORY) {
     			deadEntities.add(e);
     		}
     	}
+		
     	entities.removeAll(deadEntities);    	
     	deadEntities.clear();
     	entities.addAll(newEntities);
     	newEntities.clear();
+		newInventory.forEach(e -> getPlayer().addToInventory(e));
+    	newInventory.clear();
     }
 
     // TODO
@@ -277,6 +289,15 @@ public class Dungeon {
 		return player;
 	}
     
+    public Entity getEntityFromId(String id) {
+    	for (Entity e : entities) {
+    		if (e.getId().equals(id)) {
+    			return e;
+    		}
+    	}
+    	return null;
+    }
+    
 	// TODO: add goals, buildables, animations
     /**
      * Create a DungeonResponse for the current Dungeon
@@ -303,11 +324,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-    	return new ArrayList<ItemResponse>();
-    	// Yet to be properly implemented
-//        return new ArrayList<ItemResponse>(inventory.stream()
-//        .map(e -> new ItemResponse(e.getId(), e.getType()))
-//        .collect(Collectors.toList()));
+        return getPlayer().getInventory();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -323,65 +340,73 @@ public class Dungeon {
      */
 	public Entity createEntity(JSONObject ent) {
 		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-	
+		
+		int topLayer = 3;
+		int movingLayer = 2;
+		int itemLayer = 1;
+		int bottomLayer = 0;
+		
 		switch (ent.getString("type")) {
 			case "player":
-				return (player = new Player(this, pos));
+				Entity player = new Player(this, pos.asLayer(topLayer));
+				// Make sure player is updated first
+				Collections.swap(entities, 0, entities.indexOf(player));
+				return player;
 			// Statics
 			case "wall":
-				return new Wall(this, pos);
+				return new Wall(this, pos.asLayer(bottomLayer));
 			case "exit":
-				return new Exit(this, pos);
+				return new Exit(this, pos.asLayer(bottomLayer));
 			case "boulder":
-				return new Boulder(this, pos);
+				return new Boulder(this, pos.asLayer(bottomLayer));
 			case "switch":
-				return new FloorSwitch(this, pos);
+				return new FloorSwitch(this, pos.asLayer(bottomLayer));
 			case "door":
-				return new Door(this, pos);
+				return new Door(this, pos.asLayer(bottomLayer));
 			case "portal":
-				return new Portal(this, pos);
+				return new Portal(this, pos.asLayer(bottomLayer), ent.getString("colour"));
 			case "spawner":
-				return new ZombieToastSpawner(this, pos);
+				return new ZombieToastSpawner(this, pos.asLayer(bottomLayer));
 			
 			// Moving
 			case "spider":
-				return new Spider(this, pos);
+				return new Spider(this, pos.asLayer(movingLayer));
 			case "zombie":
-				return new ZombieToast(this, pos);
+				return new ZombieToast(this, pos.asLayer(movingLayer));
 			case "mercenary":
-				return new Mercenary(this, pos);
+				return new Mercenary(this, pos.asLayer(movingLayer));
 				
 			// Collectable
 			case "treasure":
-				return new Treasure(this, pos);
+				return new Treasure(this, pos.asLayer(itemLayer));
 			case "key":
-				return new Key(this, pos);
+				return new Key(this, pos.asLayer(itemLayer));
 			case "health_potion":
-				return new HealthPotion(this, pos);
+				return new HealthPotion(this, pos.asLayer(itemLayer));
 			case "invincibility_potion":
-				return new InvincibilityPotion(this, pos);
+				return new InvincibilityPotion(this, pos.asLayer(itemLayer));
 			case "invisibility_potion":
-				return new InvisibilityPotion(this, pos);
+				return new InvisibilityPotion(this, pos.asLayer(itemLayer));
 			case "wood":
-				return new Wood(this, pos);
+				return new Wood(this, pos.asLayer(itemLayer));
 			case "arrows":
-				return new Arrows(this, pos);
+				return new Arrows(this, pos.asLayer(itemLayer));
 			case "bomb":
-				return new Bomb(this, pos);
+				return new Bomb(this, pos.asLayer(itemLayer));
 			case "sword":
-				return new Sword(this, pos);
+				return new Sword(this, pos.asLayer(itemLayer));
 			case "armour":
-				return new Armour(this, pos);
+				return new Armour(this, pos.asLayer(itemLayer));
 				
 			// Rare Collectable
 			case "the_one_ring":
-				return new TheOneRing(this, pos);
+				return new TheOneRing(this, pos.asLayer(itemLayer));
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos);
+				return new Bow(this, pos.asLayer(itemLayer));
 			case "shield":
-				return new Shield(this, pos);
+				return new Shield(this, pos.asLayer(itemLayer));
 				
 			// Type is not correct or has not been implemented
 			default:
@@ -389,4 +414,29 @@ public class Dungeon {
 				return null;
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Helper Methods                              ///
+	////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Get the player
+	 * Assumes only one player always exists and it is stored as the first 
+	 * entity in entities
+	 * @return player
+	 */
+	public Player getPlayer() {
+		return (Player)entities.get(0);
+	}
+
+	/**
+	 * Check if the player is in a position
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return getPlayer().getPosition().equals(pos);
+	}
 }
+
+

@@ -93,14 +93,16 @@ public abstract class Entity {
     public EntityState getState() { return state; }
     public void setState(EntityState s) { state = s; }
     public Position getPosition() { return position; }
-    public void setPosition(Position p) { position = p; } 
-    
+    public void setPosition(Position p) { position = p.asLayer(position.getLayer()); } 
+    public String getId() { return id; }
+    public String getType() { return type; }
     
     /**
      * Creates an EntityResponse for this entity
      * @return EntityResponse describing the entity
      */
     public EntityResponse response() {
-        return new EntityResponse(id, type, position, isInteractable);
+        return new EntityResponse(getId(), type, position, isInteractable);
     }
+
 }

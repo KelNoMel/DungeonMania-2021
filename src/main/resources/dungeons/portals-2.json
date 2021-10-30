@@ -12,12 +12,24 @@
             "colour": "BLUE"
         },
         {
-            "x": 4,
+            "x": 5,
             "y": 0,
             "type": "portal",
             "colour": "BLUE"
         },
+		{
+            "x": 3,
+            "y": 0,
+            "type": "portal",
+            "colour": "ORANGE"
+        },
+        {
+            "x": 7,
+            "y": 0,
+            "type": "portal",
+            "colour": "ORANGE"
+        }
     ],
-    "width": 5,
-    "height": 5
+    "width": 7,
+    "height": 7
 }
