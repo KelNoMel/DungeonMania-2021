@@ -332,11 +332,11 @@ public class Dungeon {
 			/// Buildable
 			case "bow":
 				Bow bow = new Bow(this, pos.asLayer(itemLayer));
-				// transfer(getPlayer(), bow);	// TODO: transfer from dungeon to inventory
+				transferToInventory(bow);
 				return bow;
 			case "shield":
 				Shield shield = new Shield(this, pos.asLayer(itemLayer));
-				// transfer(getPlayer(), shield);	// TODO: transfer from dungeon to inventory
+				transferToInventory(shield);
 				return shield;
 			
 			// Non spec-defined
