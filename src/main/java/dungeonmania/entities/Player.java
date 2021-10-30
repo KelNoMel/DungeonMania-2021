@@ -50,7 +50,7 @@ public class Player extends Entity {
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
-				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2))) == null) {
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
@@ -117,9 +117,9 @@ public class Player extends Entity {
 	}
 
 
-	public Mercenary findMercenary(List<Entity> entities) {
+	public Mercenary findMercenary(List<Entity> entities, String mercenaryId) {
 		for (Entity e : entities) {
-			if (e instanceof Mercenary) {
+			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
 			}
 		}
