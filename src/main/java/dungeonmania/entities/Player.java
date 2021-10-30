@@ -20,7 +20,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
-public class Player extends Entity implements Subject {
+public class Player extends Entity {
 	
 	private int health = 10;
 	private int attackDamage = 10;
