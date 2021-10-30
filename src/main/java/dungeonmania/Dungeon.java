@@ -24,7 +24,6 @@ import dungeonmania.entities.buildable.*;
 
 /**
  * Dungeon class describes all aspects of a DungeonMania game
- * @author Matthew Johnstone
  * Class Invariants:
  * No two Entities will have the same id
  */
@@ -216,8 +215,17 @@ public class Dungeon {
     	}
     	return null;
     }
+
+	// TODO
+	/**
+	 * Get the types of buildables possible
+	 * @return list of strings for each type of buildable
+	 */
+	public List<String> buildableResponse() {
+		return Buildable.response(getPlayer());
+	}
     
-	// TODO: add goals, buildables, animations
+	// TODO: add goals, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game
@@ -226,7 +234,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), "");
+        itemResponse(), buildableResponse(), "");
     }
     
     /**
@@ -323,9 +331,13 @@ public class Dungeon {
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos.asLayer(itemLayer));
+				Bow bow = new Bow(this, pos.asLayer(itemLayer));
+				transferToInventory(bow);
+				return bow;
 			case "shield":
-				return new Shield(this, pos.asLayer(itemLayer));
+				Shield shield = new Shield(this, pos.asLayer(itemLayer));
+				transferToInventory(shield);
+				return shield;
 			
 			// Non spec-defined
 			case "mercenary_spawner":
@@ -338,6 +350,10 @@ public class Dungeon {
 				System.out.println(ent.getString("type") + " has not been implemented");
 				return null;
 		}
+	}
+
+	public void build(String buildable) {
+		getPlayer().build(buildable);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
