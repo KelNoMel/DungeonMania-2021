@@ -42,6 +42,4 @@ public class Door extends Entity {
 	}
 
 
-	// if statics.door.isUnlocked = true {move}
-
 }
