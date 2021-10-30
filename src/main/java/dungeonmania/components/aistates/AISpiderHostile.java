@@ -3,42 +3,45 @@ package dungeonmania.components.aistates;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
-import dungeonmania.entities.moving.Mercenary;
+import dungeonmania.entities.moving.Spider;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
 
 public class AISpiderHostile extends AIState {
 
-	private Mercenary merc;
+	private Spider spider;
 	
-	public AISpiderHostile(AIComponent owner, Mercenary m) {
+	private int cyclePos = -1;
+	
+	public AISpiderHostile(AIComponent owner, Spider spider) {
 		super(owner);
-		this.merc = m;
+		this.spider = spider;
 	}
 	
 	public void processInput(InputState inputState) {
-		// Garbage brain pathfinding - move in the same direction as the player
-		// Update this for actual pathfinding like A* or somen
-		Direction mercMoveDirection = inputState.getMovementDirection();
-		// Actual pathfinding should also work with the following line???
-		// merc.getDungeon().getPlayer().getPosition();
+		Direction spiderMoveDirection = Direction.UP;
 		
-		Position mercToPlayer = Position.calculatePositionBetween(merc.getDungeon().getPlayer().getPosition(), merc.getPosition());
-		if (mercToPlayer.getY() > 0) {
-			mercMoveDirection = Direction.UP;
-		} else if (mercToPlayer.getX() > 0) {
-			mercMoveDirection = Direction.LEFT;
-		} else if (mercToPlayer.getY() < 0) {
-			mercMoveDirection = Direction.DOWN;
-		} else if (mercToPlayer.getX() < 0) {
-			mercMoveDirection = Direction.RIGHT;
+		if (cyclePos != -1) {
+			// Cycle!
+			if (cyclePos == 0 || cyclePos == 7) {
+				spiderMoveDirection = Direction.RIGHT;
+			} else if (cyclePos == 1 || cyclePos == 2) {
+				spiderMoveDirection = Direction.DOWN;
+			} else if (cyclePos == 3 || cyclePos == 4) {
+				spiderMoveDirection = Direction.LEFT;
+			} else if (cyclePos == 5 || cyclePos == 6) {
+				spiderMoveDirection = Direction.UP;
+			}
 		}
-		
-		merc.moveComponent.setMoveDirection(mercMoveDirection);
+	
+		cyclePos++;
+		if (cyclePos >= 8) {
+			cyclePos = 0;
+		}
+		spider.moveComponent.setMoveDirection(spiderMoveDirection);
 	}
 
 	public void updateState() {
-		System.out.println("Hostile");
+		System.out.println("Spider Hostile");
 	}
 
 	public void onEnter() {}
@@ -46,6 +49,6 @@ public class AISpiderHostile extends AIState {
 	public void onExit() {}
 
 	public String getName() {
-		return "MercHostile";
+		return "SpiderHostile";
 	}
 }
