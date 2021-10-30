@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import dungeonmania.Dungeon;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
+import dungeonmania.Subject;
+import dungeonmania.entities.buildable.BuildableFactory;
+import dungeonmania.entities.statics.Boulder;
+import dungeonmania.entities.statics.Wall;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -46,7 +50,7 @@ public class Player extends Entity {
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
-				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2))) == null) {
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
@@ -65,8 +69,25 @@ public class Player extends Entity {
 		inventory.updateEntities();
 	}
 
+	public void build(String buildable) {
+		inventory.add(BuildableFactory.build(buildable, getDungeon()));
+	}
+
 	public void addToInventory(Entity item) {
 		inventory.add(item);
+	}
+
+	public void removeTypeFromInventory(String item) {
+		for (Entity i : inventory) {
+			if (i.getType().equals(item)) {
+				inventory.remove(i);
+				return;
+			}
+		}
+	}
+
+	public void removeFromInventory(Entity item) {
+		inventory.remove(item);
 	}
 
 	public ArrayList<ItemResponse> getInventoryResponse() {
@@ -96,9 +117,9 @@ public class Player extends Entity {
 	}
 
 
-	public Mercenary findMercenary(List<Entity> entities) {
+	public Mercenary findMercenary(List<Entity> entities, String mercenaryId) {
 		for (Entity e : entities) {
-			if (e instanceof Mercenary) {
+			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
 			}
 		}

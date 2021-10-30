@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import java.util.List;
+import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.File;
@@ -15,6 +16,7 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
+import dungeonmania.Dungeon.Bounds;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
@@ -25,7 +27,6 @@ import dungeonmania.entities.buildable.*;
 
 /**
  * Dungeon class describes all aspects of a DungeonMania game
- * @author Matthew Johnstone
  * Class Invariants:
  * No two Entities will have the same id
  */
@@ -102,26 +103,32 @@ public class Dungeon {
     	}
     	
     	// If no merc spawner, load in
-    	if (!isMercSpawner()) {
-    		createEntity(createMercSpawner());
+    	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
+    		Position p = getPlayer().getPosition();
+    		createEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"));
+    	}
+    	
+    	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
+    		createEntity(newEntityJSON(0, 0, "spider_spawner"));
     	}
     }
     
-    private JSONObject createMercSpawner() {
+    private JSONObject newEntityJSON(int x, int y, String entType) {
     	JSONObject newMercSpawner = new JSONObject();
     	newMercSpawner.put("x", getPlayer().getPosition().getX());
     	newMercSpawner.put("y", getPlayer().getPosition().getY());
-    	newMercSpawner.put("type", "mercenary_spawner");
+    	newMercSpawner.put("type", entType);
     	return newMercSpawner;
     }
-    
-    private boolean isMercSpawner() {
+
+    public int numEntitiesOfType(Class<?> classType) {
+    	int numOfType = 0;
     	for (Entity e : entities) {
-    		if (e instanceof MercenarySpawner) {
-    			return true;
+    		if (classType.isInstance(e)) {
+    			numOfType++;
     		}
     	}
-    	return false;
+    	return numOfType;
     }
     
 	public void addEntity(Entity e) {
@@ -283,8 +290,17 @@ public class Dungeon {
     	}
     	return null;
     }
+
+	// TODO
+	/**
+	 * Get the types of buildables possible
+	 * @return list of strings for each type of buildable
+	 */
+	public List<String> buildableResponse() {
+		return Buildable.response(getPlayer());
+	}
     
-	// TODO: add goals, buildables, animations
+	// TODO: add goals, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game
@@ -293,7 +309,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), goals);
+        itemResponse(), buildableResponse(), "");
     }
     
     /**
@@ -390,16 +406,20 @@ public class Dungeon {
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos.asLayer(itemLayer));
+				Bow bow = new Bow(this, pos.asLayer(itemLayer));
+				transferToInventory(bow);
+				return bow;
 			case "shield":
-				return new Shield(this, pos.asLayer(itemLayer));
+				Shield shield = new Shield(this, pos.asLayer(itemLayer));
+				transferToInventory(shield);
+				return shield;
 			
 			// Non spec-defined
 			case "mercenary_spawner":
-				if (numMercenarySpawners < 1) {
-					return new MercenarySpawner(this, pos);					
-				}
-				return null;
+				return new MercenarySpawner(this, pos, 10);
+			case "spider_spawner":
+				// TODO load spawner info from save
+				return new SpiderSpawner(this, pos, 5);
 			// Type is not correct or has not been implemented
 			default:
 				System.out.println(ent.getString("type") + " has not been implemented");
@@ -407,9 +427,15 @@ public class Dungeon {
 		}
 	}
 
+	public void build(String buildable) {
+		getPlayer().build(buildable);
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
+	
+	
 	
 	/**
 	 * Get the player
@@ -419,6 +445,53 @@ public class Dungeon {
 	 */
 	public Player getPlayer() {
 		return (Player)entities.get(0);
+	}
+	
+	public class Bounds {
+		private Position minBounds;
+		private Position maxBounds;
+		
+		public Bounds(Position minBounds, Position maxBounds) {
+			this.minBounds = minBounds;
+			this.maxBounds = maxBounds;
+		}
+		
+		public Position getMinBounds() {
+			return minBounds;
+		}
+		
+		public Position getMaxBounds() {
+			return maxBounds;
+		}
+	}
+	
+	public Bounds getBounds() {
+		Position startPos = entities.get(0).getPosition();
+		int minX = startPos.getX();
+		int maxX = startPos.getX();
+		int minY = startPos.getY();
+		int maxY = startPos.getY();
+		
+		for (Entity e : entities) {
+			Position entPos = e.getPosition();
+			int checkX = entPos.getX();
+			int checkY = entPos.getY();
+
+			
+			if (checkX < minX) {
+				minX = checkX;
+			} else if (checkX > maxX) {
+				maxX = checkX;
+			}
+			
+			if (checkY < minY) {
+				minY = checkY;
+			} else if (checkY > maxY) {
+				maxY = checkY;
+			}
+		}
+		
+		return new Bounds(new Position(minX, minY), new Position(maxX, maxY));
 	}
 
 	/**

@@ -51,6 +51,11 @@ public class EntityList extends ArrayList<Entity> {
 		}
 	}
 	
+	public boolean queueAdd(Entity e) {
+		newEntities.add(e);
+		return true;
+	}
+	
 	public boolean isUpdating() {
 		return updatingActors;
 	}

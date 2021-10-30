@@ -124,7 +124,6 @@ public class DungeonManiaController {
     	return tickActual(new InputState(itemUsed, movementDirection, null));
     }
     
-    // TODO
     /**
      * Builds the given entity, where buildable is one of bow and shield.
      * @param buildable
@@ -133,9 +132,10 @@ public class DungeonManiaController {
      * @throws InvalidActionException If the player does not have sufficient items to craft the buildable
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        game.build(buildable);
         return game.response();
     }
-
+    
     // TODO
     /**
      * Interacts with a mercenary (where the character bribes the mercenary) or a zombie spawner, where
