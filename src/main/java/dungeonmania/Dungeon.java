@@ -141,8 +141,9 @@ public class Dungeon {
 	private void loadGoals(JSONObject dungeonData) {
 		JSONObject goalData = dungeonData.getJSONObject("goal-condition");
 
+		String goalString = goalData.getString("goal");
 		//JSONObject goalCondition = goalData.getJSONObject("goal");
-		switch (goalData.getString("goal")) {
+		switch (goalString) {
 			case "AND":
 				goalCondition = GoalCondition.AND;
 				break;
@@ -150,7 +151,8 @@ public class Dungeon {
 				goalCondition = GoalCondition.OR;
 				break;
 			default:
-				goalsList.add(createGoal(goalData.getString("goal")));
+				goalsList.add(createGoal(goalString));
+				goals = ":" + goalString;
 				return;
 		}
 
@@ -161,7 +163,13 @@ public class Dungeon {
     	for (int i = 0; i < numGoals; i++) {
     		JSONObject goal = subGoals.getJSONObject(i);
     		goalsList.add(createGoal(goal.getString("goal")));
+			if (i != 0) {
+				goals += goalString + " ";
+			}
+			goals += ":" + goal.getString("goal") + " ";
+			
     	}
+		checkGoalState();
 
 	}
 
@@ -171,7 +179,7 @@ public class Dungeon {
 				return new ExitGoal(this);
 			case "treasure":
 				return new TreasureGoal(this);
-			case "boulder":
+			case "boulders":
 				return new BoulderGoal(this);
 			case "enemies":
 				return new EnemiesGoal(this);
@@ -213,6 +221,7 @@ public class Dungeon {
     
     private void updateGame() {
     	entities.updateEntities();
+		if (checkGoalState() == true) goals = "";
     }
     
     // TODO
@@ -221,6 +230,7 @@ public class Dungeon {
      * @return
      */
     private boolean checkGoalState() {
+		if (goalCondition == null) return goalsList.get(0).checkGoal();
 		switch (goalCondition) {
 			case AND:
 				for (Goal goal : goalsList) {
@@ -264,10 +274,6 @@ public class Dungeon {
     	}
     	return posEnts;
     }
-
-	public Entity getPlayer() {
-		return player;
-	}
     
     public Entity getEntityFromId(String id) {
     	for (Entity e : entities) {
@@ -287,7 +293,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), new ArrayList<>(), "");
+        itemResponse(), new ArrayList<>(), goals);
     }
     
     /**

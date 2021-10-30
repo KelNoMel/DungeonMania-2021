@@ -22,7 +22,9 @@ public class ExitTest {
     @Test
     public void testPlayerAtExit() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze", "Peaceful");
+        DungeonResponse newDungeon = mania.newGame("maze", "Peaceful");
+        
+        assertFalse(ResponseHelp.goalComplete(newDungeon));
 
         mania.tick(null, Direction.DOWN);
         mania.tick(null, Direction.DOWN);

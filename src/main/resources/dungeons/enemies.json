@@ -8,17 +8,17 @@
         {
             "x": 1,
             "y": 0,
-            "type": "boulder"
+            "type": "sword"
         },
         {
             "x": 2,
             "y": 0,
-            "type": "switch"
+            "type": "spider"
         }
     ],
     "width": 5,
     "height": 5,
     "goal-condition": {
-        "goal": "boulders"
+        "goal": "enemies"
     }
 }

@@ -11,7 +11,7 @@ import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class FloorSwitchTest {
+public class FloorSwitchBoulderGoalTest {
     
     @Test
     public void testSwitchPressed() {
@@ -23,7 +23,6 @@ public class FloorSwitchTest {
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "switch", new Position(2, 0), false), newGame));
 
         // check state
-        // TODO: bouldergoal.checkgoal
         assertFalse(ResponseHelp.goalComplete(newGame));
         
         DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
@@ -34,10 +33,7 @@ public class FloorSwitchTest {
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "switch", new Position(2, 0), false), movedResponse));
         
         // check state
-        // TODO: bouldergoal.checkgoal
         assertTrue(ResponseHelp.goalComplete(movedResponse));
-
-
     }
 
 }

@@ -17,11 +17,15 @@ public class FloorSwitch extends Entity {
 	}
 
 	protected void updateEntity() {
-		for (Entity entity : dungeon.getEntitiesAtPosition(getPosition())) {
-			if (entity instanceof Boulder) isTriggered = true;
-			else isTriggered = false;
+		boolean hasboulder = false;
+		for (Entity entity : getDungeon().getEntitiesAtPosition(getPosition())) {
+			
+			if (entity instanceof Boulder) {
+				isTriggered = true;
+				hasboulder = true;
+			} 
 		}
-
+		if(!hasboulder) isTriggered = false;
 	}
 
 	public boolean isTriggered() {

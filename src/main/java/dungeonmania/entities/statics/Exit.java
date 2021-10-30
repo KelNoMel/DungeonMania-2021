@@ -20,7 +20,7 @@ public class Exit extends Entity {
 	}
 
 	public Boolean playerAtExit() {
-		if (dungeon.getPlayer().getPosition().equals(getPosition())) {
+		if (getDungeon().getPlayer().getPosition().equals(getPosition())) {
 			return true;
 		}
 		return false;

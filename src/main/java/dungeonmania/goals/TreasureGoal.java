@@ -15,7 +15,6 @@ public class TreasureGoal extends Goal{
 
     
     public boolean checkGoal() {
-        //TODO: double check: when treasure is collected into inventory, is it no longer in dungeon entity list? 
         List<Entity> entityList = dungeon.getEntities();
         
         for (Entity entity : entityList) {
