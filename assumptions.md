@@ -9,3 +9,6 @@ Player
 
 Potions
 - Players cannot consume more than one potion a tick (verified???)
+
+Mercenary
+- The player equires one coin to bribe them

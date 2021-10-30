@@ -11,10 +11,12 @@ public class CollectableComponent extends Component {
 	
     public CollectableComponent(Entity owningEntity, int updateOrder, CollectableState collectableState) {
         super(owningEntity, updateOrder);
+        this.collectableState = collectableState;
     }
 
-    public void processInput(InputState inputState) {
-        
+    public void processInput(InputState inputState) {}
+    
+    public void updateComponent() {
     	if (collectableState == CollectableState.MAP) {
 	    	Dungeon d = getEntity().getDungeon();
 	    	
@@ -30,8 +32,6 @@ public class CollectableComponent extends Component {
 	        }
     	}
     }
-    
-    public void updateComponent() {}
 
 	public CollectableState getCollectableState() { return collectableState; }
 	public void setCollectableState(CollectableState collectableState) { this.collectableState = collectableState; }

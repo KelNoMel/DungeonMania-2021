@@ -5,7 +5,8 @@ import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
-import dungeonmania.components.aistates.AIMercAttack;
+import dungeonmania.components.aistates.AIMercAlly;
+import dungeonmania.components.aistates.AIMercHostile;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -16,8 +17,9 @@ public class Mercenary extends Entity {
 	
 	public Mercenary(Dungeon dungeon, Position position) {
 		super(dungeon, "mercenary", position, true);
-		aiComponent.registerState(new AIMercAttack(aiComponent, this));
-		aiComponent.changeState("MercAttack");
+		aiComponent.registerState(new AIMercHostile(aiComponent, this));
+		aiComponent.registerState(new AIMercAlly(aiComponent, this));
+		aiComponent.changeState("MercHostile");
 	}
 
 	protected void inputEntity(InputState inputState) {

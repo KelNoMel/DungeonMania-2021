@@ -15,12 +15,14 @@ public class AIComponent extends Component {
     }
     
     public void processInput(InputState inputState) {
-		// garbage dirt-brain level pathfinding
+		if (currentState == null) return;
+    	// garbage dirt-brain level pathfinding
 		currentState.processInput(inputState);
 	}
     
     public void updateComponent() {
-		currentState.updateState();
+    	if (currentState == null) return;
+    	currentState.updateState();
 	}
     
     /**
@@ -44,6 +46,4 @@ public class AIComponent extends Component {
     public void registerState(AIState state) {
         stateMap.put(state.getName(), state);
     }
-
-	
 }

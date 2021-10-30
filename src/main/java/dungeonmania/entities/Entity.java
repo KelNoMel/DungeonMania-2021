@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Entity {
+	
     private EntityState state;
     private Position position;
 
@@ -111,6 +112,10 @@ public abstract class Entity {
     public String getId() { return id; }
     public String getType() { return type; }
     public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
+    
+    public boolean withinRange(Entity e, int distance) {
+		return Math.abs(Position.distanceBetween(position, e.getPosition()) - distance) <= Position.epsilon;
+	}
     
     /**
      * Creates an EntityResponse for this entity

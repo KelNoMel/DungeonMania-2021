@@ -2,6 +2,7 @@ package dungeonmania.entities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import dungeonmania.Dungeon;
@@ -10,6 +11,8 @@ import dungeonmania.InputState;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
+import dungeonmania.entities.moving.Mercenary;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
@@ -32,7 +35,31 @@ public class Player extends Entity {
 		super(dungeon, "player", position, false);
 	}
 	
-	protected void inputEntity(InputState inputState) {}
+	private List<Entity> getTypeInInventory(String entityType) {
+		return new ArrayList<>(inventory.stream().filter(e->e.getType().equals(entityType)).collect(Collectors.toList()));
+	}
+	
+	protected void inputEntity(InputState inputState) {
+		if (inputState.getInteractId() == null) return;
+		
+		Entity interactEntity = getDungeon().getEntityFromId(inputState.getInteractId());
+		switch (interactEntity.getType()) {
+			case "mercenary":
+				Mercenary bribeMercenary = null;
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2))) == null) {
+					throw new InvalidActionException("The player is not within range of a Mercenary!");
+				}
+				List<Entity> playerTreasure = getTypeInInventory("treasure");
+				if (playerTreasure.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold to bribe the Mercenary!");
+				}
+				// Bribe away!
+				playerTreasure.get(0).setState(EntityState.DEAD);
+				bribeMercenary.aiComponent.changeState("MercAlly");
+				break;
+		}
+		inventory.processInput(inputState);
+	}
 
 	protected void updateEntity() {
 		inventory.updateEntities();
@@ -66,5 +93,15 @@ public class Player extends Entity {
 
 	public EntityList getInventory() {
 		return inventory;
+	}
+
+
+	public Mercenary findMercenary(List<Entity> entities) {
+		for (Entity e : entities) {
+			if (e instanceof Mercenary) {
+				return (Mercenary) e;
+			}
+		}
+		return null;
 	}
 }

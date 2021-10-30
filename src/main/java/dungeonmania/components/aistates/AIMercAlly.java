@@ -3,15 +3,16 @@ package dungeonmania.components.aistates;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
+import dungeonmania.entities.Player;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class AIMercAttack extends AIState {
+public class AIMercAlly extends AIState {
 
 	private Mercenary merc;
 	
-	public AIMercAttack(AIComponent owner, Mercenary m) {
+	public AIMercAlly(AIComponent owner, Mercenary m) {
 		super(owner);
 		this.merc = m;
 	}
@@ -21,11 +22,12 @@ public class AIMercAttack extends AIState {
 		// Update this for actual pathfinding like A* or somen
 		Direction mercMoveDirection = inputState.getMovementDirection();
 		// Actual pathfinding should also work with the following line???
-		// merc.getDungeon().getPlayer().getPosition();
-		
-		Position mercToPlayer = Position.calculatePositionBetween(merc.getDungeon().getPlayer().getPosition(), merc.getPosition());
-		System.out.println(mercToPlayer.toString());
-		if (mercToPlayer.getY() > 0) {
+		Player p = merc.getDungeon().getPlayer();
+		Position mercToPlayer = Position.calculatePositionBetween(p.getPosition(), merc.getPosition());
+		// Move to right if on top of player
+		if (merc.withinRange(p, 0)) {
+			mercMoveDirection = Direction.RIGHT;
+		} else if (mercToPlayer.getY() > 0) {
 			mercMoveDirection = Direction.UP;
 		} else if (mercToPlayer.getX() > 0) {
 			mercMoveDirection = Direction.LEFT;
@@ -38,13 +40,15 @@ public class AIMercAttack extends AIState {
 		merc.moveComponent.setMoveDirection(mercMoveDirection);
 	}
 
-	public void updateState() {}
+	public void updateState() {
+		System.out.println("Ally!");
+	}
 
 	public void onEnter() {}
 
 	public void onExit() {}
 
 	public String getName() {
-		return "MercAttack";
+		return "MercAlly";
 	}
 }

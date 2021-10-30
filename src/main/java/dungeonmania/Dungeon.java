@@ -30,7 +30,6 @@ import dungeonmania.entities.buildable.*;
  */
 public class Dungeon {
     static private Integer lastId = 0;
-    static private final double epsilon = 0.001;
     static private final int maxMercenarySpawners = 1;
     
     private int numMercenarySpawners = 0;
@@ -159,8 +158,8 @@ public class Dungeon {
      * @param movementDirection 
      * @param itemUsed 
      */
-    public void tick(String itemUsed, Direction movementDirection) {
-    	processInput(new InputState(itemUsed, movementDirection));
+    public void tick(InputState inputState) {
+    	processInput(inputState);
     	updateGame();
     }
     
@@ -192,7 +191,7 @@ public class Dungeon {
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
-    		if (Math.abs(Position.calculatePositionBetween(origin, e.getPosition()).getLength() - radius) <= epsilon) {
+    		if (Position.withinRange(origin, e.getPosition(), radius)) {
     			radEnts.add(e);
     		}
     	}
