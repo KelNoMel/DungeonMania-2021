@@ -31,13 +31,14 @@ import dungeonmania.entities.buildable.*;
  */
 public class Dungeon {
     static private Integer lastId = 0;
-    static private final double epsilon = 0.001;
+    static private final int maxMercenarySpawners = 1;
     
+    private int numMercenarySpawners = 0;
     private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
     
-    private List<Entity> entities = new ArrayList<Entity>();
+    private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
     private List<String> buildables = new ArrayList<String>();
@@ -46,12 +47,6 @@ public class Dungeon {
     private GoalCondition goalCondition;
 	private List<Goal> goalsList = new ArrayList<Goal>();
        
-    // Stuff used for adding entities and inventory
-    private boolean updatingActors = false;
-    private List<Entity> newEntities = new ArrayList<>();
-    private List<Entity> deadEntities = new ArrayList<>();
-    private List<Entity> newInventory = new ArrayList<>();
-
     // TODO: fill in empty attribute fields with proper code
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
     	this.dungeonName = dungeonName;
@@ -89,7 +84,7 @@ public class Dungeon {
     				FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json")
     				);
     		
-    	} catch (IOException e) {
+    	} catch (Exception e) {
     		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
     	}
     }
@@ -105,24 +100,34 @@ public class Dungeon {
             // Entity construction function
     		createEntity(ent);
     	}
+    	
+    	// If no merc spawner, load in
+    	if (!isMercSpawner()) {
+    		createEntity(createMercSpawner());
+    	}
+    }
+    
+    private JSONObject createMercSpawner() {
+    	JSONObject newMercSpawner = new JSONObject();
+    	newMercSpawner.put("x", getPlayer().getPosition().getX());
+    	newMercSpawner.put("y", getPlayer().getPosition().getY());
+    	newMercSpawner.put("type", "mercenary_spawner");
+    	return newMercSpawner;
+    }
+    
+    private boolean isMercSpawner() {
+    	for (Entity e : entities) {
+    		if (e instanceof MercenarySpawner) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
 	public void addEntity(Entity e) {
-		if (updatingActors) {
-			newEntities.add(e);
-		} else {			
-			entities.add(e);
-		}
+		entities.add(e);
 	}
 
-	public void addInventory(Entity e) {
-		if (updatingActors) {
-			newInventory.add(e);
-		} else {
-			getPlayer().addToInventory(e);
-		}
-	}
-    
     /**
      * Creates a new id by adding 1 to the integer value of the last id created
      * Note: This may generate used ids if persistence is added. Use UUID's in 
@@ -197,44 +202,19 @@ public class Dungeon {
      * @param movementDirection 
      * @param itemUsed 
      */
-    public void tick(String itemUsed, Direction movementDirection) {
-    	processInput(new InputState(itemUsed, movementDirection));
+    public void tick(InputState inputState) {
+    	processInput(inputState);
     	updateGame();
     }
     
     private void processInput(InputState inputState) {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.processInput(inputState);
-    	}
-		
-    	updatingActors = false;
+    	entities.processInput(inputState);
     }
     
     private void updateGame() {
-    	updatingActors = true;
-    	for (Entity e : entities) {
-    		e.update();
-    	}
-		
-    	updatingActors = false;
-    	
-    	for (Entity e : entities) {
-    		if (e.getState() == EntityState.DEAD 
-				|| e.getState() == EntityState.INVENTORY) {
-    			deadEntities.add(e);
-    		}
-    	}
-		
-    	entities.removeAll(deadEntities);    	
-    	deadEntities.clear();
-    	entities.addAll(newEntities);
-    	newEntities.clear();
-		newInventory.forEach(e -> getPlayer().addToInventory(e));
-    	newInventory.clear();
-		if (checkGoalState() == true) goals = ""; // TODO: double check this is how we indicate goal complete https://edstem.org/au/courses/7065/discussion/652798I
+    	entities.updateEntities();
     }
-
+    
     // TODO
     /**
      * Checks if the goal has been reached to complete the game
@@ -256,8 +236,7 @@ public class Dungeon {
 				return goalsList.get(0).checkGoal();
 		}
     }
-	
-	
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -265,11 +244,11 @@ public class Dungeon {
     public List<Entity> getEntities() {
     	return entities;
     }
-    
+
     public List<Entity> getEntitiesInRadius(Position origin, int radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
-    		if (Math.abs(Position.calculatePositionBetween(origin, e.getPosition()).getLength() - radius) <= epsilon) {
+    		if (Position.withinRange(origin, e.getPosition(), radius)) {
     			radEnts.add(e);
     		}
     	}
@@ -325,7 +304,7 @@ public class Dungeon {
      * @return list of all ItemResponses for the inventory
      */
     private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventory();
+        return getPlayer().getInventoryResponse();
     }
 	    
 	////////////////////////////////////////////////////////////////////////////////
@@ -408,7 +387,13 @@ public class Dungeon {
 				return new Bow(this, pos.asLayer(itemLayer));
 			case "shield":
 				return new Shield(this, pos.asLayer(itemLayer));
-				
+			
+			// Non spec-defined
+			case "mercenary_spawner":
+				if (numMercenarySpawners < 1) {
+					return new MercenarySpawner(this, pos);					
+				}
+				return null;
 			// Type is not correct or has not been implemented
 			default:
 				System.out.println(ent.getString("type") + " has not been implemented");
@@ -437,6 +422,11 @@ public class Dungeon {
 	 */
 	public boolean isPlayerHere(Position pos) {
 		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		e.toggleDisplay(false);
+		entities.transferEntity(getPlayer().getInventory(), e);
 	}
 }
 

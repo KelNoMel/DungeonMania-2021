@@ -2,7 +2,6 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
