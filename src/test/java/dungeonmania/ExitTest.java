@@ -87,17 +87,11 @@ public class ExitTest {
 
         DungeonResponse movedResponse = mania.tick(null, Direction.DOWN);
 
-        // TODO : 
-        // Check that the player moved 
-        //assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(1, 1), false), movedResponse));
-
         // Check that player is at exit
-        //assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(18, 16), false), movedResponse));
-        //assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "exit", new Position(18, 16), false), movedResponse));
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(18, 16), false), movedResponse));
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "exit", new Position(18, 16), false), movedResponse));
 
-        //Exit exit = ResponseHelp.getEntityOfType(movedResponse, "exit");
-        assertTrue(); //.checkGoal();
-        // check that Exit.playerAtExit() returns true // TODO: check via goal condition being met. 
+        assertTrue(ResponseHelp.goalComplete(movedResponse));
 
     }
     
