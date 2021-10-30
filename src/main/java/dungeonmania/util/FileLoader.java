@@ -26,7 +26,7 @@ public final class FileLoader {
             path = "/" + path;
         try {
             return new String(Files.readAllBytes(Path.of(FileLoader.class.getResource(path).toURI())));
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             throw new FileNotFoundException(path);
         }
     }
@@ -46,8 +46,9 @@ public final class FileLoader {
      * @throws IOException If directory path is invalid or some other sort of IO issue occurred.
      */
     public static List<String> listFileNamesInResourceDirectory(String directory) throws IOException {
-        if (!directory.startsWith("/"))
+        if (!directory.startsWith("/")) {
             directory = "/" + directory;
+        }
         try {
             Path root = getFolderPath(directory);
             
@@ -60,4 +61,16 @@ public final class FileLoader {
             throw new FileNotFoundException(directory);
         }
     }
+
+	public static void initialiseSaves() {
+		try {
+			String dungeonFolder = getFolderPath("/dungeons").toString();
+			dungeonFolder = dungeonFolder.substring(0, dungeonFolder.lastIndexOf("\\"));
+			Path savePath = Paths.get(dungeonFolder, "dungeonSaves");
+			System.out.println(savePath);
+			savePath.toFile().mkdirs();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 }

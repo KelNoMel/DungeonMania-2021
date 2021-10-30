@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import dungeonmania.entities.Entity;
+
 /**
  * See Section 7.1
  */
 public final class Position {
+	
+	public static final double epsilon = 0.001;
+	public static boolean withinRange(Position p1, Position p2, int distance) {
+		return Math.abs(distanceBetween(p1,p2) - distance) <= epsilon;
+	}
+	
+	public static double distanceBetween(Position p1, Position p2) {
+		return Position.calculatePositionBetween(p1, p2).getLength();
+	}
+				
     private final int x, y, layer;
 
     public Position(int x, int y, int layer) {

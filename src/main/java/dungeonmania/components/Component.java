@@ -27,7 +27,7 @@ public abstract class Component {
     
     public abstract void updateComponent();
     
-    public int getUpdatedOrder() {
+    public int getUpdateOrder() {
         return updateOrder;
     }
 
