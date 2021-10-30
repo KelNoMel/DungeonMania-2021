@@ -1,14 +1,16 @@
 package dungeonmania.entities.buildable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.buildable.Recipe;
+
 
 public class Shield extends Buildable {
 	// durability for the number of times a shield can take a hit
@@ -18,21 +20,14 @@ public class Shield extends Buildable {
 	
 	
 	
-	public Shield(Dungeon dungeon, Position position, Player player) {
-		super(dungeon, "shield", position, false, player, 
-		new ArrayList<ArrayList<String>>(Arrays.asList(
-			new ArrayList<>(Arrays.asList("wood","treasure")), 
-			new ArrayList<>(Arrays.asList("wood","key")) 
-			)), 
-			new ArrayList<ArrayList<Integer>>(Arrays.asList(
-				new ArrayList<>(Arrays.asList(2,1)), 
-				new ArrayList<>(Arrays.asList(2,1))
-			))
-		);
+	public Shield(Dungeon dungeon, String type, Position position, List<Recipe> recipes) {
+		super(dungeon, type, position, false, recipes);
 	}
 
+	// if a buildable is found on the map
 	public Shield(Dungeon dungeon, Position position) {
-		this(dungeon, position, null);
+		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, 
+			BuildableEnum.SHIELD.getRecipes());
 	}
 
 	protected void inputEntity(InputState inputState) {

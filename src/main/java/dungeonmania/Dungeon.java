@@ -242,16 +242,10 @@ public class Dungeon {
 	 * @return list of strings for each type of buildable
 	 */
 	public List<String> buildableResponse() {
-		// ArrayList<String> newBuildables = new ArrayList<>();
-		// for (buildableType : buildableTypes) {
-		// 	if (buildableType.hasResources()) {
-		// 		buildableType.name();
-		// 	}
-		// }
-		return new ArrayList<>();
+		return Buildable.response(getPlayer());
 	}
     
-	// TODO: add goals, buildables, animations
+	// TODO: add goals, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game
@@ -357,9 +351,13 @@ public class Dungeon {
 				
 			/// Buildable
 			case "bow":
-				return new Bow(this, pos.asLayer(itemLayer));
+				Bow bow = new Bow(this, pos.asLayer(itemLayer));
+				// transfer(getPlayer(), bow);	// TODO: transfer from dungeon to inventory
+				return bow;
 			case "shield":
-				return new Shield(this, pos.asLayer(itemLayer));
+				Shield shield = new Shield(this, pos.asLayer(itemLayer));
+				// transfer(getPlayer(), shield);	// TODO: transfer from dungeon to inventory
+				return shield;
 				
 			// Type is not correct or has not been implemented
 			default:
