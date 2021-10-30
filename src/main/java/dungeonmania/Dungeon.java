@@ -309,7 +309,7 @@ public class Dungeon {
         //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
         //    itemResponse(), buildables, goals, animations);
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), buildableResponse(), "");
+        itemResponse(), buildableResponse(), goals);
     }
     
     /**
