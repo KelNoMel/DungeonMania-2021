@@ -300,4 +300,9 @@ public class ResponseHelp {
         }
         return null;
     }
+
+    public static boolean goalComplete(DungeonResponse dgnRes) {
+        if (dgnRes.getGoals().equals("")) return true;
+        return false;
+    }
 }

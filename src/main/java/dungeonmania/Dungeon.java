@@ -232,6 +232,7 @@ public class Dungeon {
     	newEntities.clear();
 		newInventory.forEach(e -> getPlayer().addToInventory(e));
     	newInventory.clear();
+		if (checkGoalState() == true) goals = ""; // TODO: double check this is how we indicate goal complete https://edstem.org/au/courses/7065/discussion/652798I
     }
 
     // TODO

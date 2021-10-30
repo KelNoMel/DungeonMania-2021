@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,15 @@ public class FloorSwitchTest {
     @Test
     public void testSwitchPressed() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("floorswitch","Peaceful");
+
+        DungeonResponse newGame = mania.newGame("floorswitch","Peaceful");
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(0, 0), false), newGame));
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "boulder", new Position(1, 0), false), newGame));
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "switch", new Position(2, 0), false), newGame));
 
         // check state
         // TODO: bouldergoal.checkgoal
+        assertFalse(ResponseHelp.goalComplete(newGame));
         
         DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
 
@@ -29,6 +35,8 @@ public class FloorSwitchTest {
         
         // check state
         // TODO: bouldergoal.checkgoal
+        assertTrue(ResponseHelp.goalComplete(movedResponse));
+
 
     }
 
