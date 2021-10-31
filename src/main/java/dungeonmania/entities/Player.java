@@ -125,19 +125,6 @@ public class Player extends Entity {
 			}
 		}
 		return newHealth;
-
-	public int getHealth() {
-		return health;
-	}
-
-	// Used to subtract players health by a value, used when taking damage
-	public void takeDamage(int dmg) {
-		health = health - dmg;
-	}
-
-	// Used to set players health, currently used to restore full health on heal
-	public void setHealth(int hp) {
-		health = hp;
 	}
 
 	public EntityList getInventory() {
@@ -175,16 +162,4 @@ public class Player extends Entity {
 		}
 	}
 	
-	
-	@Override
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
-		// TODO Auto-generated method stub
-		
-	}
 }

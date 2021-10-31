@@ -5,6 +5,7 @@ import java.util.Collections;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
@@ -118,9 +119,9 @@ public class EntityFactory {
 			case "bomb":
 				return new Bomb(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "sword":
-				return new Sword(loadingDungeon, pos.asLayer(itemLayer), entData);
+				return new Sword(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 			case "armour":
-				return new Armour(loadingDungeon, pos.asLayer(itemLayer), entData);
+				return new Armour(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 				
 			// Rare Collectable
 			case "the_one_ring":
@@ -128,10 +129,10 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
+				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
 				return bow;
 			case "shield":
-				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer));
+				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
 				return shield;
 			
 			// Non spec-defined
