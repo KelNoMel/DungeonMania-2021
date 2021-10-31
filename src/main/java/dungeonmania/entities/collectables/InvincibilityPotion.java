@@ -1,33 +1,42 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
+import dungeonmania.components.ConsumableComponent;
+import dungeonmania.components.EffectComponent;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
+import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Entity {
 
-	public InvincibilityPotion(Dungeon dungeon, Position position) {
-		super(dungeon, "invincibility_potion", position, false);
+	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
+
+	public InvincibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "invincibility_potion", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
-		// Check if a health potion was already used in this tick
-		boolean alreadyUsed = getDungeon().getPlayer().getUsedList().containsKey("invincibility_potion");
-		
-		// Would "consumable" be a valid component?
-		if (inputState.getItemUsed() == "invincibility_potion" && alreadyUsed == false) {
-			getDungeon().getPlayer().setHealth(10);
+		Player player = getDungeon().getPlayer();
+		// Check if item was queued to be used
+		if (player.getUsedList().containsKey(getId())) {
 			
-			setState(EntityState.DEAD);
-
-			getDungeon().getPlayer().getUsedList().put("invincibility_potion", null);
+			// Effects of potion: Make all enemies go into afraid AI state
+			// Afraid AI: Run away from player, battle auto-resolves to win
+			player.addComponent(new EffectComponent(getDungeon().getPlayer(), 3));
+			player.setStatus("invincible");
 		}
 	}
 	
 	protected void updateEntity() {
 
 	}
-
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

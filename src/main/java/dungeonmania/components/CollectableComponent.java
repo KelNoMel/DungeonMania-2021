@@ -1,6 +1,8 @@
 package dungeonmania.components;
 
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;

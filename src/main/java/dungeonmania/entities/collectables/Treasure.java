@@ -1,8 +1,9 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
@@ -12,8 +13,8 @@ public class Treasure extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	
-	public Treasure(Dungeon dungeon, Position position) {
-		super(dungeon, "treasure", position, false);
+	public Treasure(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "treasure", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -23,5 +24,7 @@ public class Treasure extends Entity {
 	protected void updateEntity() {
 
 	}
-
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

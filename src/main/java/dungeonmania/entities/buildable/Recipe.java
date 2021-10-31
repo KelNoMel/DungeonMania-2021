@@ -1,11 +1,7 @@
 package dungeonmania.entities.buildable;
 
-import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import dungeonmania.entities.buildable.Ingredient;
 
 /**
  * Strongly typed tuple structure for keeping buildable resource requirements

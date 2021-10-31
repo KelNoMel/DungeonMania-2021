@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
+import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
-import dungeonmania.Subject;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Wall;
@@ -35,15 +37,18 @@ public class Player extends Entity {
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 
 		new Power(maxHealth, maxHealth, attackDamage, 0, PowerUser.PLAYER, AttackTypeEnum.FISTS));
 
-	private EntityList inventory = new EntityList();
+	private EntityList inventory;
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	public Player(Dungeon dungeon, Position position) {
-		super(dungeon, "player", position, false);
+	// Player states include: Normal, invisible, invincible
+	public String status = "normal";
+
+	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "player", position, false, entitySpecificData);
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {
@@ -57,7 +62,7 @@ public class Player extends Entity {
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
-				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2))) == null) {
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
@@ -67,6 +72,7 @@ public class Player extends Entity {
 				// Bribe away!
 				playerTreasure.get(0).setState(EntityState.DEAD);
 				bribeMercenary.aiComponent.changeState("MercAlly");
+				bribeMercenary.setInteractable(false);
 				break;
 		}
 		inventory.processInput(inputState);
@@ -119,19 +125,66 @@ public class Player extends Entity {
 			}
 		}
 		return newHealth;
+
+	public int getHealth() {
+		return health;
+	}
+
+	// Used to subtract players health by a value, used when taking damage
+	public void takeDamage(int dmg) {
+		health = health - dmg;
+	}
+
+	// Used to set players health, currently used to restore full health on heal
+	public void setHealth(int hp) {
+		health = hp;
 	}
 
 	public EntityList getInventory() {
 		return inventory;
 	}
 
+	public String getStatus() {
+		return status;
+	}
 
-	public Mercenary findMercenary(List<Entity> entities) {
+	// Used to set player status: Normal, invincible, invisible
+	public void setStatus(String state) {
+		status = state;
+	}
+
+
+	public Mercenary findMercenary(List<Entity> entities, String mercenaryId) {
 		for (Entity e : entities) {
-			if (e instanceof Mercenary) {
+			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
 			}
 		}
 		return null;
+	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("inventory", inventory.toJSON());
+	}
+
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		if (entitySpecificData.has("inventory")) {
+			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
+		} else {
+			inventory = new EntityList();
+		}
+	}
+	
+	
+	@Override
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		// TODO Auto-generated method stub
+		
 	}
 }

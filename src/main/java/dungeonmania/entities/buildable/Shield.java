@@ -1,12 +1,11 @@
 package dungeonmania.entities.buildable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
+
+import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Recipe;
@@ -27,8 +26,8 @@ public class Shield extends Buildable {
 	public CollectableComponent collectableComponent;
 
 	// if a buildable is found on the map
-	public Shield(Dungeon dungeon, Position position, CollectableState collectableState) {
-		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, BuildableEnum.SHIELD.getRecipes());
+	public Shield(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
+		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, BuildableEnum.SHIELD.getRecipes(), entitySpecificData);
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
 		armourComponent = new ArmourComponent(this, 2, totalDurability, armour);
 	}
@@ -45,4 +44,6 @@ public class Shield extends Buildable {
 	// remove shield after taking the final hit
 	// shield observes the player battling (each battle / each time the player is attacked)
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

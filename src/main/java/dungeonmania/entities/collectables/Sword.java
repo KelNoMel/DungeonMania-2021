@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
@@ -17,8 +19,8 @@ public class Sword extends Entity {
 	public AttackItemComponent attackItemComponent;
 	public CollectableComponent collectableComponent;
 
-	public Sword(Dungeon dungeon, Position position, CollectableState collectableState) {
-		super(dungeon, "sword", position, false);
+	public Sword(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
+		super(dungeon, "sword", position, false, entitySpecificData);
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
 		attackItemComponent = new AttackItemComponent(this, 2, totalDurability, damage, new NormalAttack());
 	}
@@ -31,4 +33,6 @@ public class Sword extends Entity {
 
 	}
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

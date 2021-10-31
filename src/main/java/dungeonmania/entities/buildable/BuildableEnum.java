@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import dungeonmania.entities.buildable.Recipe;
-
 // Based on: https://www.baeldung.com/java-enum-iteration
 public enum BuildableEnum {
     SHIELD("shield", Recipe.createRecipes(
         new ArrayList<ArrayList<String>>(Arrays.asList(
-            new ArrayList<>(Arrays.asList("arrows","wood")))
+            new ArrayList<>(Arrays.asList("arrow","wood")))
         ), 
         new ArrayList<ArrayList<Integer>>(Arrays.asList(
             new ArrayList<>(Arrays.asList(3,1)))
