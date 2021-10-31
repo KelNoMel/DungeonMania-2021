@@ -10,7 +10,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
 import dungeonmania.entities.buildable.Shield;
 import dungeonmania.entities.collectables.Armour;
-import dungeonmania.entities.collectables.Arrows;
+import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.HealthPotion;
 import dungeonmania.entities.collectables.InvincibilityPotion;
@@ -113,8 +113,8 @@ public class EntityFactory {
 				return new InvisibilityPotion(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "wood":
 				return new Wood(loadingDungeon, pos.asLayer(itemLayer), entData);
-			case "arrows":
-				return new Arrows(loadingDungeon, pos.asLayer(itemLayer), entData);
+			case "arrow":
+				return new Arrow(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "bomb":
 				return new Bomb(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "sword":

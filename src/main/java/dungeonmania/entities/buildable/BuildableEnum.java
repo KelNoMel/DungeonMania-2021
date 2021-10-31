@@ -9,7 +9,7 @@ import java.util.Arrays;
 public enum BuildableEnum {
     SHIELD("shield", Recipe.createRecipes(
         new ArrayList<ArrayList<String>>(Arrays.asList(
-            new ArrayList<>(Arrays.asList("arrows","wood")))
+            new ArrayList<>(Arrays.asList("arrow","wood")))
         ), 
         new ArrayList<ArrayList<Integer>>(Arrays.asList(
             new ArrayList<>(Arrays.asList(3,1)))
