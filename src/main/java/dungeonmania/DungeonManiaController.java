@@ -44,7 +44,7 @@ public class DungeonManiaController {
     
     private static File getSaveFile(String saveName) throws IllegalArgumentException {
 		try {
-			return FileLoader.getFolderPath("/dungeonSaves").resolve(saveName + ".json").toFile();
+			return FileLoader.getSavePath().resolve(saveName + ".json").toFile();
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Invalid save name");
 		}
