@@ -25,13 +25,13 @@ import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
 import dungeonmania.entities.spawners.MercenarySpawner;
 import dungeonmania.entities.spawners.SpiderSpawner;
+import dungeonmania.entities.spawners.ZombieToastSpawner;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Exit;
 import dungeonmania.entities.statics.FloorSwitch;
 import dungeonmania.entities.statics.Portal;
 import dungeonmania.entities.statics.Wall;
-import dungeonmania.entities.statics.ZombieToastSpawner;
 import dungeonmania.util.Position;
 
 public class EntityFactory {
@@ -90,7 +90,7 @@ public class EntityFactory {
 			case "portal":
 				return new Portal(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "spawner":
-				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), entData);
+				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), 20, entData);
 			
 			// Moving
 			case "spider":
