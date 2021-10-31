@@ -24,6 +24,7 @@ public class TreasureGoal extends Goal {
     }
 
     public String response() {
+    	if (checkGoal()) return "";
 		return ":treasure";
 	}
     

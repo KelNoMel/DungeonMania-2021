@@ -23,11 +23,12 @@ public class SpiderSpawner extends Spawner {
 			Bounds b = getDungeon().getBounds();
 			int xPos = generateRandom(b.getMinBounds().getX(), b.getMaxBounds().getX());
 			int yPos = generateRandom(b.getMinBounds().getY(), b.getMaxBounds().getY());
-			new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject());			
+			getDungeon().addEntity(new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject()));
 		}
 	}
 
 	private static int generateRandom(int low, int high) {
+		if (low == high) return low;
 		return randomiser.nextInt(high-low) + low;
 	}
 

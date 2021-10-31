@@ -22,7 +22,14 @@ public class OrGoal extends Goal {
 	}
 
 	public String response() {
-		return "( " + getChild(0).response() + " " + toString() + " " + getChild(1).response() + " )";
+		boolean leftStatus = getChild(0).checkGoal();
+		boolean rightStatus = getChild(1).checkGoal();
+		
+		if (leftStatus || rightStatus) {
+			return "";
+		} else {			
+			return "( " + getChild(0).response() + " " + toString() + " " + getChild(1).response() + " )";
+		}
 	}
 
 	public JSONObject toJSON() {

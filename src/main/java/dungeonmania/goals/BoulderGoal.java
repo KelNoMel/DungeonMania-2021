@@ -27,6 +27,7 @@ public class BoulderGoal extends Goal {
     }
 
     public String response() {
+    	if (checkGoal()) return "";
     	return ":boulder";
     }
     
