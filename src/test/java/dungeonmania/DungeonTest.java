@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -103,7 +104,53 @@ public class DungeonTest {
      * throws IllegalArgumentException
      */
     // load a previous game
-
+    @Test
+    public void testLoadGameBasic() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("maze","Peaceful");
+        DungeonResponse saveResponse = mania.saveGame("SaveFile");
+        DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
+        removeSaves();
+    }
+    
+    @Test
+    public void testLoadGameABitMoreComplex() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        DungeonResponse saveResponse = mania.saveGame("SaveFile");
+        DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
+        removeSaves();
+    }
+    
+    @Test
+    public void testLoadGameALOTMORECOMPLEX() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("advanced","Peaceful");
+        
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.DOWN);
+        
+        DungeonResponse saveResponse = mania.saveGame("SaveFile");
+        DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
+        removeSaves();
+    }
+    
     // load the current game
 
     // attempt to load a game that doesn't exist
