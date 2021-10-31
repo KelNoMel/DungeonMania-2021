@@ -23,14 +23,14 @@ public class TreasureGoal extends Goal {
         return true;
     }
 
+    public String response() {
+		return ":treasure";
+	}
+    
 	public String toString() {
 		return "treasure";
 	}
 
-	public String response() {
-		return ":" + toString();
-	}
-    
 	public JSONObject toJSON() {
 		JSONObject treasureJSON = new JSONObject();
 		treasureJSON.put("goal", "treasure");

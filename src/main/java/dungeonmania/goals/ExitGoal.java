@@ -27,13 +27,12 @@ public class ExitGoal extends Goal {
         return false;
     }
 
-
+    public String response() {
+    	return ":exit";
+    }
+    
 	public String toString() {
 		return "exit";
-	}
-
-	public String response() {
-		return ":" + toString();
 	}
 	
 	public JSONObject toJSON() {

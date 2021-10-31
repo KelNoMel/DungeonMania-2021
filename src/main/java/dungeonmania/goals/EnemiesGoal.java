@@ -26,18 +26,18 @@ public class EnemiesGoal extends Goal {
         }
         return true;
     }
+    
+    public String response() {
+		return ":mercenary";
+	}
 
 	public String toString() {
 		return "enemies";
 	}
 
-	public String response() {
-		return ":" + toString();
-	}
-	
 	public JSONObject toJSON() {
 		JSONObject enemiesJSON = new JSONObject();
-		enemiesJSON.put("goal", "enemies");
+		enemiesJSON.put("goal", toString());
 		return enemiesJSON;
 	}
 }

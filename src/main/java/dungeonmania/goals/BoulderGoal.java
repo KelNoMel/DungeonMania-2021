@@ -26,17 +26,17 @@ public class BoulderGoal extends Goal {
         return true;
     }
 
+    public String response() {
+    	return ":boulder";
+    }
+    
 	public String toString() {
-		return "boulder";
-	}
-
-	public String response() {
-		return ":" + toString();
+		return "boulders";
 	}
 
 	public JSONObject toJSON() {
 		JSONObject boulderJSON = new JSONObject();
-		boulderJSON.put("goal", "boulders");
+		boulderJSON.put("goal", toString());
 		return boulderJSON;
 	}
     

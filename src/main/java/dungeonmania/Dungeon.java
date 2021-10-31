@@ -240,39 +240,6 @@ public class Dungeon {
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
-    public List<Entity> getEntities() {
-    	return entities;
-    }
-
-    public List<Entity> getEntitiesInRadius(Position origin, int radius) {
-    	List<Entity> radEnts = new ArrayList<>();
-    	for (Entity e : entities) {
-    		if (Position.withinRange(origin, e.getPosition(), radius)) {
-    			radEnts.add(e);
-    		}
-    	}
-    	return radEnts;
-    }
-    
-    public List<Entity> getEntitiesAtPosition(Position checkPosition) {
-    	List<Entity> posEnts = new ArrayList<>();
-    	for (Entity e : entities) {
-    		if (e.getPosition().equals(checkPosition)) {
-    			posEnts.add(e);
-    		}
-    	}
-    	return posEnts;
-    }
-    
-    public Entity getEntityFromId(String id) {
-    	for (Entity e : entities) {
-    		if (e.getId().equals(id)) {
-    			return e;
-    		}
-    	}
-    	return null;
-    }
-
 	// TODO
 	/**
 	 * Get the types of buildables possible
@@ -417,7 +384,38 @@ public class Dungeon {
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
 	
-	
+	public List<Entity> getEntities() {
+    	return entities;
+    }
+
+    public List<Entity> getEntitiesInRadius(Position origin, int radius) {
+    	List<Entity> radEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (Position.withinRange(origin, e.getPosition(), radius)) {
+    			radEnts.add(e);
+    		}
+    	}
+    	return radEnts;
+    }
+    
+    public List<Entity> getEntitiesAtPosition(Position checkPosition) {
+    	List<Entity> posEnts = new ArrayList<>();
+    	for (Entity e : entities) {
+    		if (e.getPosition().equals(checkPosition)) {
+    			posEnts.add(e);
+    		}
+    	}
+    	return posEnts;
+    }
+    
+    public Entity getEntityFromId(String id) {
+    	for (Entity e : entities) {
+    		if (e.getId().equals(id)) {
+    			return e;
+    		}
+    	}
+    	return null;
+    }
 	
 	/**
 	 * Get the player
