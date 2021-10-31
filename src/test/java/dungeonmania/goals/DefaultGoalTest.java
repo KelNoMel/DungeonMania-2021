@@ -1,7 +1,6 @@
 package dungeonmania.goals;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +9,13 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 
-public class TreasureGoalTest {
-
-    @Test
+public class DefaultGoalTest {
+	@Test
     public void treasureGoalTest() {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("treasure-pickup","Peaceful");
+    	response = mania.newGame("default-goal","Peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	
@@ -25,9 +23,12 @@ public class TreasureGoalTest {
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	
+        response = mania.tick(null, Direction.DOWN);
+        
+        assertFalse(ResponseHelp.goalComplete(response));
+        
         response = mania.tick(null, Direction.RIGHT);
         
-        assertTrue(ResponseHelp.goalComplete(response));
+        assertFalse(ResponseHelp.goalComplete(response));
     }
-    
 }
