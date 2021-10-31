@@ -38,6 +38,11 @@ public class ConsumableComponent extends Component {
             
                 // All prerequisites are filled, add item to usedList
                 getEntity().getDungeon().getPlayer().getUsedList().put(getEntity().getId(), getEntity().getType());
+
+                curDurability = curDurability - 1;
+                if (curDurability == 0) {
+                    getEntity().setState(EntityState.DEAD);
+                }
         }
 
 
