@@ -1,5 +1,7 @@
 package dungeonmania.entities.moving;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
@@ -27,4 +29,6 @@ public class Mercenary extends Entity {
 	}
 
 	protected void updateEntity() {}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }

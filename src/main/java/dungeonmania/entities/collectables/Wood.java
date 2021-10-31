@@ -1,7 +1,10 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
@@ -22,5 +25,7 @@ public class Wood extends Entity {
 	protected void updateEntity() {
 
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
@@ -23,5 +25,7 @@ public class Arrows extends Entity {
 	protected void updateEntity() {
 
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

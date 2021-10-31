@@ -1,6 +1,8 @@
-package dungeonmania.entities;
+package dungeonmania.entities.spawners;
 
 import java.util.Random;
+
+import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.Dungeon.Bounds;
@@ -28,4 +30,6 @@ public class SpiderSpawner extends Spawner {
 	private static int generateRandom(int low, int high) {
 		return randomiser.nextInt(high-low) + low;
 	}
+
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }

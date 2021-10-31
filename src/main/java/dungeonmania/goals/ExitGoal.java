@@ -1,20 +1,20 @@
 package dungeonmania.goals;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.statics.Exit;
 
-public class ExitGoal extends Goal{
+public class ExitGoal extends Goal {
 
     public ExitGoal (Dungeon dungeon) {
-        super(dungeon, "exit");
-
+        super(dungeon, 0);
     }
 
-    
     public boolean checkGoal() {
         Exit exit;
-        for (Entity entity : dungeon.getEntities()) { 
+        for (Entity entity : getDungeon().getEntities()) { 
             if (entity instanceof Exit) {
                 exit = (Exit) entity;
                 if (exit.playerAtExit()) {
@@ -26,5 +26,19 @@ public class ExitGoal extends Goal{
         }
         return false;
     }
+
+    public String response() {
+    	return ":exit";
+    }
+    
+	public String toString() {
+		return "exit";
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject exitJSON = new JSONObject();
+		exitJSON.put("goal", "exit");
+		return exitJSON;
+	}
     
 }

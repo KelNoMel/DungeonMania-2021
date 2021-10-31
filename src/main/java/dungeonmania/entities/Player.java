@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
-import dungeonmania.Subject;
 import dungeonmania.entities.buildable.BuildableFactory;
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Wall;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -124,5 +123,9 @@ public class Player extends Entity {
 			}
 		}
 		return null;
+	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("inventory", inventory.toJSON());
 	}
 }

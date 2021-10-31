@@ -1,5 +1,7 @@
 package dungeonmania.entities.statics;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -32,7 +34,6 @@ public class FloorSwitch extends Entity {
 		return isTriggered;
 	}
 
-
-
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

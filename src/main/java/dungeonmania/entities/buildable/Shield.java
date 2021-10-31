@@ -2,6 +2,9 @@ package dungeonmania.entities.buildable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 import dungeonmania.Dungeon;
@@ -41,4 +44,5 @@ public class Shield extends Buildable {
 	// remove shield after taking the final hit
 	// shield observes the player battling (each battle / each time the player is attacked)
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }

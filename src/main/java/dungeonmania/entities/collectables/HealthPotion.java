@@ -1,5 +1,7 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
@@ -30,4 +32,6 @@ public class HealthPotion extends Entity {
 		
 	}
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	
 }

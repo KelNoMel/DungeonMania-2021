@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.json.JSONObject;
+
 /**
  * Entity base class representing most objects found in the game.
  * Class Invariants:
@@ -117,6 +119,16 @@ public abstract class Entity {
     public String getId() { return id; }
     public String getType() { return type; }
     public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
+    
+    public JSONObject toJSON() {
+    	JSONObject entityJSON = new JSONObject();
+    	entityJSON.put("x", position.getX());
+    	entityJSON.put("y", position.getY());
+    	entityJSON.put("type", type);
+    	addJSONEntitySpecific(entityJSON);
+    	return entityJSON;
+    }
+    public abstract void addJSONEntitySpecific(JSONObject baseJSON);
     
     public boolean withinRange(Entity e, int distance) {
 		return Math.abs(Position.distanceBetween(position, e.getPosition()) - distance) <= Position.epsilon;
