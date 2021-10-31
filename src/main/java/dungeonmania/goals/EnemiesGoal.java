@@ -28,6 +28,7 @@ public class EnemiesGoal extends Goal {
     }
     
     public String response() {
+    	if (checkGoal()) return "";
 		return ":mercenary";
 	}
 
