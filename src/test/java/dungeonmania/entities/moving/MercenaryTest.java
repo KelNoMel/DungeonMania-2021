@@ -35,8 +35,6 @@ public class MercenaryTest {
         mania.tick(null, Direction.LEFT);
         // Spawn!
         d = mania.tick(null, Direction.LEFT);
-//        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 0), true), d));
-        // TODO Look at this
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
     }
 }
