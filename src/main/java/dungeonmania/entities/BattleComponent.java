@@ -10,6 +10,8 @@ public class BattleComponent extends Component {
 
 	public BattleComponent(Entity owningEntity, int updateOrder, int health, int attackDamage) {
 		super(owningEntity, updateOrder);
+		this.health = health;
+		this.attackDamage = attackDamage;
 	}
 	
 	public void processInput(InputState inputState) {}

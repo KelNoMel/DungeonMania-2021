@@ -12,9 +12,6 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Wall;
-import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -25,11 +22,9 @@ import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	
-	private int health = 20;
-	
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-//	public BattleComponent battleComponent = new BattleComponent();
+	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
 
 	private EntityList inventory;
 
@@ -109,7 +104,7 @@ public class Player extends Entity {
 
 	// Used to set players health, currently used to restore full health on heal
 	public void setHealth(int hp) {
-		health = hp;
+		battleComponent.setHealth(hp);
 	}
 
 	public EntityList getInventory() {

@@ -8,6 +8,7 @@ import dungeonmania.components.AIComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AISpiderHostile;
+import dungeonmania.entities.BattleComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -17,6 +18,7 @@ public class Spider extends Entity {
 
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.GHOST);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
 	
 	public Spider(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "spider", position, false, entitySpecificData);

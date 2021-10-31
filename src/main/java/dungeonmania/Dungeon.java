@@ -251,8 +251,11 @@ public class Dungeon {
      * @return DungeonResponse describing the currennt state of the game
      */
     public DungeonResponse response() {
-        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-        //    itemResponse(), buildables, goals, animations);
+        Player p = getPlayer();
+    	if (p == null) {
+    		return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+    				new ArrayList<ItemResponse>(), new ArrayList<String>(), dungeonGoal.response());
+    	}
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
         itemResponse(), buildableResponse(), dungeonGoal.response());
     }
