@@ -13,7 +13,7 @@ public class MercenarySpawner extends Spawner {
 	}
 
 	public void spawnEntity() {
-		new Mercenary(getDungeon(), getPosition(), new JSONObject());
+		getDungeon().addEntity(new Mercenary(getDungeon(), getPosition(), new JSONObject()));
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}

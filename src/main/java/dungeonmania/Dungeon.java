@@ -62,7 +62,9 @@ public class Dungeon {
     	JSONObject dungeonJSON = readDungeonJSON(dungeonName);
     	
     	// Add the entities
+    	Portal.clearPortalLinks();
         entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
+        loadSpawners();
         
 		// Adds goals and sets goal condition
 		dungeonGoal = loadGoalFromFile(dungeonJSON);
@@ -109,6 +111,7 @@ public class Dungeon {
     	
     	dungeonName = fileData.getString("dungeon-name");
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
+    	Portal.clearPortalLinks();
     	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
     	loadSpawners();
     	dungeonGoal = loadGoalFromFile(fileData);
@@ -122,11 +125,11 @@ public class Dungeon {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
-    		EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this);
+    		entities.add(EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this));
     	}
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
-    		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
+    		entities.add(EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this));
     	}
     }
     

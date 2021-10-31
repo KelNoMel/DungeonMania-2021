@@ -77,4 +77,8 @@ public class Portal extends Entity {
 	public EntityResponse response() {
     	return new EntityResponse(getId(), getType() + "-" + colour, getPosition(), getInteractable());
     }
+	
+	public static void clearPortalLinks() {
+		portalLinks = new HashMap<>();
+	}
 }
