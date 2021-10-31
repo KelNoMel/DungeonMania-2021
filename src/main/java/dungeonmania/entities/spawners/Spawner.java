@@ -1,5 +1,7 @@
 package dungeonmania.entities.spawners;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -10,8 +12,9 @@ public abstract class Spawner extends Entity {
 	private int tickSpawnRate;
 	private int ticksUntilNextSpawn;
 	
-	public Spawner(Dungeon dungeon, Position position, int tickSpawnRate) {
-		super(dungeon, "blank", position, false);
+	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
+		super(dungeon, type, position, false, entitySpecificData);
+		toggleDisplay(false);
 		this.tickSpawnRate = tickSpawnRate;
 		ticksUntilNextSpawn = tickSpawnRate;
 	}

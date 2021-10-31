@@ -12,8 +12,8 @@ import dungeonmania.util.Position;
 
 public class Boulder extends Entity {
 
-	public Boulder(Dungeon dungeon, Position position) {
-		super(dungeon, "boulder", position, false);
+	public Boulder(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "boulder", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -41,5 +41,6 @@ public class Boulder extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
 }

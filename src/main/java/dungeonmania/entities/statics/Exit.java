@@ -9,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class Exit extends Entity {
 
-	public Exit(Dungeon dungeon, Position position) {
-		super(dungeon, "exit", position, false);
+	public Exit(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "exit", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -29,5 +29,6 @@ public class Exit extends Entity {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 }

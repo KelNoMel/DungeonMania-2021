@@ -16,8 +16,8 @@ public class InvincibilityPotion extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 
-	public InvincibilityPotion(Dungeon dungeon, Position position) {
-		super(dungeon, "invincibility_potion", position, false);
+	public InvincibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "invincibility_potion", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -36,5 +36,5 @@ public class InvincibilityPotion extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

@@ -14,8 +14,8 @@ public class SpiderSpawner extends Spawner {
 	static private final Random randomiser = new Random();
 	static private final int maxSpiders = 3;
 	
-	public SpiderSpawner(Dungeon dungeon, Position position, int tickSpawnRate) {
-		super(dungeon, position, tickSpawnRate);
+	public SpiderSpawner(Dungeon dungeon, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
+		super(dungeon, "spider_spawner", position, tickSpawnRate, entitySpecificData);
 	}
 
 	public void spawnEntity() {
@@ -23,7 +23,7 @@ public class SpiderSpawner extends Spawner {
 			Bounds b = getDungeon().getBounds();
 			int xPos = generateRandom(b.getMinBounds().getX(), b.getMaxBounds().getX());
 			int yPos = generateRandom(b.getMinBounds().getY(), b.getMaxBounds().getY());
-			new Spider(getDungeon(), new Position(xPos, yPos));			
+			new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject());			
 		}
 	}
 
@@ -32,4 +32,5 @@ public class SpiderSpawner extends Spawner {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

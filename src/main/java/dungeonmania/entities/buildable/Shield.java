@@ -1,19 +1,12 @@
 package dungeonmania.entities.buildable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
-import dungeonmania.entities.Player;
-import dungeonmania.entities.buildable.Recipe;
-
 
 public class Shield extends Buildable {
 	// durability for the number of times a shield can take a hit
@@ -23,14 +16,14 @@ public class Shield extends Buildable {
 	
 	
 	
-	public Shield(Dungeon dungeon, String type, Position position, List<Recipe> recipes) {
-		super(dungeon, type, position, false, recipes);
+	public Shield(Dungeon dungeon, String type, Position position, List<Recipe> recipes, JSONObject entitySpecificData) {
+		super(dungeon, type, position, false, recipes, entitySpecificData);
 	}
 
 	// if a buildable is found on the map
 	public Shield(Dungeon dungeon, Position position) {
 		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, 
-			BuildableEnum.SHIELD.getRecipes());
+			BuildableEnum.SHIELD.getRecipes(), new JSONObject());
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -45,4 +38,5 @@ public class Shield extends Buildable {
 	// shield observes the player battling (each battle / each time the player is attacked)
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

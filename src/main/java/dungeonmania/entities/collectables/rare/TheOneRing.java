@@ -9,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class TheOneRing extends Entity {
 
-	public TheOneRing(Dungeon dungeon, Position position) {
-		super(dungeon, "the_one_ring", position, false);
+	public TheOneRing(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "the_one_ring", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -22,5 +22,6 @@ public class TheOneRing extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
 }
