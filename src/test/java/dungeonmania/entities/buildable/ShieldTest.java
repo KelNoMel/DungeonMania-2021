@@ -38,4 +38,39 @@ public class ShieldTest {
         mania.tick(null, Direction.RIGHT);
 		assertDoesNotThrow(() -> mania.build("shield"));
 	}
+
+	@Test
+	public void testShieldInvalid() {
+		DungeonManiaController mania = new DungeonManiaController();
+		mania.newGame("advanced-2","Peaceful");
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+		//assertThrows(Ill, () -> mania.build("shield"));
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.DOWN);
+		mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+		assertDoesNotThrow(() -> mania.build("shield"));
+	}
+
+	
 }
