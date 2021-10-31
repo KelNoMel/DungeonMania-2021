@@ -45,12 +45,4 @@ public enum BuildableEnum {
     public static Stream<BuildableEnum> stream() {
         return Stream.of(BuildableEnum.values());
     }
-
-    // for debugging
-    public static void main(String[] args) {
-        BuildableEnum.stream().forEach(e -> System.out.println(e.getType()));
-        BuildableEnum.stream().filter(e->e.getType().equals("shield"))
-            .map(e->e.getType()).forEach(e -> System.out.println(e));
-        System.out.println(BuildableEnum.BOW.getType());
-    }
 }

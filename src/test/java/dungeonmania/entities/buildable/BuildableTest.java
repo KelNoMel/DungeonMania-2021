@@ -13,6 +13,6 @@ public class BuildableTest {
 		DungeonManiaController mania = new DungeonManiaController();
 		mania.newGame("advanced-2","Peaceful");
 
-		// assertThrows(IllegalArgumentException, () -> mania.build("semester plan"));
+		assertThrows(IllegalArgumentException.class, () -> mania.build("gabagool"));
 	}
 }
