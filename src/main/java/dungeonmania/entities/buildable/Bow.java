@@ -10,9 +10,9 @@ import dungeonmania.util.Position;
  * Bow Entity can shoot from a range
  */
 public class Bow extends Buildable {
-	public Bow(Dungeon dungeon, Position position) {
+	public Bow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon,  BuildableEnum.BOW.getType(), position, false, 
-			BuildableEnum.BOW.getRecipes());
+			BuildableEnum.BOW.getRecipes(), entitySpecificData);
 	}
 			
 	protected void inputEntity(InputState inputState) {
@@ -24,5 +24,5 @@ public class Bow extends Buildable {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

@@ -14,8 +14,8 @@ public class Arrows extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
 
-	public Arrows(Dungeon dungeon, Position position) {
-		super(dungeon, "arrows", position, false);
+	public Arrows(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "arrows", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -27,5 +27,6 @@ public class Arrows extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 }

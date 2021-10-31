@@ -16,8 +16,8 @@ public class HealthPotion extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
 	
-	public HealthPotion(Dungeon dungeon, Position position) {
-		super(dungeon, "health_potion", position, false);
+	public HealthPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "health_potion", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -33,5 +33,6 @@ public class HealthPotion extends Entity {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 }

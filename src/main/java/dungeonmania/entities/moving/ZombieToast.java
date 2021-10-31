@@ -12,8 +12,8 @@ public class ZombieToast extends Entity {
 
 	AIComponent aiComponent = new AIComponent(this, 100);
 	
-	public ZombieToast(Dungeon dungeon, Position position) {
-		super(dungeon, "zombie", position, false);
+	public ZombieToast(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "zombie", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -25,5 +25,6 @@ public class ZombieToast extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 }

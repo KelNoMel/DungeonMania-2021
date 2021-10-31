@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
@@ -27,15 +28,15 @@ public class Player extends Entity {
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
-	private EntityList inventory = new EntityList();
+	private EntityList inventory;
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	public Player(Dungeon dungeon, Position position) {
-		super(dungeon, "player", position, false);
+	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "player", position, false, entitySpecificData);
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {
@@ -127,5 +128,13 @@ public class Player extends Entity {
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("inventory", inventory.toJSON());
+	}
+
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		if (entitySpecificData.has("inventory")) {
+			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
+		} else {
+			inventory = new EntityList();
+		}
 	}
 }
