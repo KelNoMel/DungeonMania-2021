@@ -1,9 +1,7 @@
 package dungeonmania.components;
 
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
 
 // For all items that can be used (consume, craft, place)
 public class EffectComponent extends Component {
@@ -21,7 +19,7 @@ public class EffectComponent extends Component {
         timer = timer - 1;
         if (timer == 0) {
             getEntity().getDungeon().getPlayer().setStatus("normal");
-            owningEntity.removeComponent(this);
+            getEntity().removeComponent(this);
         }
     }
 

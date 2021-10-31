@@ -1,9 +1,10 @@
-package dungeonmania;
+package dungeonmania.entities.statics;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;

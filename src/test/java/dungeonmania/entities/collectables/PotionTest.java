@@ -1,6 +1,6 @@
-package dungeonmania;
+package dungeonmania.entities.collectables;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -11,11 +11,11 @@ import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class TreasureGoalTest {
-
+public class PotionTest {
+	
+    // Succeed at moving a boulder with nothing behind it
     @Test
-    public void treasureGoalTest() {
+    public void testHealthPotion() {
         
     }
-    
 }
