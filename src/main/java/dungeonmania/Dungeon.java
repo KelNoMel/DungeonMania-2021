@@ -62,7 +62,7 @@ public class Dungeon {
     	JSONObject dungeonJSON = readDungeonJSON(dungeonName);
     	
     	// Add the entities
-        loadEntities(dungeonJSON.getJSONArray("entities"));        
+        entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
         
 		// Adds goals and sets goal condition
 		dungeonGoal = loadGoals(dungeonJSON.getJSONObject("goal-condition"));
@@ -99,7 +99,8 @@ public class Dungeon {
     	
     	dungeonName = fileData.getString("dungeon-name");
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
-    	loadEntities(fileData.getJSONArray("entities"));
+    	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
+    	loadSpawners();
     	dungeonGoal = loadGoals(fileData.getJSONObject("goal-condition"));
     }
 
@@ -107,115 +108,17 @@ public class Dungeon {
 	///                              JSON Extraction                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
-    private void loadEntities(JSONArray entityArray) {
-    	int numEntities = entityArray.length();
-    	for (int i = 0; i < numEntities; i++) {
-    		JSONObject ent = entityArray.getJSONObject(i);
-    		
-            // Entity construction function
-    		constructEntity(ent);
-    	}
-    	
+    private void loadSpawners() {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
-    		constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"));
+    		EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this);
     	}
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
-    		constructEntity(newEntityJSON(0, 0, "spider_spawner"));
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
     }
-    
-    /**
-     * Used to construct specific entities given their JSON representation
-     * @param ent
-     * @return
-     */
-	public void constructEntity(JSONObject ent) {
-		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-		
-		int topLayer = 3;
-		int movingLayer = 2;
-		int itemLayer = 1;
-		int bottomLayer = 0;
-		
-		switch (ent.getString("type")) {
-			case "player":
-				Entity player = new Player(this, pos.asLayer(topLayer));
-				Collections.swap(entities, 0, entities.indexOf(player));
-				return;
-			// Statics
-			case "wall":
-				new Wall(this, pos.asLayer(bottomLayer)); return;
-			case "exit":
-				new Exit(this, pos.asLayer(bottomLayer)); return;
-			case "boulder":
-				new Boulder(this, pos.asLayer(bottomLayer)); return;
-			case "switch":
-				new FloorSwitch(this, pos.asLayer(bottomLayer)); return;
-			case "door":
-				new Door(this, pos.asLayer(bottomLayer)); return;
-			case "portal":
-				new Portal(this, pos.asLayer(bottomLayer), ent.getString("colour")); return;
-			case "spawner":
-				new ZombieToastSpawner(this, pos.asLayer(bottomLayer)); return;
-			
-			// Moving
-			case "spider":
-				new Spider(this, pos.asLayer(movingLayer)); return;
-			case "zombie":
-				new ZombieToast(this, pos.asLayer(movingLayer)); return;
-			case "mercenary":
-				new Mercenary(this, pos.asLayer(movingLayer)); return;
-				
-			// Collectable
-			case "treasure":
-				new Treasure(this, pos.asLayer(itemLayer)); return;
-			case "key":
-				new Key(this, pos.asLayer(itemLayer)); return;
-			case "health_potion":
-				new HealthPotion(this, pos.asLayer(itemLayer)); return;
-			case "invincibility_potion":
-				new InvincibilityPotion(this, pos.asLayer(itemLayer)); return;
-			case "invisibility_potion":
-				new InvisibilityPotion(this, pos.asLayer(itemLayer)); return;
-			case "wood":
-				new Wood(this, pos.asLayer(itemLayer)); return;
-			case "arrows":
-				new Arrows(this, pos.asLayer(itemLayer)); return;
-			case "bomb":
-				new Bomb(this, pos.asLayer(itemLayer)); return;
-			case "sword":
-				new Sword(this, pos.asLayer(itemLayer)); return;
-			case "armour":
-				new Armour(this, pos.asLayer(itemLayer)); return;
-				
-			// Rare Collectable
-			case "the_one_ring":
-				new TheOneRing(this, pos.asLayer(itemLayer)); return;
-				
-			/// Buildable
-			case "bow":
-				Bow bow = new Bow(this, pos.asLayer(itemLayer));
-				transferToInventory(bow);
-				return;
-			case "shield":
-				Shield shield = new Shield(this, pos.asLayer(itemLayer));
-				transferToInventory(shield);
-				return;
-			
-			// Non spec-defined
-			case "mercenary_spawner":
-				new MercenarySpawner(this, pos, 10); return;
-			case "spider_spawner":
-				// TODO load spawner info from save
-				new SpiderSpawner(this, pos, 5); return;
-			// Type is not correct or has not been implemented
-			default:
-				System.out.println(ent.getString("type") + " has not been implemented");
-		}
-	}
     
     private Goal loadGoals(JSONObject goalJSON) {
 		JSONArray subgoals;

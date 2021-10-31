@@ -9,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class Door extends Entity {
 
-	public Door(Dungeon dungeon, Position position) {
-		super(dungeon, "door", position, true);
+	public Door(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "door", position, true, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -22,5 +22,6 @@ public class Door extends Entity {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 }

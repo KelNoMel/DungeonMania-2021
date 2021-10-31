@@ -9,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class InvisibilityPotion extends Entity {
 
-	public InvisibilityPotion(Dungeon dungeon, Position position) {
-		super(dungeon, "invisibility_potion", position, false);
+	public InvisibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "invisibility_potion", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -22,5 +22,5 @@ public class InvisibilityPotion extends Entity {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

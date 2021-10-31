@@ -7,7 +7,6 @@ import dungeonmania.components.Component;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +31,7 @@ public abstract class Entity {
     
     private List<Component> components = new ArrayList<Component>();
 
-    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable) {
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, JSONObject entitySpecificData) {
     	this.dungeon = dungeon;
     	this.state = EntityState.ACTIVE;
         this.position = position;
@@ -40,8 +39,10 @@ public abstract class Entity {
         this.type = type;
         this.isInteractable = isInteractable;
         
-        dungeon.addEntity(this);
+        loadJSONEntitySpecific(entitySpecificData);
     }
+    
+    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                        Entity Loading/Construction                       ///

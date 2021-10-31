@@ -9,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class Key extends Entity {
 
-	public Key(Dungeon dungeon, Position position) {
-		super(dungeon, "key", position, false);
+	public Key(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "key", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -22,5 +22,5 @@ public class Key extends Entity {
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

@@ -29,19 +29,11 @@ public class Portal extends Entity {
 	// Entities teleported already this tick
 	private List<Entity> teleportedEntities = new ArrayList<>();
 	
-	public Portal(Dungeon dungeon, Position position, String colour) {
-		super(dungeon, "portal-" + colour, position, false);
-		this.colour = colour;
-
-		// Create a new portal link, and link this to the other portal of the same colour if link already exists
-		if (portalLinks.putIfAbsent(colour, new PortalLink(this, null)) != null) {
-			portalLinks.get(colour).p2 = this;
-		}
+	public Portal(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "portal-" + entitySpecificData.getString("colour"), position, false, entitySpecificData);
 	}
 
-	protected void inputEntity(InputState inputState) {
-		
-	}
+	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {
 		List<Entity> entitiesOnThisPortal = getDungeon().getEntitiesAtPosition(getPosition());
@@ -67,5 +59,16 @@ public class Portal extends Entity {
 		}
 	}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("colour", colour);
+	}
+	
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		colour = entitySpecificData.getString("colour");
+
+		// Create a new portal link, and link this to the other portal of the same colour if link already exists
+		if (portalLinks.putIfAbsent(colour, new PortalLink(this, null)) != null) {
+			portalLinks.get(colour).p2 = this;
+		}
+	}
 }

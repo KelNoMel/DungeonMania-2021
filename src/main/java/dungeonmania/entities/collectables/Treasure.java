@@ -13,8 +13,8 @@ public class Treasure extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	
-	public Treasure(Dungeon dungeon, Position position) {
-		super(dungeon, "treasure", position, false);
+	public Treasure(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "treasure", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -26,5 +26,5 @@ public class Treasure extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }
