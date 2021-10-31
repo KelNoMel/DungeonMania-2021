@@ -53,8 +53,7 @@ public abstract class Entity {
      * @return new unique entity id
      */
     private static String createId() {
-        String id = UUID.randomUUID().toString();
-        return id;
+        return UUID.randomUUID().toString();
     }
 
 	////////////////////////////////////////////////////////////////////////////////

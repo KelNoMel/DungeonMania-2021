@@ -10,8 +10,9 @@ public abstract class Spawner extends Entity {
 	private int tickSpawnRate;
 	private int ticksUntilNextSpawn;
 	
-	public Spawner(Dungeon dungeon, Position position, int tickSpawnRate) {
-		super(dungeon, "blank", position, false);
+	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate) {
+		super(dungeon, type, position, false);
+		toggleDisplay(false);
 		this.tickSpawnRate = tickSpawnRate;
 		ticksUntilNextSpawn = tickSpawnRate;
 	}

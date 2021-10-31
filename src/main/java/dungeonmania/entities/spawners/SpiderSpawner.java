@@ -15,7 +15,7 @@ public class SpiderSpawner extends Spawner {
 	static private final int maxSpiders = 3;
 	
 	public SpiderSpawner(Dungeon dungeon, Position position, int tickSpawnRate) {
-		super(dungeon, position, tickSpawnRate);
+		super(dungeon, "spider_spawner", position, tickSpawnRate);
 	}
 
 	public void spawnEntity() {
