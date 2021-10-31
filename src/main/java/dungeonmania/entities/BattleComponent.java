@@ -5,11 +5,13 @@ import dungeonmania.components.Component;
 
 public class BattleComponent extends Component {
 
+	private int maxHealth;
 	private int health;
 	private int attackDamage;
 
 	public BattleComponent(Entity owningEntity, int updateOrder, int health, int attackDamage) {
 		super(owningEntity, updateOrder);
+		this.maxHealth = health;
 		this.health = health;
 		this.attackDamage = attackDamage;
 	}
@@ -18,7 +20,7 @@ public class BattleComponent extends Component {
 	public void updateComponent() {}
 	
 	public int getScaledAttackDamage() {
-		return health * attackDamage;
+		return (int) Math.ceil(health * attackDamage);
 	}
 	
 	public int getHealth() { return health; }
@@ -38,5 +40,9 @@ public class BattleComponent extends Component {
 			return true;
 		}
 		return false;
+	}
+	
+	public String getHealthAsString() {
+		return String.format("%.1f", (float)health / (float)maxHealth);
 	}
 }

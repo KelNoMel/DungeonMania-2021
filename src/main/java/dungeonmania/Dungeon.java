@@ -220,6 +220,7 @@ public class Dungeon {
      * @param itemUsed 
      */
     public void tick(InputState inputState) {
+    	animations.clear();
     	processInput(inputState);
     	updateGame();
     }
@@ -257,7 +258,7 @@ public class Dungeon {
     				new ArrayList<ItemResponse>(), new ArrayList<String>(), dungeonGoal.response());
     	}
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), buildableResponse(), dungeonGoal.response());
+        itemResponse(), buildableResponse(), dungeonGoal.response(), animations);
     }
     
     /**
@@ -276,7 +277,7 @@ public class Dungeon {
     private List<ItemResponse> itemResponse() {
         return getPlayer().getInventoryResponse();
     }
-	    
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity Construction                           ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -290,7 +291,11 @@ public class Dungeon {
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
 	
-	public List<Entity> getEntities() {
+	public void queueAnimation(AnimationQueue q) {
+		animations.add(q);
+	}
+	
+	public EntityList getEntities() {
     	return entities;
     }
 
@@ -364,7 +369,10 @@ public class Dungeon {
 	 * @return player
 	 */
 	public Player getPlayer() {
-		return (Player)entities.get(0);
+		if (entities.get(0) instanceof Player) {
+			return (Player)entities.get(0);			
+		}
+		return null;
 	}
 	
 	public GameMode getGameMode() {

@@ -2,9 +2,11 @@ package dungeonmania;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.JSONArray;
 
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 
@@ -45,6 +47,13 @@ public class EntityList extends ArrayList<Entity> {
     	
     	addAll(newEntities);
     	newEntities.clear();
+    	
+    	for (Entity e : this) {
+    		if (e instanceof BattleResolver) {
+    			Collections.swap(this, indexOf(e), size()-1);
+    			break;
+    		}
+    	}
 	}
 	
 	@Override

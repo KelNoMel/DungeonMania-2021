@@ -138,10 +138,10 @@ public class EntityFactory {
 			
 			// Non spec-defined
 			case "mercenary_spawner":
-				return new MercenarySpawner(loadingDungeon, pos, 10, entData);
+				return new MercenarySpawner(loadingDungeon, pos, 20, entData);
 			case "spider_spawner":
 				// TODO load spawner info from save
-				return new SpiderSpawner(loadingDungeon, pos, 5, entData);
+				return new SpiderSpawner(loadingDungeon, pos, 10, entData);
 			
 			case "battle_resolver":
 				return new BattleResolver(loadingDungeon, pos, entData);

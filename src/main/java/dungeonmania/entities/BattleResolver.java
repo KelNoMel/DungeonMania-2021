@@ -1,16 +1,20 @@
 package dungeonmania.entities;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.Component;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
+import dungeonmania.response.models.AnimationQueue;
 import dungeonmania.util.Position;
 
 public class BattleResolver extends Entity {
@@ -20,7 +24,9 @@ public class BattleResolver extends Entity {
 		toggleDisplay(false);
 	}
 
-	protected void inputEntity(InputState inputState) {}
+	protected void inputEntity(InputState inputState) {
+		
+	}
 	protected void updateEntity() {
 		Dungeon d = getDungeon();
 		
@@ -32,13 +38,43 @@ public class BattleResolver extends Entity {
 		
 		// Battle time!
 		for (Entity e : battleEnemies) {
-			BattleComponent enemyBattleState = getBattleComponent(e);
 			
-			playerBattleState.dealDamage(enemyBattleState.getScaledAttackDamage() / 10);
-			if (!playerBattleState.isAlive()) break;
-			
-			enemyBattleState.dealDamage(playerBattleState.getScaledAttackDamage() / 5);
-			if (!playerBattleState.isAlive()) break;
+			while (true) {
+				BattleComponent enemyBattleState = getBattleComponent(e);
+				
+				String preAttackHealth = playerBattleState.getHealthAsString();
+				
+				playerBattleState.dealDamage(enemyBattleState.getScaledAttackDamage() / 10);
+				if (!playerBattleState.isAlive()) break;
+				
+				d.queueAnimation(
+					new AnimationQueue(
+						"PostTick",
+						player.getId(),
+						Arrays.asList(
+							"healthbar set " + preAttackHealth,
+							"healthbar tint 0x00ff00",
+							"healthbar set " + playerBattleState.getHealthAsString() + ", over 1.5s",
+							"healthbar tint 0xff0000, over 0.5s"
+				        ),
+						false,
+						-1
+					)
+				);
+				
+				d.queueAnimation(
+					new AnimationQueue(
+						"PostTick",
+						player.getId(),
+						Arrays.asList("healthbar shake, over 0.5s, ease Sin"),
+						false, 
+						0.5
+					)
+				);
+				
+				enemyBattleState.dealDamage(playerBattleState.getScaledAttackDamage() / 5);
+				if (!enemyBattleState.isAlive()) break;
+			}
 		}
 	}
 	
