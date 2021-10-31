@@ -64,10 +64,9 @@ public final class FileLoader {
 
 	public static void initialiseSaves() {
 		try {
-			String dungeonFolder = getFolderPath("/dungeons").toString();
-			dungeonFolder = dungeonFolder.substring(0, dungeonFolder.lastIndexOf("\\"));
-			Path savePath = Paths.get(dungeonFolder, "dungeonSaves");
-			System.out.println(savePath);
+			Path dungeonFolder = getFolderPath("/dungeons");
+			dungeonFolder = dungeonFolder.subpath(0, dungeonFolder.getNameCount()-1);
+			Path savePath = dungeonFolder.resolve("dungeonSaves");
 			savePath.toFile().mkdirs();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
