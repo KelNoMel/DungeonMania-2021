@@ -3,6 +3,7 @@ package dungeonmania.entities.spawners;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.GameMode;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
 
@@ -13,7 +14,9 @@ public class MercenarySpawner extends Spawner {
 	}
 
 	public void spawnEntity() {
-		getDungeon().addEntity(new Mercenary(getDungeon(), getPosition(), new JSONObject()));
+		if (getDungeon().getGameMode() != GameMode.PEACEFUL) {
+			getDungeon().addEntity(new Mercenary(getDungeon(), getPosition(), new JSONObject()));
+		}
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
