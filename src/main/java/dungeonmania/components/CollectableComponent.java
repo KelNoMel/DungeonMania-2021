@@ -7,6 +7,10 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 
+/**
+ * CollectableComponent will automatically add a component from the map to the 
+ * player's inventory when the player steps on it.
+ */
 public class CollectableComponent extends Component {
 
 	private CollectableState collectableState;

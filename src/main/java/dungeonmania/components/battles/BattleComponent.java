@@ -76,6 +76,9 @@ public class BattleComponent extends Component implements Subject, Observer {
         // use case in player TODO
         // use case in enemies TODO
 	
+    /**
+     * Notify all observers that a battle has started
+     */
 	public void notifyObservers() {
         // get the combined weapon damage for attacks into the attacks list  
         // then send out the beatings
@@ -86,14 +89,25 @@ public class BattleComponent extends Component implements Subject, Observer {
         }
     }
 
+
+    /**
+     *  Add the item's power to the buffer to remove it from the player after 
+     * the battle
+     * @param removeItemPower
+     */
     public void removeItemEffectsAfterBattle(Power removeItemPower) {
         removeStatsBuffer.add(removeItemPower);
     }
+    
     
     public void removeItemEffects(Power removeItemPower) {
         power.remove(removeItemPower);
     }
 
+    /**
+     * 
+     * @param itemPower
+     */
 	public void addAttack(Power itemPower) {
         if (attacks.size() == 1 && attacks.get(0).getAttackType().equals(AttackTypeEnum.FISTS)) {
             // replace fist attack

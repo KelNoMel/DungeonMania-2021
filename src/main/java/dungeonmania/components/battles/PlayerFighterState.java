@@ -1,9 +1,9 @@
-package dungeonmania.components.battles;
+// package dungeonmania.components.battles;
 
-public class PlayerFighterState extends FighterState {
-    protected BattleComponent owner;
+// public class PlayerFighterState extends FighterState {
+//     protected BattleComponent owner;
 
-    public PlayerFighterState(BattleComponent owner) {
-        super(owner);
-    }
-}
+//     public PlayerFighterState(BattleComponent owner) {
+//         super(owner);
+//     }
+// }

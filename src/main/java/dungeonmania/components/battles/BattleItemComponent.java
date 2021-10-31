@@ -8,6 +8,9 @@ import dungeonmania.entities.Entity;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 
+/**
+ * BattleItemComponent is a base class of common accessories used for battle.
+ */
 public abstract class BattleItemComponent extends Component implements Observer {
     protected int durability;
     

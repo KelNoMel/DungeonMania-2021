@@ -3,6 +3,10 @@ package dungeonmania.components.battles;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 
+/**
+ * Power describes the releveant stats used for battles that each player/enttiy 
+ * may have. It does not cover all details of battles (special items exist).
+ */
 public class Power {
     private int health;
     private int damage;
@@ -11,6 +15,9 @@ public class Power {
     private int maxHealth;
     private AttackTypeEnum attackType;
 
+    /**
+     * Full Power Constructor
+     */
     public Power(int maxHealth, int health, int damage, int armour, int userModifier, AttackTypeEnum attackType) {
         this.maxHealth = maxHealth;
         this.health = health;
@@ -20,6 +27,9 @@ public class Power {
         this.attackType = attackType;
     }
 
+    /**
+     * Alternate full constructor with c
+     */
     public Power(int maxHealth, int health, int damage, int armour, PowerUser user, AttackTypeEnum attackType) {
         this(maxHealth, health, damage, armour, user.getModifier(), attackType);
     }
