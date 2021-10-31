@@ -5,6 +5,7 @@ import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
+import dungeonmania.components.aistates.AIZombieHostile;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -14,7 +15,10 @@ public class ZombieToast extends Entity {
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	
 	public ZombieToast(Dungeon dungeon, Position position) {
-		super(dungeon, "zombie", position, false);
+		super(dungeon, "zombie", position, false, entitySpecificData);
+		aiComponent.registerState(new AIZombieHostile(aiComponent, this));
+		aiComponent.changeState("ZombieHostile");
+
 	}
 
 	protected void inputEntity(InputState inputState) {
