@@ -1,3 +1,4 @@
+package dungeonmania.components.battles.states;
 // package dungeonmania.components.battles;
 
 // public class EnemyFighterState extends FighterState {

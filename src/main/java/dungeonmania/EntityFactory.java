@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
@@ -141,7 +142,11 @@ public class EntityFactory {
 			case "spider_spawner":
 				// TODO load spawner info from save
 				return new SpiderSpawner(loadingDungeon, pos, 5, entData);
-			// Type is not correct or has not been implemented
+			
+			case "battle_resolver":
+				return new BattleResolver(loadingDungeon, pos, entData);
+			
+				// Type is not correct or has not been implemented
 			default:
 				System.out.println(entityType + " could not be loaded");
 				return null;

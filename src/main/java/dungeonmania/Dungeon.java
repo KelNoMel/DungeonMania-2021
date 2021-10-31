@@ -23,7 +23,6 @@ import dungeonmania.util.*;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.Component;
-import dungeonmania.components.battles.BattleComponent;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
@@ -70,7 +69,7 @@ public class Dungeon {
     	// Add the entities
     	Portal.clearPortalLinks();
         entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
-        loadSpawners();
+        loadOther();
         
 		// Adds goals and sets goal condition
 		dungeonGoal = loadGoalFromFile(dungeonJSON);
@@ -119,7 +118,7 @@ public class Dungeon {
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
     	Portal.clearPortalLinks();
     	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
-    	loadSpawners();
+    	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
     }
 
@@ -127,7 +126,7 @@ public class Dungeon {
 	///                              JSON Extraction                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
-    private void loadSpawners() {
+    private void loadOther() {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
@@ -136,6 +135,12 @@ public class Dungeon {
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
     		entities.add(EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this));
+    	}
+    	// Should be singleton??
+    	if (numEntitiesOfType(BattleResolver.class) == 0) {
+    		Entity newResolver = EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
+    		entities.add(newResolver);
+    		Collections.swap(entities, entities.indexOf(newResolver), entities.size()-1);
     	}
     }
     
@@ -375,17 +380,6 @@ public class Dungeon {
 	public void transferToInventory(Entity e) {
 		e.toggleDisplay(false);
 		entities.transferEntity(getPlayer().getInventory(), e);
-		// attach to player for battles
-		for (Component component : e.getComponents()) {
-			if (component instanceof BattleComponent) {
-				BattleComponent battleComponent = (BattleComponent)component;
-				BattleComponent playerBattle = (BattleComponent)getPlayer().getComponents()
-					.stream().filter(p -> p instanceof BattleComponent)
-					.collect(Collectors.toList()).get(0);
-				playerBattle.attach((BattleComponent)component);
-				return;
-			}
-		}
 	}
 	
 	public void addEntity(Entity e) {

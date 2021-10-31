@@ -9,10 +9,6 @@ import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIMercAlly;
 import dungeonmania.components.aistates.AIMercHostile;
-import dungeonmania.components.battles.AttackTypeEnum;
-import dungeonmania.components.battles.BattleComponent;
-import dungeonmania.components.battles.Power;
-import dungeonmania.components.battles.PowerUser;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -22,8 +18,6 @@ public class Mercenary extends Entity {
 	
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 1, 
-		new Power(maxHealth, maxHealth, damage, 0, PowerUser.ENEMY, AttackTypeEnum.FISTS));
 	
 	public Mercenary(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "mercenary", position, true, entitySpecificData);
