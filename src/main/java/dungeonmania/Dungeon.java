@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
@@ -65,7 +66,7 @@ public class Dungeon {
         entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
         
 		// Adds goals and sets goal condition
-		dungeonGoal = loadGoals(dungeonJSON.getJSONObject("goal-condition"));
+		dungeonGoal = loadGoalFromFile(dungeonJSON);
     	
     	dungeonId = Dungeon.createId();
     }
@@ -78,6 +79,16 @@ public class Dungeon {
     		
     	} catch (Exception e) {
     		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
+    	}
+    }
+    
+    private Goal loadGoalFromFile(JSONObject dungeonJSON) {
+    	JSONObject goalInfo;
+    	try {
+    		goalInfo = dungeonJSON.getJSONObject("goal-condition");
+    		return loadGoals(goalInfo);
+    	} catch (JSONException e) {
+    		return new DefaultGoal(this);
     	}
     }
     
@@ -101,7 +112,7 @@ public class Dungeon {
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
     	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
     	loadSpawners();
-    	dungeonGoal = loadGoals(fileData.getJSONObject("goal-condition"));
+    	dungeonGoal = loadGoalFromFile(fileData);
     }
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -138,6 +149,8 @@ public class Dungeon {
 				return new BoulderGoal(this);
 			case "enemies":
 				return new EnemiesGoal(this);
+			case "default":
+				return new DefaultGoal(this);
 			default:
 				throw new IllegalArgumentException("GoalJSON is invalid");
 		}

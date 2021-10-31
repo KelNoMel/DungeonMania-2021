@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Portal extends Entity {
@@ -30,7 +31,7 @@ public class Portal extends Entity {
 	private List<Entity> teleportedEntities = new ArrayList<>();
 	
 	public Portal(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "portal-" + entitySpecificData.getString("colour"), position, false, entitySpecificData);
+		super(dungeon, "portal", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {}
@@ -71,4 +72,9 @@ public class Portal extends Entity {
 			portalLinks.get(colour).p2 = this;
 		}
 	}
+	
+	@Override
+	public EntityResponse response() {
+    	return new EntityResponse(getId(), getType() + "-" + colour, getPosition(), getInteractable());
+    }
 }

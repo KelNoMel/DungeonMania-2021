@@ -114,7 +114,9 @@ public abstract class Entity {
     public EntityState getState() { return state; }
     public void setState(EntityState s) { state = s; }
     public Position getPosition() { return position; }
-    public void setPosition(Position p) { position = p.asLayer(position.getLayer()); } 
+    public void setPosition(Position p) { position = p.asLayer(position.getLayer()); }
+    public boolean getInteractable() { return isInteractable; }
+    public void setInteractable(boolean interactable) { isInteractable = interactable; }
     public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }

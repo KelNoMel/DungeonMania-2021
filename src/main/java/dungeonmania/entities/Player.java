@@ -133,6 +133,8 @@ public class Player extends Entity {
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
 		if (entitySpecificData.has("inventory")) {
 			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
+		} else {
+			inventory = new EntityList();
 		}
 	}
 }
