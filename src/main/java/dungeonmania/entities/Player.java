@@ -10,10 +10,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
-import dungeonmania.Subject;
 import dungeonmania.entities.buildable.BuildableFactory;
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Wall;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -30,7 +27,7 @@ public class Player extends Entity {
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
-	private EntityList inventory = new EntityList("inventory");
+	private EntityList inventory = new EntityList();
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
@@ -128,5 +125,7 @@ public class Player extends Entity {
 		return null;
 	}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("inventory", inventory.toJSON());
+	}
 }

@@ -33,14 +33,12 @@ import dungeonmania.entities.buildable.*;
  */
 public class Dungeon {
     static private Integer lastId = 0;
-    static private final int maxMercenarySpawners = 1;
     
-    private int numMercenarySpawners = 0;
     private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
     
-    private EntityList entities = new EntityList("entities");
+    private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
 
     private List<String> buildables = new ArrayList<String>();
@@ -183,19 +181,10 @@ public class Dungeon {
 			return;
 		}
 		
-		// Get save data
+		// Retrieve all data to save
 		JSONObject saveData = new JSONObject();
-		
-		// Get all entitity data
-		JSONArray entitySaveData = new JSONArray();
-		entitySaveData.putAll(entities.toJSON());
-		entitySaveData.putAll(getPlayer().getInventory().toJSON());
-		
-		// Get all goal data
-		JSONObject goalSaveData = dungeonGoal.toJSON();
-		
-		saveData.put("entities", entitySaveData);
-		saveData.put("goal-condition", goalSaveData);
+		saveData.put("entities", entities.toJSON());
+		saveData.put("goal-condition", dungeonGoal.toJSON());
 		
 		try {
 			// Write the file
@@ -206,10 +195,7 @@ public class Dungeon {
 			System.out.println("File save error 2");
 			return;
 		}
-		
-
-		
-		System.out.println(entitySaveData);
+		System.out.println("Saved game at location " + saveFile.getPath());
 	}
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -233,8 +219,6 @@ public class Dungeon {
     private void updateGame() {
     	entities.updateEntities();
     }
-    
-    
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                             Dungeon Response                             ///
