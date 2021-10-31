@@ -32,7 +32,7 @@ public abstract class Buildable extends Entity {
         this.player = dungeon.getPlayer();
 		this.recipes = recipes;
         Recipe recipe  = checkRequirements(player, recipes);
-		if (recipe != null) {
+		if (recipe == null) {
 			throw new InvalidActionException("player does not have sufficient items to craft the buildable");
 		}
 		useRequirements(recipe);
