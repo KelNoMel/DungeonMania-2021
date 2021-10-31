@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
 import dungeonmania.entities.statics.ZombieToastSpawner;
@@ -21,8 +22,12 @@ public class EnemiesGoal extends Goal {
         List<Entity> entityList = getDungeon().getEntities();
         
         for (Entity entity : entityList) {
-            if (entity instanceof Spider || entity instanceof ZombieToast || entity instanceof ZombieToastSpawner) 
-                return false;
+            if (entity instanceof Spider || 
+            	entity instanceof ZombieToast ||
+            	entity instanceof ZombieToastSpawner ||
+            	entity instanceof Mercenary) 
+                
+            	return false;
         }
         return true;
     }

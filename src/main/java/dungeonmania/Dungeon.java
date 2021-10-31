@@ -353,6 +353,10 @@ public class Dungeon {
 		return (Player)entities.get(0);
 	}
 	
+	public GameMode getGameMode() {
+		return gameMode;
+	}
+	
 	/**
 	 * Check if the player is in a position
 	 * @param pos
