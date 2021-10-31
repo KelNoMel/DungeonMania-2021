@@ -151,6 +151,16 @@ public class DungeonTest {
         removeSaves();
     }
     
+    @Test
+    public void testLotsOfStuff() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("alotofstuff","Peaceful");
+        DungeonResponse saveResponse = mania.saveGame("SaveFile");
+        DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
+        removeSaves();
+    }
+    
     // load the current game
 
     // attempt to load a game that doesn't exist
