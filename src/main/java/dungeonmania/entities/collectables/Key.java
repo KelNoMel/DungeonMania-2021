@@ -7,14 +7,15 @@ import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
-import dungeonmania.entities.Player;
-import dungeonmania.entities.statics.Door;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Key extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	
+	private int keyNumber;
+	private String colour;
 	
 	public Key(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "key", position, false, entitySpecificData);
@@ -28,13 +29,26 @@ public class Key extends Entity {
 		
 	}
 
-	public boolean unlockDoor() {
-		Door.isUnlocked();
-		this.setState(EntityState.DEAD);
-		return true;
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("key", keyNumber);
+	}
+	
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		keyNumber = entitySpecificData.getInt("key");
+		if (keyNumber % 2 == 0) {
+			colour = "gold";
+		} else {
+			colour = "silver";
+		}
 		
 	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
+	public int getKeyNumber() {
+		return keyNumber;
+	}
+	
+	@Override
+	public EntityResponse response() {
+    	return new EntityResponse(getId(), getType() + "-" + colour, getPosition(), getInteractable());
+    }
 }

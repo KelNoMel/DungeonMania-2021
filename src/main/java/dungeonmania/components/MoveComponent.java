@@ -5,6 +5,7 @@ import java.util.List;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.statics.Boulder;
+import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -53,6 +54,7 @@ public class MoveComponent extends Component {
 		// Attempt to move if boulder in move location
 		boolean boulderMoved = true;
 		boolean isWall = false;
+		boolean doorUnlocked = true;
 		for (Entity e : moveEntities) {
 			if (e instanceof Boulder) {				
 				boulderMoved = ((Boulder)e).moveBoulder(moveDirection);
@@ -60,13 +62,16 @@ public class MoveComponent extends Component {
 			} else if (e instanceof Wall) {
 				isWall = true;
 				break;
+			} else if (e instanceof Door) {
+				doorUnlocked = ((Door)e).attemptUnlock();
+				break;
 			}
 		}
 		
 		// Instead for boulder a collisionless raycast could be passed down the checking chain?
 		
 		// Only move if move space is not covered by a wall or an unmovable boulder
-		if (!(isWall) && boulderMoved) {
+		if (!(isWall) && boulderMoved && doorUnlocked) {
 			return moveLocation;
 		}
 		return entityToMove.getPosition();

@@ -63,6 +63,7 @@ public class Player extends Entity {
 				// Bribe away!
 				playerTreasure.get(0).setState(EntityState.DEAD);
 				bribeMercenary.aiComponent.changeState("MercAlly");
+				bribeMercenary.setInteractable(false);
 				break;
 		}
 		inventory.processInput(inputState);
