@@ -26,20 +26,15 @@ public abstract class Buildable extends Entity {
 
     public Buildable(Dungeon dungeon, String type, Position position,  
         boolean isInteractable, List<Recipe> recipes) throws InvalidActionException {
-		// old constructor parameters
-		// ArrayList<ArrayList<String>> requiredTypeConfigs, 
-		// ArrayList<ArrayList<Integer>> requiredFreqConfigs
-
 
         super(dungeon, type, position, isInteractable);
         this.player = dungeon.getPlayer();
 		this.recipes = recipes;
         Recipe recipe  = checkRequirements(player, recipes);
-		if (recipe != null) {
+		if (recipe == null) {
 			throw new InvalidActionException("player does not have sufficient items to craft the buildable");
 		}
 		useRequirements(recipe);
-		//useRequirements(requiredTypes, requiredFreq);
     }
 
 	public static List<String> response(Player player) {
