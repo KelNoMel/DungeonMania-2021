@@ -14,6 +14,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.entities.buildable.Recipe;
+import dungeonmania.InputState;
 
 
 /**
@@ -77,5 +78,8 @@ public abstract class Buildable extends Entity {
 		}
 
 	}
+
+	protected abstract void updateEntity();
+	protected abstract void inputEntity(InputState inputState);
 
 }

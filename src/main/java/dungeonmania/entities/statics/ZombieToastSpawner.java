@@ -6,7 +6,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
 public class ZombieToastSpawner extends Entity {
-
+	
 	public ZombieToastSpawner(Dungeon dungeon, Position position) {
 		super(dungeon, "spawner", position, true);
 	}

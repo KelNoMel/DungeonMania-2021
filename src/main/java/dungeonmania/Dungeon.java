@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import dungeonmania.response.models.AnimationQueue;
@@ -15,6 +16,10 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
+import dungeonmania.components.Component;
+import dungeonmania.components.battles.BattleComponent;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.entities.moving.*;
@@ -321,9 +326,9 @@ public class Dungeon {
 			case "bomb":
 				return new Bomb(this, pos.asLayer(itemLayer));
 			case "sword":
-				return new Sword(this, pos.asLayer(itemLayer));
+				return new Sword(this, pos.asLayer(itemLayer), CollectableState.MAP);
 			case "armour":
-				return new Armour(this, pos.asLayer(itemLayer));
+				return new Armour(this, pos.asLayer(itemLayer), CollectableState.MAP);
 				
 			// Rare Collectable
 			case "the_one_ring":
@@ -331,11 +336,11 @@ public class Dungeon {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(this, pos.asLayer(itemLayer));
+				Bow bow = new Bow(this, pos.asLayer(itemLayer), CollectableState.MAP);
 				transferToInventory(bow);
 				return bow;
 			case "shield":
-				Shield shield = new Shield(this, pos.asLayer(itemLayer));
+				Shield shield = new Shield(this, pos.asLayer(itemLayer), CollectableState.MAP);
 				transferToInventory(shield);
 				return shield;
 			
@@ -382,6 +387,17 @@ public class Dungeon {
 	public void transferToInventory(Entity e) {
 		e.toggleDisplay(false);
 		entities.transferEntity(getPlayer().getInventory(), e);
+		// attach to player for battles
+		for (Component component : e.getComponents()) {
+			if (component instanceof BattleComponent) {
+				BattleComponent battleComponent = (BattleComponent)component;
+				BattleComponent playerBattle = (BattleComponent)getPlayer().getComponents()
+					.stream().filter(p -> p instanceof BattleComponent)
+					.collect(Collectors.toList()).get(0);
+				playerBattle.attach((BattleComponent)component);
+				return;
+			}
+		}
 	}
 }
 

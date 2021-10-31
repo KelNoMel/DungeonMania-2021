@@ -18,13 +18,12 @@ public class Recipe {
         this.ingredients = createRecipe(requiredType, requiredFreq);
     }
 
-    public static List<Ingredient> createRecipe(List<String> requiredType, 
+    private List<Ingredient> createRecipe(List<String> requiredType, 
         List<Integer> requiredFreq) {
         List<Ingredient> ingredients = new ArrayList<Ingredient>();
         int recipeLength = requiredType.size();
         for (int i = 0; i < recipeLength; i++) {
-            final int ii = i;
-            ingredients.add(new Ingredient(requiredType.get(ii), requiredFreq.get(ii)));
+            ingredients.add(new Ingredient(requiredType.get(i), requiredFreq.get(i)));
         }
         return ingredients;
     }

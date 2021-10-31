@@ -1,6 +1,7 @@
 package dungeonmania.entities.buildable;
 
 import dungeonmania.Dungeon;
+import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 import dungeonmania.entities.buildable.BuildableEnum;
@@ -12,9 +13,9 @@ public class BuildableFactory {
 		Position pos = new Position(0, 0);
         switch(buildable) {
 			case "bow":
-                return new Bow(dungeon, pos.asLayer(0));
+                return new Bow(dungeon, pos.asLayer(0), CollectableState.INVENTORY);
 			case "shield":
-                return new Shield(dungeon,BuildableEnum.SHIELD.getType(), pos.asLayer(0), BuildableEnum.SHIELD.getRecipes());
+                return new Shield(dungeon, pos.asLayer(0), CollectableState.INVENTORY);
 			default:
 				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}
