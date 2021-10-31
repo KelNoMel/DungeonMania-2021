@@ -8,7 +8,7 @@ import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
+import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 public class HealthPotion extends Entity {
@@ -21,11 +21,12 @@ public class HealthPotion extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {
+		Player player = getDungeon().getPlayer();
 		// Check if item was queued to be used
-		if (getDungeon().getPlayer().getUsedList().containsKey(getId())) {
+		if (player.getUsedList().containsKey(getId())) {
 			
 			// Effects of potion: Restore health
-			getDungeon().getPlayer().setHealth(10);
+			player.setHealth(10);
 		}
 	}
 
