@@ -1,8 +1,9 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
@@ -23,5 +24,7 @@ public class Treasure extends Entity {
 	protected void updateEntity() {
 
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

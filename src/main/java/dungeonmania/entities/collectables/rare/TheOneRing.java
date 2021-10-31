@@ -1,8 +1,9 @@
 package dungeonmania.entities.collectables.rare;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -19,5 +20,7 @@ public class TheOneRing extends Entity {
 	protected void updateEntity() {
 
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

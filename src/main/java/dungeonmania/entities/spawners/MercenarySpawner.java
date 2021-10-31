@@ -1,4 +1,6 @@
-package dungeonmania.entities;
+package dungeonmania.entities.spawners;
+
+import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.entities.moving.Mercenary;
@@ -13,5 +15,7 @@ public class MercenarySpawner extends Spawner {
 	public void spawnEntity() {
 		new Mercenary(getDungeon(), getPosition());
 	}
+
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

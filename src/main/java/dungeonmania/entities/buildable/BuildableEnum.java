@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import dungeonmania.entities.buildable.Recipe;
-
 // Based on: https://www.baeldung.com/java-enum-iteration
 public enum BuildableEnum {
     SHIELD("shield", Recipe.createRecipes(

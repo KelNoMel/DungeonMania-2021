@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -64,4 +66,6 @@ public class Portal extends Entity {
 			return portalLinks.get(colour).p1;
 		}
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }

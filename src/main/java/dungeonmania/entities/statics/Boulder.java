@@ -2,6 +2,8 @@ package dungeonmania.entities.statics;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -37,5 +39,7 @@ public class Boulder extends Entity {
 		
 		return true;
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 }

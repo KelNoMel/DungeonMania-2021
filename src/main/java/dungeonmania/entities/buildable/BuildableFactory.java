@@ -3,7 +3,6 @@ package dungeonmania.entities.buildable;
 import dungeonmania.Dungeon;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
-import dungeonmania.entities.buildable.BuildableEnum;
 
 public class BuildableFactory {
     public static Entity build(String buildable, Dungeon dungeon) {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
@@ -28,7 +30,7 @@ public class Player extends Entity {
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
-	private EntityList inventory = new EntityList();
+	private EntityList inventory = new EntityList("inventory");
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
@@ -125,4 +127,6 @@ public class Player extends Entity {
 		}
 		return null;
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }

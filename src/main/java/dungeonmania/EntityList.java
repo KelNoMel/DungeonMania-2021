@@ -3,6 +3,9 @@ package dungeonmania;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 
@@ -11,6 +14,12 @@ public class EntityList extends ArrayList<Entity> {
 	private boolean updatingActors = false;
 	private ArrayList<Entity> newEntities = new ArrayList<>();
 	private ArrayList<Entity> deadEntities = new ArrayList<>();
+	private String entityListName;
+	
+	public EntityList(String entityListName) {
+		super();
+		this.entityListName = entityListName;
+	}
 	
 	public void processInput(InputState inputState) {
 		updatingActors = true;
@@ -66,5 +75,15 @@ public class EntityList extends ArrayList<Entity> {
 		}
 		dest.add(transferEntity);
 		deadEntities.add(transferEntity);
+	}
+	
+	public JSONArray toJSON() {
+		JSONArray entities = new JSONArray();
+		for (Entity e : this) {
+			JSONObject entityInfo = e.toJSON();
+			entityInfo.put("location", entityListName);
+			entities.put(entityInfo);
+		}
+		return entities;
 	}
 }
