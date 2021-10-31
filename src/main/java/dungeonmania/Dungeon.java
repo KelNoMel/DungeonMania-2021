@@ -19,7 +19,6 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
-import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
 import dungeonmania.entities.moving.*;
@@ -27,6 +26,8 @@ import dungeonmania.entities.spawners.MercenarySpawner;
 import dungeonmania.entities.spawners.SpiderSpawner;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.rare.*;
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.*;
 
 /**
@@ -42,8 +43,6 @@ public class Dungeon {
     
     private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
-
-    private List<String> buildables = new ArrayList<String>();
     
     private Goal dungeonGoal;
     
@@ -318,6 +317,16 @@ public class Dungeon {
 		}
 		return entTypeList;
 	}
+	
+	public int numEntitiesOfType(Class<?> classType) {
+    	int numOfType = 0;
+    	for (Entity e : entities) {
+    		if (classType.isInstance(e)) {
+    			numOfType++;
+    		}
+    	}
+    	return numOfType;
+    }
 
 	// Offshoot of EntitiesByType, returning all hostile enemies
 	// Not used now
@@ -339,6 +348,24 @@ public class Dungeon {
 	 */
 	public Player getPlayer() {
 		return (Player)entities.get(0);
+	}
+	
+	/**
+	 * Check if the player is in a position
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		e.toggleDisplay(false);
+		entities.transferEntity(getPlayer().getInventory(), e);
+	}
+	
+	public void addEntity(Entity e) {
+		entities.add(e);
 	}
 	
 	public class Bounds {
@@ -386,34 +413,6 @@ public class Dungeon {
 		}
 		
 		return new Bounds(new Position(minX, minY), new Position(maxX, maxY));
-	}
-
-	/**
-	 * Check if the player is in a position
-	 * @param pos
-	 * @return true if player is at the (x,y) location. False otherwise.
-	 */
-	public boolean isPlayerHere(Position pos) {
-		return getPlayer().getPosition().equals(pos);
-	}
-
-	public void transferToInventory(Entity e) {
-		e.toggleDisplay(false);
-		entities.transferEntity(getPlayer().getInventory(), e);
-	}
-	
-	public int numEntitiesOfType(Class<?> classType) {
-    	int numOfType = 0;
-    	for (Entity e : entities) {
-    		if (classType.isInstance(e)) {
-    			numOfType++;
-    		}
-    	}
-    	return numOfType;
-    }
-    
-	public void addEntity(Entity e) {
-		entities.add(e);
 	}
 }
 
