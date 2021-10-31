@@ -1,10 +1,13 @@
 package dungeonmania;
 
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -16,13 +19,15 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
-import dungeonmania.Dungeon.Bounds;
-import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
 import dungeonmania.entities.moving.*;
+import dungeonmania.entities.spawners.MercenarySpawner;
+import dungeonmania.entities.spawners.SpiderSpawner;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.rare.*;
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.*;
 
 /**
@@ -31,55 +36,41 @@ import dungeonmania.entities.buildable.*;
  * No two Entities will have the same id
  */
 public class Dungeon {
-    static private Integer lastId = 0;
-    static private final int maxMercenarySpawners = 1;
-    
-    private int numMercenarySpawners = 0;
-    private String dungeonId;
+
+	private String dungeonId;
     private String dungeonName;
     private GameMode gameMode;
     
     private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
-
-    private List<String> buildables = new ArrayList<String>();
     
-    private String goals;
-    private GoalCondition goalCondition;
-	private List<Goal> goalsList = new ArrayList<Goal>();
-       
-    // TODO: fill in empty attribute fields with proper code
+    private Goal dungeonGoal;
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                         New Dungeon Construction                         ///
+	////////////////////////////////////////////////////////////////////////////////
+    
+    private static String createId() {
+        return UUID.randomUUID().toString();
+    }
+    
     public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
-    	this.dungeonName = dungeonName;
+        this.dungeonName = dungeonName;
     	this.gameMode = GameMode.getGameMode(gameMode);
     	
     	// Load file
-    	JSONObject newDungeonData = loadDungeonJSON(dungeonName);
+    	JSONObject dungeonJSON = readDungeonJSON(dungeonName);
     	
     	// Add the entities
-        loadEntities(newDungeonData);        
+        entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
         
 		// Adds goals and sets goal condition
-		loadGoals(newDungeonData);
+		dungeonGoal = loadGoalFromFile(dungeonJSON);
     	
     	dungeonId = Dungeon.createId();
     }
     
-    public Dungeon(File loadFile) {
-    	String fileData;
-    	try {
-			fileData = new String(Files.readAllBytes(loadFile.toPath()));
-		} catch (IOException e) {
-			System.out.println("Unable to read file " + loadFile + " information");
-		}
-    	System.out.println("Loading saved files is not yet implemented!");
-    }
-    
-	////////////////////////////////////////////////////////////////////////////////
-	///                       Dungeon Loading/Construction                       ///
-	////////////////////////////////////////////////////////////////////////////////
-    
-    private JSONObject loadDungeonJSON(String dungeonName) throws IllegalArgumentException {
+    private JSONObject readDungeonJSON(String dungeonName) throws IllegalArgumentException {
     	try {
     		return new JSONObject(
     				FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json")
@@ -89,99 +80,66 @@ public class Dungeon {
     		throw new IllegalArgumentException("dungeonName is not a dungeon that exists");
     	}
     }
-
-    private void loadEntities(JSONObject dungeonData) {
-    	JSONArray loadEntities = dungeonData.getJSONArray("entities");
-
-    	int numEntities = loadEntities.length();
-    	for (int i = 0; i < numEntities; i++) {
-    		JSONObject ent = loadEntities.getJSONObject(i);
-    		
-    		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-            // Entity construction function
-    		createEntity(ent);
+    
+    private Goal loadGoalFromFile(JSONObject dungeonJSON) {
+    	JSONObject goalInfo;
+    	try {
+    		goalInfo = dungeonJSON.getJSONObject("goal-condition");
+    		return loadGoals(goalInfo);
+    	} catch (JSONException e) {
+    		return new DefaultGoal(this);
     	}
+    }
+    
+    
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Dungeon Loading                             ///
+	////////////////////////////////////////////////////////////////////////////////
+    
+    public Dungeon(File loadFile) {
+    	JSONObject fileData;
+    	try {
+			fileData = new JSONObject(new String(Files.readAllBytes(loadFile.toPath())));
+		} catch (IOException e) {
+			System.out.println("Unable to read/load file " + loadFile.toPath() + " information");
+			throw new IllegalArgumentException("Unable to create the dungeon from the selected file");
+		}
     	
+    	System.out.println(fileData.toString(2));
+    	
+    	dungeonName = fileData.getString("dungeon-name");
+    	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
+    	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
+    	loadSpawners();
+    	dungeonGoal = loadGoalFromFile(fileData);
+    }
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              JSON Extraction                             ///
+	////////////////////////////////////////////////////////////////////////////////
+    
+    private void loadSpawners() {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
-    		createEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"));
+    		EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this);
     	}
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
-    		createEntity(newEntityJSON(0, 0, "spider_spawner"));
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
     }
     
-    private JSONObject newEntityJSON(int x, int y, String entType) {
-    	JSONObject newMercSpawner = new JSONObject();
-    	newMercSpawner.put("x", getPlayer().getPosition().getX());
-    	newMercSpawner.put("y", getPlayer().getPosition().getY());
-    	newMercSpawner.put("type", entType);
-    	return newMercSpawner;
-    }
-
-    public int numEntitiesOfType(Class<?> classType) {
-    	int numOfType = 0;
-    	for (Entity e : entities) {
-    		if (classType.isInstance(e)) {
-    			numOfType++;
-    		}
-    	}
-    	return numOfType;
-    }
-    
-	public void addEntity(Entity e) {
-		entities.add(e);
-	}
-
-    /**
-     * Creates a new id by adding 1 to the integer value of the last id created
-     * Note: This may generate used ids if persistence is added. Use UUID's in 
-     *       that case.
-     * @return new unique dungeon id
-     */
-    private static String createId() {
-        return String.valueOf(++lastId); 
-    }
-
-	private void loadGoals(JSONObject dungeonData) {
-		JSONObject goalData = dungeonData.getJSONObject("goal-condition");
-
-		String goalString = goalData.getString("goal");
-		//JSONObject goalCondition = goalData.getJSONObject("goal");
-		switch (goalString) {
-			case "AND":
-				goalCondition = GoalCondition.AND;
-				break;
-			case "OR":
-				goalCondition = GoalCondition.OR;
-				break;
-			default:
-				goalsList.add(createGoal(goalString));
-				goals = ":" + goalString;
-				return;
-		}
-
-		// casewhere goalCondition = AND, OR, goaloptions
-		JSONArray subGoals = goalData.getJSONArray("subgoals");
+    private Goal loadGoals(JSONObject goalJSON) {
+		JSONArray subgoals;
 		
-		int numGoals = subGoals.length();
-    	for (int i = 0; i < numGoals; i++) {
-    		JSONObject goal = subGoals.getJSONObject(i);
-    		goalsList.add(createGoal(goal.getString("goal")));
-			if (i != 0) {
-				goals += goalString + " ";
-			}
-			goals += ":" + goal.getString("goal") + " ";
-			
-    	}
-		checkGoalState();
-
-	}
-
-	public Goal createGoal(String goalType) {
-		switch (goalType) {
+		switch(goalJSON.getString("goal")) {
+			case "AND":
+				subgoals = goalJSON.getJSONArray("subgoals");
+				return new AndGoal(this, loadGoals(subgoals.getJSONObject(0)), loadGoals(subgoals.getJSONObject(1)));
+			case "OR":
+				subgoals = goalJSON.getJSONArray("subgoals");
+				return new OrGoal(this, loadGoals(subgoals.getJSONObject(0)), loadGoals(subgoals.getJSONObject(1)));
 			case "exit":
 				return new ExitGoal(this);
 			case "treasure":
@@ -190,11 +148,20 @@ public class Dungeon {
 				return new BoulderGoal(this);
 			case "enemies":
 				return new EnemiesGoal(this);
-			default: 
-				System.out.println(goalType + " goal has not been implemented yet.");
-				return null;
+			case "default":
+				return new DefaultGoal(this);
+			default:
+				throw new IllegalArgumentException("GoalJSON is invalid");
 		}
 	}
+    
+    private JSONObject newEntityJSON(int x, int y, String entType) {
+    	JSONObject newEntity = new JSONObject();
+    	newEntity.put("x", getPlayer().getPosition().getX());
+    	newEntity.put("y", getPlayer().getPosition().getY());
+    	newEntity.put("type", entType);
+    	return newEntity;
+    }
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Dungeon Saving                              ///
@@ -202,10 +169,31 @@ public class Dungeon {
     
     public void saveGame(File saveFile) {
 		try {
+			// Make sure the file exists and is ready to write to
+			saveFile.delete();
 			saveFile.createNewFile();
 		} catch (IOException e) {
-			System.out.println("File save error");
+			System.out.println("File save error 1");
+			return;
 		}
+		
+		// Retrieve all data to save
+		JSONObject saveData = new JSONObject();
+		saveData.put("entities", entities.toJSON());
+		saveData.put("goal-condition", dungeonGoal.toJSON());
+		saveData.put("gamemode", gameMode.asString());
+		saveData.put("dungeon-name", dungeonName);
+		
+		try {
+			// Write the file
+			FileWriter writer = new FileWriter(saveFile);
+			writer.write(saveData.toString(4));
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("File save error 2");
+			return;
+		}
+		System.out.println("Saved game at location " + saveFile.getPath());
 	}
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -228,37 +216,64 @@ public class Dungeon {
     
     private void updateGame() {
     	entities.updateEntities();
-		if (checkGoalState() == true) goals = "";
-    }
-    
-    // TODO
-    /**
-     * Checks if the goal has been reached to complete the game
-     * @return
-     */
-    private boolean checkGoalState() {
-		if (goalCondition == null) return goalsList.get(0).checkGoal();
-		switch (goalCondition) {
-			case AND:
-				for (Goal goal : goalsList) {
-					if (goal.checkGoal() == false) return false;
-				}
-				return true;
-			case OR:
-				for (Goal goal : goalsList) {
-					if (goal.checkGoal() == true) return true;
-				}
-				return false;
-			default:
-				return goalsList.get(0).checkGoal();
-		}
     }
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
-    public List<Entity> getEntities() {
+	// TODO
+	/**
+	 * Get the types of buildables possible
+	 * @return list of strings for each type of buildable
+	 */
+	public List<String> buildableResponse() {
+		return Buildable.response(getPlayer());
+	}
+    
+	// TODO: add goals, animations
+    /**
+     * Create a DungeonResponse for the current Dungeon
+     * @return DungeonResponse describing the currennt state of the game
+     */
+    public DungeonResponse response() {
+        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
+        //    itemResponse(), buildables, goals, animations);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+        itemResponse(), buildableResponse(), dungeonGoal.response());
+    }
+    
+    /**
+     * Create a list of EntityResponse for each entity on the map
+     * @return list of EntityResponse for all entities
+     */
+    private List<EntityResponse> entityResponse() {
+        return new ArrayList<EntityResponse>(entities.stream()
+            .map(e -> e.response()).collect(Collectors.toList()));
+    }
+	
+	/**
+     * Create a list of ItemRespones for each item in the player's inventory
+     * @return list of all ItemResponses for the inventory
+     */
+    private List<ItemResponse> itemResponse() {
+        return getPlayer().getInventoryResponse();
+    }
+	    
+	////////////////////////////////////////////////////////////////////////////////
+	///                            Entity Construction                           ///
+	////////////////////////////////////////////////////////////////////////////////
+   
+
+	public void build(String buildable) {
+		getPlayer().build(buildable);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	///                              Helper Methods                              ///
+	////////////////////////////////////////////////////////////////////////////////
+	
+	public List<Entity> getEntities() {
     	return entities;
     }
 
@@ -291,151 +306,39 @@ public class Dungeon {
     	return null;
     }
 
-	// TODO
-	/**
-	 * Get the types of buildables possible
-	 * @return list of strings for each type of buildable
-	 */
-	public List<String> buildableResponse() {
-		return Buildable.response(getPlayer());
-	}
-    
-	// TODO: add goals, animations
-    /**
-     * Create a DungeonResponse for the current Dungeon
-     * @return DungeonResponse describing the currennt state of the game
-     */
-    public DungeonResponse response() {
-        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-        //    itemResponse(), buildables, goals, animations);
-        return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), buildableResponse(), goals);
-    }
-    
-    /**
-     * Create a list of EntityResponse for each entity on the map
-     * @return list of EntityResponse for all entities
-     */
-    private List<EntityResponse> entityResponse() {
-        return new ArrayList<EntityResponse>(entities.stream()
-            .map(e -> e.response()).collect(Collectors.toList()));
-    }
-	
-	/**
-     * Create a list of ItemRespones for each item in the player's inventory
-     * @return list of all ItemResponses for the inventory
-     */
-    private List<ItemResponse> itemResponse() {
-        return getPlayer().getInventoryResponse();
-    }
-	    
-	////////////////////////////////////////////////////////////////////////////////
-	///                            Entity Construction                           ///
-	////////////////////////////////////////////////////////////////////////////////
-    
-    // TODO: Research better way to do this
-    
-    /**
-     * Used to construct specific entities given their JSON representation
-     * @param ent
-     * @return
-     */
-	public Entity createEntity(JSONObject ent) {
-		Position pos = new Position(ent.getInt("x"), ent.getInt("y"));
-		
-		int topLayer = 3;
-		int movingLayer = 2;
-		int itemLayer = 1;
-		int bottomLayer = 0;
-		
-		switch (ent.getString("type")) {
-			case "player":
-				Entity player = new Player(this, pos.asLayer(topLayer));
-				// Make sure player is updated first
-				Collections.swap(entities, 0, entities.indexOf(player));
-				return player;
-			// Statics
-			case "wall":
-				return new Wall(this, pos.asLayer(bottomLayer));
-			case "exit":
-				return new Exit(this, pos.asLayer(bottomLayer));
-			case "boulder":
-				return new Boulder(this, pos.asLayer(bottomLayer));
-			case "switch":
-				return new FloorSwitch(this, pos.asLayer(bottomLayer));
-			case "door":
-				return new Door(this, pos.asLayer(bottomLayer));
-			case "portal":
-				return new Portal(this, pos.asLayer(bottomLayer), ent.getString("colour"));
-			case "spawner":
-				return new ZombieToastSpawner(this, pos.asLayer(bottomLayer));
-			
-			// Moving
-			case "spider":
-				return new Spider(this, pos.asLayer(movingLayer));
-			case "zombie":
-				return new ZombieToast(this, pos.asLayer(movingLayer));
-			case "mercenary":
-				return new Mercenary(this, pos.asLayer(movingLayer));
-				
-			// Collectable
-			case "treasure":
-				return new Treasure(this, pos.asLayer(itemLayer));
-			case "key":
-				return new Key(this, pos.asLayer(itemLayer));
-			case "health_potion":
-				return new HealthPotion(this, pos.asLayer(itemLayer));
-			case "invincibility_potion":
-				return new InvincibilityPotion(this, pos.asLayer(itemLayer));
-			case "invisibility_potion":
-				return new InvisibilityPotion(this, pos.asLayer(itemLayer));
-			case "wood":
-				return new Wood(this, pos.asLayer(itemLayer));
-			case "arrows":
-				return new Arrows(this, pos.asLayer(itemLayer));
-			case "bomb":
-				return new Bomb(this, pos.asLayer(itemLayer));
-			case "sword":
-				return new Sword(this, pos.asLayer(itemLayer));
-			case "armour":
-				return new Armour(this, pos.asLayer(itemLayer));
-				
-			// Rare Collectable
-			case "the_one_ring":
-				return new TheOneRing(this, pos.asLayer(itemLayer));
-				
-			/// Buildable
-			case "bow":
-				Bow bow = new Bow(this, pos.asLayer(itemLayer));
-				transferToInventory(bow);
-				return bow;
-			case "shield":
-				Shield shield = new Shield(this, pos.asLayer(itemLayer));
-				transferToInventory(shield);
-				return shield;
-			
-			// Non spec-defined
-			case "mercenary_spawner":
-				return new MercenarySpawner(this, pos, 10);
-			case "spider_spawner":
-				// TODO load spawner info from save
-				return new SpiderSpawner(this, pos, 5);
-			// Type is not correct or has not been implemented
-			default:
-				System.out.println(ent.getString("type") + " has not been implemented");
-				return null;
+	// Returns a list of enitities by a certain type
+	// Not used now
+	public List<Entity> getEntitiesByType(String type) {
+		List<Entity> entTypeList = new ArrayList<>();
+		for (Entity e : entities) {
+			if (e.getType().equals(type)) {
+				entTypeList.add(e);
+			}
 		}
+		return entTypeList;
 	}
+	
+	public int numEntitiesOfType(Class<?> classType) {
+    	int numOfType = 0;
+    	for (Entity e : entities) {
+    		if (classType.isInstance(e)) {
+    			numOfType++;
+    		}
+    	}
+    	return numOfType;
+    }
 
-	public void build(String buildable) {
-		getPlayer().build(buildable);
+	// Offshoot of EntitiesByType, returning all hostile enemies
+	// Not used now
+	public List<Entity> getEnemies() {
+		List<Entity> enemList = new ArrayList<>();
+		enemList.addAll(getEntitiesByType("spider"));
+		enemList.addAll(getEntitiesByType("zombie"));
+		// NOTE: Will add "ally" mercenaries, you'll need to separate
+		// them out later
+		enemList.addAll(getEntitiesByType("mercenary"));
+		return enemList;
 	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	///                              Helper Methods                              ///
-	////////////////////////////////////////////////////////////////////////////////
-	
-	
 	
 	/**
 	 * Get the player
@@ -445,6 +348,24 @@ public class Dungeon {
 	 */
 	public Player getPlayer() {
 		return (Player)entities.get(0);
+	}
+	
+	/**
+	 * Check if the player is in a position
+	 * @param pos
+	 * @return true if player is at the (x,y) location. False otherwise.
+	 */
+	public boolean isPlayerHere(Position pos) {
+		return getPlayer().getPosition().equals(pos);
+	}
+
+	public void transferToInventory(Entity e) {
+		e.toggleDisplay(false);
+		entities.transferEntity(getPlayer().getInventory(), e);
+	}
+	
+	public void addEntity(Entity e) {
+		entities.add(e);
 	}
 	
 	public class Bounds {
@@ -492,20 +413,6 @@ public class Dungeon {
 		}
 		
 		return new Bounds(new Position(minX, minY), new Position(maxX, maxY));
-	}
-
-	/**
-	 * Check if the player is in a position
-	 * @param pos
-	 * @return true if player is at the (x,y) location. False otherwise.
-	 */
-	public boolean isPlayerHere(Position pos) {
-		return getPlayer().getPosition().equals(pos);
-	}
-
-	public void transferToInventory(Entity e) {
-		e.toggleDisplay(false);
-		entities.transferEntity(getPlayer().getInventory(), e);
 	}
 }
 

@@ -16,10 +16,7 @@ public class DoorKeyTest {
     // Test to see if key is added to inventory
     @Test
     public void testKey() {
-        Dungeon mania = new DungeonManiaController();
-        mania.newGame("boulders","Peaceful");
-
-        Key key1 = new Key(mania, 100, "Key1");
+        
 
 
     }

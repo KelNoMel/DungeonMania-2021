@@ -5,14 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
+import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
-import dungeonmania.Subject;
 import dungeonmania.entities.buildable.BuildableFactory;
+<<<<<<< HEAD
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
+=======
+>>>>>>> master
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -29,15 +34,18 @@ public class Player extends Entity {
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 
-	private EntityList inventory = new EntityList();
+	private EntityList inventory;
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	public Player(Dungeon dungeon, Position position) {
-		super(dungeon, "player", position, false);
+	// Player states include: Normal, invisible, invincible
+	public String status = "normal";
+
+	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "player", position, false, entitySpecificData);
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {
@@ -101,20 +109,32 @@ public class Player extends Entity {
 		return usedList;
 	}
 
-	// Used to subtract players health by a value, used when taking damage
-	public int takeDamage(int dmg) {
-		health = health - dmg;
+
+	public int getHealth() {
 		return health;
 	}
 
+	// Used to subtract players health by a value, used when taking damage
+	public void takeDamage(int dmg) {
+		health = health - dmg;
+	}
+
 	// Used to set players health, currently used to restore full health on heal
-	public int setHealth(int hp) {
+	public void setHealth(int hp) {
 		health = hp;
-		return health;
 	}
 
 	public EntityList getInventory() {
 		return inventory;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	// Used to set player status: Normal, invincible, invisible
+	public void setStatus(String state) {
+		status = state;
 	}
 
 
@@ -125,5 +145,17 @@ public class Player extends Entity {
 			}
 		}
 		return null;
+	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("inventory", inventory.toJSON());
+	}
+
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		if (entitySpecificData.has("inventory")) {
+			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
+		} else {
+			inventory = new EntityList();
+		}
 	}
 }

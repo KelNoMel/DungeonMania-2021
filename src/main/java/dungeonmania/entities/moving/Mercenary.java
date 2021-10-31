@@ -1,5 +1,7 @@
 package dungeonmania.entities.moving;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
@@ -11,12 +13,12 @@ import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
 public class Mercenary extends Entity {
-
+	
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	
-	public Mercenary(Dungeon dungeon, Position position) {
-		super(dungeon, "mercenary", position, true);
+	public Mercenary(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "mercenary", position, true, entitySpecificData);
 		aiComponent.registerState(new AIMercHostile(aiComponent, this));
 		aiComponent.registerState(new AIMercAlly(aiComponent, this));
 		aiComponent.changeState("MercHostile");
@@ -27,4 +29,7 @@ public class Mercenary extends Entity {
 	}
 
 	protected void updateEntity() {}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

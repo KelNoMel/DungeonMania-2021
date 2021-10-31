@@ -1,15 +1,16 @@
 package dungeonmania.entities.collectables;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.AIComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
 public class Sword extends Entity {
 
-	public Sword(Dungeon dungeon, Position position) {
-		super(dungeon, "sword", position, false);
+	public Sword(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "sword", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -20,4 +21,6 @@ public class Sword extends Entity {
 
 	}
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

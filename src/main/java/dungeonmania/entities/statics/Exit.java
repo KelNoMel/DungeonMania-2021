@@ -1,5 +1,7 @@
 package dungeonmania.entities.statics;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
@@ -7,8 +9,8 @@ import dungeonmania.util.Position;
 
 public class Exit extends Entity {
 
-	public Exit(Dungeon dungeon, Position position) {
-		super(dungeon, "exit", position, false);
+	public Exit(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "exit", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -26,4 +28,7 @@ public class Exit extends Entity {
 		return false;
 	}
 
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
 }

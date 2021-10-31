@@ -2,18 +2,15 @@ package dungeonmania.entities.buildable;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.Map;
+
+import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.entities.buildable.Recipe;
 
 
 /**
@@ -25,13 +22,13 @@ public abstract class Buildable extends Entity {
 	protected List<Recipe> recipes;
 
     public Buildable(Dungeon dungeon, String type, Position position,  
-        boolean isInteractable, List<Recipe> recipes) throws InvalidActionException {
+        boolean isInteractable, List<Recipe> recipes, JSONObject entitySpecificData) throws InvalidActionException {
 		// old constructor parameters
 		// ArrayList<ArrayList<String>> requiredTypeConfigs, 
 		// ArrayList<ArrayList<Integer>> requiredFreqConfigs
 
 
-        super(dungeon, type, position, isInteractable);
+        super(dungeon, type, position, isInteractable, entitySpecificData);
         this.player = dungeon.getPlayer();
 		this.recipes = recipes;
         Recipe recipe  = checkRequirements(player, recipes);

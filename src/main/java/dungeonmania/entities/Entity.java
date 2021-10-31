@@ -7,9 +7,10 @@ import dungeonmania.components.Component;
 import dungeonmania.response.models.EntityResponse;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.json.JSONObject;
 
 /**
  * Entity base class representing most objects found in the game.
@@ -30,7 +31,7 @@ public abstract class Entity {
     
     private List<Component> components = new ArrayList<Component>();
 
-    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable) {
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, JSONObject entitySpecificData) {
     	this.dungeon = dungeon;
     	this.state = EntityState.ACTIVE;
         this.position = position;
@@ -38,8 +39,10 @@ public abstract class Entity {
         this.type = type;
         this.isInteractable = isInteractable;
         
-        dungeon.addEntity(this);
+        loadJSONEntitySpecific(entitySpecificData);
     }
+    
+    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                        Entity Loading/Construction                       ///
@@ -51,8 +54,7 @@ public abstract class Entity {
      * @return new unique entity id
      */
     private static String createId() {
-        String id = UUID.randomUUID().toString();
-        return id;
+        return UUID.randomUUID().toString();
     }
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -112,11 +114,23 @@ public abstract class Entity {
     public EntityState getState() { return state; }
     public void setState(EntityState s) { state = s; }
     public Position getPosition() { return position; }
-    public void setPosition(Position p) { position = p.asLayer(position.getLayer()); } 
+    public void setPosition(Position p) { position = p.asLayer(position.getLayer()); }
+    public boolean getInteractable() { return isInteractable; }
+    public void setInteractable(boolean interactable) { isInteractable = interactable; }
     public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }
     public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
+    
+    public JSONObject toJSON() {
+    	JSONObject entityJSON = new JSONObject();
+    	entityJSON.put("x", position.getX());
+    	entityJSON.put("y", position.getY());
+    	entityJSON.put("type", type);
+    	addJSONEntitySpecific(entityJSON);
+    	return entityJSON;
+    }
+    public abstract void addJSONEntitySpecific(JSONObject baseJSON);
     
     public boolean withinRange(Entity e, int distance) {
 		return Math.abs(Position.distanceBetween(position, e.getPosition()) - distance) <= Position.epsilon;

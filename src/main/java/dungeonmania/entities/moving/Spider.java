@@ -1,5 +1,7 @@
 package dungeonmania.entities.moving;
 
+import org.json.JSONObject;
+
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
@@ -14,8 +16,8 @@ public class Spider extends Entity {
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.GHOST);
 	
-	public Spider(Dungeon dungeon, Position position) {
-		super(dungeon, "spider", position, false);
+	public Spider(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "spider", position, false, entitySpecificData);
 		aiComponent.registerState(new AISpiderHostile(aiComponent, this));
 		aiComponent.changeState("SpiderHostile");
 	}
@@ -27,5 +29,8 @@ public class Spider extends Entity {
 	protected void updateEntity() {
 
 	}
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 }
