@@ -400,6 +400,30 @@ public class Dungeon {
     	}
     	return null;
     }
+
+	// Returns a list of enitities by a certain type
+	// Not used now
+	public List<Entity> getEntitiesByType(String type) {
+		List<Entity> entTypeList = new ArrayList<>();
+		for (Entity e : entities) {
+			if (e.getType().equals(type)) {
+				entTypeList.add(e);
+			}
+		}
+		return entTypeList;
+	}
+
+	// Offshoot of EntitiesByType, returning all hostile enemies
+	// Not used now
+	public List<Entity> getEnemies() {
+		List<Entity> enemList = new ArrayList<>();
+		enemList.addAll(getEntitiesByType("spider"));
+		enemList.addAll(getEntitiesByType("zombie"));
+		// NOTE: Will add "ally" mercenaries, you'll need to separate
+		// them out later
+		enemList.addAll(getEntitiesByType("mercenary"));
+		return enemList;
+	}
 	
 	/**
 	 * Get the player

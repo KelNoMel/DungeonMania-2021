@@ -4,27 +4,30 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
+import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Entity {
 
+	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
+
 	public InvincibilityPotion(Dungeon dungeon, Position position) {
 		super(dungeon, "invincibility_potion", position, false);
 	}
 
 	protected void inputEntity(InputState inputState) {
-		// Check if a health potion was already used in this tick
-		boolean alreadyUsed = getDungeon().getPlayer().getUsedList().containsKey("invincibility_potion");
-		
-		// Would "consumable" be a valid component?
-		if (inputState.getItemUsed() == "invincibility_potion" && alreadyUsed == false) {
-			getDungeon().getPlayer().setHealth(10);
+		// Check if item was queued to be used
+		if (getDungeon().getPlayer().getUsedList().containsKey(getId())) {
 			
-			setState(EntityState.DEAD);
-
-			getDungeon().getPlayer().getUsedList().put("invincibility_potion", null);
+			// Effects of potion: Make all enemies go into afraid AI state
+			// Afraid AI: Run away from player, battle auto-resolves to win
+			getDungeon().getPlayer().addComponent(EffectComponent(EffectComponent(getDungeon().getPlayer(), 3));
+			getDungeon().getPlayer().setStatus("invincible");
 		}
 	}
 	

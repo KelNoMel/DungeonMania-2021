@@ -34,6 +34,9 @@ public class Player extends Entity {
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
+	// Player states include: Normal, invisible, invincible
+	public String status = "normal";
+
 	public Player(Dungeon dungeon, Position position) {
 		super(dungeon, "player", position, false);
 	}
@@ -99,20 +102,32 @@ public class Player extends Entity {
 		return usedList;
 	}
 
-	// Used to subtract players health by a value, used when taking damage
-	public int takeDamage(int dmg) {
-		health = health - dmg;
+
+	public int getHealth() {
 		return health;
 	}
 
+	// Used to subtract players health by a value, used when taking damage
+	public void takeDamage(int dmg) {
+		health = health - dmg;
+	}
+
 	// Used to set players health, currently used to restore full health on heal
-	public int setHealth(int hp) {
+	public void setHealth(int hp) {
 		health = hp;
-		return health;
 	}
 
 	public EntityList getInventory() {
 		return inventory;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	// Used to set player status: Normal, invincible, invisible
+	public void setStatus(String state) {
+		status = state;
 	}
 
 
