@@ -9,7 +9,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
-import dungeonmania.entities.statics.ZombieToastSpawner;
+import dungeonmania.entities.spawners.ZombieToastSpawner;
 
 public class EnemiesGoal extends Goal {
 

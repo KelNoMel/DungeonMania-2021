@@ -12,12 +12,6 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
-<<<<<<< HEAD
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Door;
-import dungeonmania.entities.statics.Wall;
-=======
->>>>>>> master
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
