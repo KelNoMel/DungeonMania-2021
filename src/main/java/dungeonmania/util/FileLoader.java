@@ -35,6 +35,13 @@ public final class FileLoader {
     	return Paths.get(FileLoader.class.getResource(directory).toURI());
     }
     
+    public static Path getSavePath() throws URISyntaxException {
+    	Path dungeonFolder;
+		dungeonFolder = getFolderPath("/dungeons");
+		dungeonFolder = dungeonFolder.subpath(0, dungeonFolder.getNameCount()-1);
+		return dungeonFolder.resolve("dungeonSaves");
+    }
+    
     /**
      * Lists file names (without extension) within a specified resource directory.
      * 
@@ -61,6 +68,20 @@ public final class FileLoader {
             throw new FileNotFoundException(directory);
         }
     }
+    
+    public static List<String> listSaves() throws IOException {
+        try {
+            Path root = getSavePath();
+            
+            return Files.walk(root).filter(Files::isRegularFile).map(x -> {
+                String nameAndExt = x.toFile().getName();
+                int extIndex = nameAndExt.lastIndexOf('.');
+                return nameAndExt.substring(0, extIndex > -1 ? extIndex : nameAndExt.length());
+            }).collect(Collectors.toList());
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException("/dungeonSaves not found");
+        }
+    }
 
     /**
      * Lists file names (without extension) within a specified non-resource directory.
@@ -82,10 +103,7 @@ public final class FileLoader {
 
 	public static void initialiseSaves() {
 		try {
-			Path dungeonFolder = getFolderPath("/dungeons");
-			dungeonFolder = dungeonFolder.subpath(0, dungeonFolder.getNameCount()-1);
-			Path savePath = dungeonFolder.resolve("dungeonSaves");
-			savePath.toFile().mkdirs();
+			getSavePath().toFile().mkdirs();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

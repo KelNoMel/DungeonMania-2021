@@ -1,8 +1,11 @@
 package dungeonmania.entities.spawners;
 
+import java.util.Collections;
+
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
@@ -26,6 +29,7 @@ public abstract class Spawner extends Entity {
 		ticksUntilNextSpawn--;
 		if (ticksUntilNextSpawn <= 0) {
 			spawnEntity();
+			EntityList entities = getDungeon().getEntities();
 			ticksUntilNextSpawn = tickSpawnRate;
 		}
 	}

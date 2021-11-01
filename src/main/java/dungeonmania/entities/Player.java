@@ -12,30 +12,20 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Wall;
-import dungeonmania.components.Component;
+import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
-import dungeonmania.components.battles.AttackTypeEnum;
-import dungeonmania.components.battles.BattleComponent;
-import dungeonmania.components.battles.Power;
-import dungeonmania.components.battles.PowerUser;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-	final private int maxHealth = 10;
-	// private int health = maxHealth;
-	final private int attackDamage = 10;
 	
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 
-		new Power(maxHealth, maxHealth, attackDamage, 0, PowerUser.PLAYER, AttackTypeEnum.FISTS));
+	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
 
 	private EntityList inventory;
 
@@ -114,17 +104,8 @@ public class Player extends Entity {
 	}
 
 	// Used to set players health, currently used to restore full health on heal
-	public int setHealth(int hp) {
-		// health = hp;
-		int newHealth = 0;
-		for (Component c : getComponents()) {
-			if (c instanceof BattleComponent) {
-				BattleComponent battleComponent = (BattleComponent)c;
-				battleComponent.setHealth(hp);
-				newHealth = battleComponent.getHealth();
-			}
-		}
-		return newHealth;
+	public void setHealth(int hp) {
+		battleComponent.setHealth(hp);
 	}
 
 	public EntityList getInventory() {

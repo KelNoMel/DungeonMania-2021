@@ -23,7 +23,6 @@ import dungeonmania.util.*;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.Component;
-import dungeonmania.components.battles.BattleComponent;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
@@ -70,7 +69,7 @@ public class Dungeon {
     	// Add the entities
     	Portal.clearPortalLinks();
         entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
-        loadSpawners();
+        loadOther();
         
 		// Adds goals and sets goal condition
 		dungeonGoal = loadGoalFromFile(dungeonJSON);
@@ -119,7 +118,7 @@ public class Dungeon {
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
     	Portal.clearPortalLinks();
     	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
-    	loadSpawners();
+    	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
     }
 
@@ -127,7 +126,7 @@ public class Dungeon {
 	///                              JSON Extraction                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
-    private void loadSpawners() {
+    private void loadOther() {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
@@ -136,6 +135,12 @@ public class Dungeon {
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
     		entities.add(EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this));
+    	}
+    	// Should be singleton??
+    	if (numEntitiesOfType(BattleResolver.class) == 0) {
+    		Entity newResolver = EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
+    		entities.add(newResolver);
+    		Collections.swap(entities, entities.indexOf(newResolver), entities.size()-1);
     	}
     }
     
@@ -215,6 +220,7 @@ public class Dungeon {
      * @param itemUsed 
      */
     public void tick(InputState inputState) {
+    	animations.clear();
     	processInput(inputState);
     	updateGame();
     }
@@ -246,10 +252,13 @@ public class Dungeon {
      * @return DungeonResponse describing the currennt state of the game
      */
     public DungeonResponse response() {
-        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-        //    itemResponse(), buildables, goals, animations);
+        Player p = getPlayer();
+    	if (p == null) {
+    		return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+    				new ArrayList<ItemResponse>(), new ArrayList<String>(), dungeonGoal.response());
+    	}
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), buildableResponse(), dungeonGoal.response());
+        itemResponse(), buildableResponse(), dungeonGoal.response(), animations);
     }
     
     /**
@@ -268,7 +277,7 @@ public class Dungeon {
     private List<ItemResponse> itemResponse() {
         return getPlayer().getInventoryResponse();
     }
-	    
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity Construction                           ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -282,7 +291,11 @@ public class Dungeon {
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
 	
-	public List<Entity> getEntities() {
+	public void queueAnimation(AnimationQueue q) {
+		animations.add(q);
+	}
+	
+	public EntityList getEntities() {
     	return entities;
     }
 
@@ -317,10 +330,10 @@ public class Dungeon {
 
 	// Returns a list of enitities by a certain type
 	// Not used now
-	public List<Entity> getEntitiesByType(String type) {
+	public List<Entity> getEntitiesByType(Class<?> classType) {
 		List<Entity> entTypeList = new ArrayList<>();
 		for (Entity e : entities) {
-			if (e.getType().equals(type)) {
+			if (classType.isInstance(e)) {
 				entTypeList.add(e);
 			}
 		}
@@ -328,26 +341,8 @@ public class Dungeon {
 	}
 	
 	public int numEntitiesOfType(Class<?> classType) {
-    	int numOfType = 0;
-    	for (Entity e : entities) {
-    		if (classType.isInstance(e)) {
-    			numOfType++;
-    		}
-    	}
-    	return numOfType;
+    	return getEntitiesByType(classType).size();
     }
-
-	// Offshoot of EntitiesByType, returning all hostile enemies
-	// Not used now
-	public List<Entity> getEnemies() {
-		List<Entity> enemList = new ArrayList<>();
-		enemList.addAll(getEntitiesByType("spider"));
-		enemList.addAll(getEntitiesByType("zombie"));
-		// NOTE: Will add "ally" mercenaries, you'll need to separate
-		// them out later
-		enemList.addAll(getEntitiesByType("mercenary"));
-		return enemList;
-	}
 	
 	/**
 	 * Get the player
@@ -356,7 +351,10 @@ public class Dungeon {
 	 * @return player
 	 */
 	public Player getPlayer() {
-		return (Player)entities.get(0);
+		if (entities.get(0) instanceof Player) {
+			return (Player)entities.get(0);			
+		}
+		return null;
 	}
 	
 	public GameMode getGameMode() {
@@ -375,17 +373,6 @@ public class Dungeon {
 	public void transferToInventory(Entity e) {
 		e.toggleDisplay(false);
 		entities.transferEntity(getPlayer().getInventory(), e);
-		// attach to player for battles
-		for (Component component : e.getComponents()) {
-			if (component instanceof BattleComponent) {
-				BattleComponent battleComponent = (BattleComponent)component;
-				BattleComponent playerBattle = (BattleComponent)getPlayer().getComponents()
-					.stream().filter(p -> p instanceof BattleComponent)
-					.collect(Collectors.toList()).get(0);
-				playerBattle.attach((BattleComponent)component);
-				return;
-			}
-		}
 	}
 	
 	public void addEntity(Entity e) {

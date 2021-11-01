@@ -10,6 +10,10 @@ import dungeonmania.entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+/**
+ * Boulder can be pushed around but some entities prevent a boulder from being
+ * pushed backwards.
+ */
 public class Boulder extends Entity {
 
 	public Boulder(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
@@ -24,6 +28,11 @@ public class Boulder extends Entity {
 
 	}
 	
+	/**
+	 * Push a boulder in a direction if the path is not blocked
+	 * @param d direction
+	 * @return true if it was succeffully pushed in direction d
+	 */
 	public boolean moveBoulder(Direction d) {
 		Position desiredMovePosition = getPosition().translateBy(d);
 		

@@ -13,6 +13,9 @@ import dungeonmania.entities.collectables.Key;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
+/**
+ * Door block parts of the map until they are opened with their unique key.
+ */
 public class Door extends Entity {
 	private boolean isUnlocked;
 	private String doorId;
@@ -34,11 +37,18 @@ public class Door extends Entity {
 		return doorId;
 	}
 
+	/**
+	 * Save the door and it's corresponding keynumber in a json uniquely 
+	 * recognisable format.
+	 */
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("key", linkedKeyNumber);
 		baseJSON.put("locked", isUnlocked);
 	}
 	
+	/**
+	 * Load in the json using the our defined format.
+	 */
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
 		linkedKeyNumber = entitySpecificData.getInt("key");
 		if (entitySpecificData.has("locked")) {
@@ -47,7 +57,7 @@ public class Door extends Entity {
 			isUnlocked = false;
 		}
 	}
-	
+
 	@Override
 	public EntityResponse response() {
 		if (isUnlocked) {
@@ -63,8 +73,11 @@ public class Door extends Entity {
     	return new EntityResponse(getId(), getType() + "-locked-" + colour, getPosition(), getInteractable());
     }
 	
+	/**
+	 * Attempt to open / unlock a door.
+	 * @return true if door is unlocked after an attempt, false otherwise
+	 */
 	public boolean attemptUnlock() {
-
 		if (isUnlocked) return true;
 		
 		for (Entity e : getDungeon().getPlayer().getInventory()) {
@@ -75,16 +88,5 @@ public class Door extends Entity {
 		}
 		
 		return isUnlocked;
-	}
-	
-	private boolean playerOnThisDoor() {
-		List<Entity> moveEntities = getDungeon().getEntitiesAtPosition(getPosition());
-		
-		for (Entity e : moveEntities) {
-			if (e instanceof Player) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

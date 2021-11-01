@@ -8,8 +8,13 @@ import dungeonmania.Dungeon;
 
 public class BadGoalTest {
 	@Test
-    public void treasureGoalTest() {
+    public void treasureBadGoalTest() {
 		Dungeon d = new Dungeon("advanced", "Hard");
     	assertThrows(IllegalArgumentException.class, ()->new BadGoal(d));
+    }
+	
+	@Test
+    public void treasureBadGoalJSONTest() {
+		assertThrows(IllegalArgumentException.class, ()->new Dungeon("bad-goal", "Hard"));
     }
 }

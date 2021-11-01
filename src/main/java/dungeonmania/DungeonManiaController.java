@@ -44,7 +44,7 @@ public class DungeonManiaController {
     
     private static File getSaveFile(String saveName) throws IllegalArgumentException {
 		try {
-			return FileLoader.getFolderPath("/dungeonSaves").resolve(saveName + ".json").toFile();
+			return FileLoader.getSavePath().resolve(saveName + ".json").toFile();
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException("Invalid save name");
 		}
@@ -80,7 +80,7 @@ public class DungeonManiaController {
      */
     public List<String> allGames() {
 		try {
-			return FileLoader.listFileNamesInResourceDirectory("/dungeonSaves");
+			return FileLoader.listSaves();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new ArrayList<>();
@@ -114,7 +114,7 @@ public class DungeonManiaController {
      * 1. The player moves in the specified direction one square
      * 2. All enemies move respectively
      * 3. Any items which are used are 'actioned' and interact with the relevant entity
-     * @param itemUsed
+     * @param interactID
      * @param movementDirection
      * @return
      * @throws IllegalArgumentException If itemUsed is not one of bomb, invincibility_potion, invisibility_potion

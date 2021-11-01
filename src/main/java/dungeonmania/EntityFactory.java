@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
@@ -90,13 +91,11 @@ public class EntityFactory {
 				return new Door(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "portal":
 				return new Portal(loadingDungeon, pos.asLayer(bottomLayer), entData);
-			case "spawner":
-				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), 20, entData);
 			
 			// Moving
 			case "spider":
 				return new Spider(loadingDungeon, pos.asLayer(movingLayer), entData);
-			case "zombie":
+			case "zombie_toast":
 				return new ZombieToast(loadingDungeon, pos.asLayer(movingLayer), entData);
 			case "mercenary":
 				return new Mercenary(loadingDungeon, pos.asLayer(movingLayer), entData);
@@ -137,11 +136,18 @@ public class EntityFactory {
 			
 			// Non spec-defined
 			case "mercenary_spawner":
-				return new MercenarySpawner(loadingDungeon, pos, 10, entData);
+				return new MercenarySpawner(loadingDungeon, pos, 20, entData);
 			case "spider_spawner":
 				// TODO load spawner info from save
-				return new SpiderSpawner(loadingDungeon, pos, 5, entData);
-			// Type is not correct or has not been implemented
+				return new SpiderSpawner(loadingDungeon, pos, 10, entData);
+			case "zombie_toast_spawner":
+				// TODO load spawner info from save
+				return new ZombieToastSpawner(loadingDungeon, pos, 10, entData);
+			
+			case "battle_resolver":
+				return new BattleResolver(loadingDungeon, pos, entData);
+			
+				// Type is not correct or has not been implemented
 			default:
 				System.out.println(entityType + " could not be loaded");
 				return null;

@@ -42,10 +42,12 @@ public class MoveComponent extends Component {
 		parentEntity.setPosition(newPosition);
 	}
 	
+	// Entity moves ignoring blocking entities like walls or boulders
 	private Position moveGhost(Entity entityToMove) {
 		return entityToMove.getPosition().translateBy(moveDirection);
 	}
 	
+	// Entity moves considering boulders, walls and other blockables
 	private Position moveNormal(Entity entityToMove) {
 		Position moveLocation = moveGhost(entityToMove);
 		
