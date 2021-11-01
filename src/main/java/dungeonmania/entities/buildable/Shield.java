@@ -7,32 +7,29 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.util.Position;
+import dungeonmania.entities.Player;
+import dungeonmania.entities.buildable.Recipe;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
+
+// debugging
+import dungeonmania.entities.buildable.Bow;
+
 
 public class Shield extends Buildable {
-	// durability for the number of times a shield can take a hit
-	private int durability = 5;
-	// decrease the effect of enemy attacks by 2 damage
-	private int armour = 2;
+	final private int totalDurability = 5;
+	final private int armour = 2;
 	
-	
-	
-	public Shield(Dungeon dungeon, String type, Position position, List<Recipe> recipes, JSONObject entitySpecificData) {
-		super(dungeon, type, position, false, recipes, entitySpecificData);
-	}
+	public CollectableComponent collectableComponent;
 
 	// if a buildable is found on the map
-	public Shield(Dungeon dungeon, Position position) {
-		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, 
-			BuildableEnum.SHIELD.getRecipes(), new JSONObject());
+	public Shield(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
+		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, BuildableEnum.SHIELD.getRecipes(), entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, collectableState);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-		
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 
 	// remove shield after taking the final hit
 	// shield observes the player battling (each battle / each time the player is attacked)

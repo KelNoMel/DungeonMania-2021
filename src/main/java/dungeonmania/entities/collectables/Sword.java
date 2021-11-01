@@ -11,10 +11,14 @@ import dungeonmania.util.Position;
 
 public class Sword extends Entity {
 
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	
-	public Sword(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+	final private int totalDurability = 7;
+	final private int damage = 7;
+
+	public CollectableComponent collectableComponent;
+
+	public Sword(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
 		super(dungeon, "sword", position, false, entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, collectableState);
 	}
 
 	protected void inputEntity(InputState inputState) {

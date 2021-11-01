@@ -5,6 +5,8 @@ import java.util.Collections;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import dungeonmania.components.CollectableState;
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
@@ -118,9 +120,9 @@ public class EntityFactory {
 			case "bomb":
 				return new Bomb(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "sword":
-				return new Sword(loadingDungeon, pos.asLayer(itemLayer), entData);
+				return new Sword(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 			case "armour":
-				return new Armour(loadingDungeon, pos.asLayer(itemLayer), entData);
+				return new Armour(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 				
 			// Rare Collectable
 			case "the_one_ring":
@@ -128,19 +130,23 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
+				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
 				return bow;
 			case "shield":
-				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer));
+				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
 				return shield;
 			
 			// Non spec-defined
 			case "mercenary_spawner":
-				return new MercenarySpawner(loadingDungeon, pos, 10, entData);
+				return new MercenarySpawner(loadingDungeon, pos, 20, entData);
 			case "spider_spawner":
 				// TODO load spawner info from save
-				return new SpiderSpawner(loadingDungeon, pos, 5, entData);
-			// Type is not correct or has not been implemented
+				return new SpiderSpawner(loadingDungeon, pos, 10, entData);
+			
+			case "battle_resolver":
+				return new BattleResolver(loadingDungeon, pos, entData);
+			
+				// Type is not correct or has not been implemented
 			default:
 				System.out.println(entityType + " could not be loaded");
 				return null;

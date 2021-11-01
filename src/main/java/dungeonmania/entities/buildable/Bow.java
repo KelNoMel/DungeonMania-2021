@@ -1,18 +1,36 @@
 package dungeonmania.entities.buildable;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.util.Position;
+import dungeonmania.entities.buildable.Buildable;
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.entities.Player;
+import dungeonmania.entities.buildable.Recipe;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
 
 /**
- * Bow Entity can shoot from a range
+ * Bow Entity can attack a second time
  */
 public class Bow extends Buildable {
-	public Bow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon,  BuildableEnum.BOW.getType(), position, false, 
-			BuildableEnum.BOW.getRecipes(), entitySpecificData);
+	
+	final private int totalDurability = 3;
+	final private int damage = 4;
+
+	public CollectableComponent collectableComponent;
+
+	public Bow(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
+		super(dungeon,  BuildableEnum.BOW.getType(), position, false, BuildableEnum.BOW.getRecipes(), entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, collectableState);
 	}
 			
 	protected void inputEntity(InputState inputState) {
