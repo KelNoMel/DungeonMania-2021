@@ -6,7 +6,9 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
+import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 public class Bomb extends Entity {

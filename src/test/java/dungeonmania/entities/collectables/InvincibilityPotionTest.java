@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class InvincibilityPotionTest {
 	@Test
@@ -25,5 +27,20 @@ public class InvincibilityPotionTest {
 	    		response
     		)
         );
+	}
+
+	// Player would die if not using potion
+	@Test
+	public void testInvinciblePotionConsumption() {
+		DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("invincibility-potion-pickup","Standard");
+        DungeonResponse d = mania.tick(null, Direction.RIGHT);
+		mania.tick("invincibility_potion", Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+        d = mania.tick(null, Direction.RIGHT);
+		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(7, 0), false), d));
 	}
 }
