@@ -13,7 +13,7 @@ import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class PlayerTest {
+public class BattleTest {
     @Test
     public void testSimpleBattle() {
         DungeonManiaController mania = new DungeonManiaController();

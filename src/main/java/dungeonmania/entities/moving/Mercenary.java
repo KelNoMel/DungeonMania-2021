@@ -5,11 +5,11 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
+import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIMercAlly;
 import dungeonmania.components.aistates.AIMercHostile;
-import dungeonmania.entities.BattleComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 

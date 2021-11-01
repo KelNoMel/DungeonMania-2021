@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -24,22 +25,60 @@ public class SpiderTest {
 	@Test
 	public void testSpiderSpawning() {
 		DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse res = mania.newGame("spider","Hard");
+        DungeonResponse res = mania.newGame("spider","Peaceful");
 		assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 2)));
+		
 		mania.tick(null, Direction.DOWN);
 		res = mania.tick(null, Direction.UP);
 		// spider is likely dead
-		assertTrue(ResponseHelp.getEntityOfType(res, "spider") == null);
+		assertNull(ResponseHelp.getEntityOfType(res, "spider"));
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			res = mania.tick(null, Direction.UP);
 			res = mania.tick(null, Direction.DOWN);
 			res = mania.tick(null, Direction.LEFT);
 			res = mania.tick(null, Direction.RIGHT);
 		}
 
-		// new spiders have spawned
-		assertTrue(ResponseHelp.getEntityOfType(res, "spider") != null);
+		// no new spiders have spawned (as on peaceful)
+		assertNull(ResponseHelp.getEntityOfType(res, "spider"));
+
+	}
+	
+	@Test
+	public void testSpiderMovement() {
+		DungeonManiaController mania = new DungeonManiaController();
+
+		DungeonResponse res = mania.newGame("spider","Peaceful");
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "spider", new Position(0, 2), false), res));
+
+        res = mania.tick(null, Direction.UP);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+				
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 1)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 2)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 3)));
+
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 3)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 3)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 2)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 1)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+
 
 	}
 }
