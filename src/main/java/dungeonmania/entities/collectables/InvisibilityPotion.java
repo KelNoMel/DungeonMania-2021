@@ -6,6 +6,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
+import dungeonmania.components.ConsumableComponent;
 import dungeonmania.components.EffectComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
@@ -14,7 +15,7 @@ import dungeonmania.util.Position;
 public class InvisibilityPotion extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	private CollectableComponent consumableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 	
 	public InvisibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "invisibility_potion", position, false, entitySpecificData);

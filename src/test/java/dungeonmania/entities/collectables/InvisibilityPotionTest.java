@@ -13,7 +13,7 @@ import dungeonmania.util.Direction;
 
 public class InvisibilityPotionTest {
 	@Test
-	public void testInvincibilityPotionPickup() {
+	public void testInvisibilityPotionPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("invisibility-potion-pickup","Peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);

@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
+import dungeonmania.components.BattleComponent;
 import dungeonmania.components.Component;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;

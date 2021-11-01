@@ -1,18 +1,17 @@
 
 package dungeonmania.components;
 
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 
 // For all items that can be used (consume, craft, place)
 public class ConsumableComponent extends Component {
-    // Most objects have just 1 durability
+   
+	// Most objects have just 1 durability
     private int curDurability;
     // When multiple of the item is required (in crafting)
     private int numObjUsed;
-
 
     public ConsumableComponent(Entity owningEntity, int updateOrder, int durability, int uses) {
         super(owningEntity, updateOrder);
