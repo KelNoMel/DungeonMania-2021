@@ -79,7 +79,7 @@ public class BattleResolver extends Entity {
 	}
 	
 	private boolean isEnemy(Entity e) {
-		if (e instanceof Mercenary || e instanceof Spider || e instanceof ZombieToast) {
+		if ((e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) || e instanceof Spider || e instanceof ZombieToast) {
 			return true;
 		}
 		return false;

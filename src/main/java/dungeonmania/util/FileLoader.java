@@ -68,6 +68,20 @@ public final class FileLoader {
             throw new FileNotFoundException(directory);
         }
     }
+    
+    public static List<String> listSaves() throws IOException {
+        try {
+            Path root = getSavePath();
+            
+            return Files.walk(root).filter(Files::isRegularFile).map(x -> {
+                String nameAndExt = x.toFile().getName();
+                int extIndex = nameAndExt.lastIndexOf('.');
+                return nameAndExt.substring(0, extIndex > -1 ? extIndex : nameAndExt.length());
+            }).collect(Collectors.toList());
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException("/dungeonSaves not found");
+        }
+    }
 
     /**
      * Lists file names (without extension) within a specified non-resource directory.

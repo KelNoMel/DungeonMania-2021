@@ -17,6 +17,7 @@ public class Mercenary extends Entity {
 	final int maxHealth = 10;
 	final int damage = 12;
 	
+	private String startState;
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
@@ -25,15 +26,27 @@ public class Mercenary extends Entity {
 		super(dungeon, "mercenary", position, true, entitySpecificData);
 		aiComponent.registerState(new AIMercHostile(aiComponent, this));
 		aiComponent.registerState(new AIMercAlly(aiComponent, this));
-		aiComponent.changeState("MercHostile");
+		if (startState == null) {
+			aiComponent.changeState("MercHostile");			
+		} else {
+			aiComponent.changeState(startState);
+			if (startState.equals("MercAlly")) {
+				setInteractable(false);
+			}
+		}
 	}
 
-	protected void inputEntity(InputState inputState) {
-		
-	}
+	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("aiState", aiComponent.getAISate().getName());
+	}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+		startState = null;
+		if (entitySpecificData.has("aiState")) {
+			startState = entitySpecificData.getString("aiState");
+		}
+	}
 }
