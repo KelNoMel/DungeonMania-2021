@@ -91,8 +91,6 @@ public class EntityFactory {
 				return new Door(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "portal":
 				return new Portal(loadingDungeon, pos.asLayer(bottomLayer), entData);
-			case "spawner":
-				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), 20, entData);
 			
 			// Moving
 			case "spider":

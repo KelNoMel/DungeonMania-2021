@@ -9,7 +9,7 @@ import dungeonmania.entities.moving.ZombieToast;
 public class ZombieToastSpawner extends Spawner {
 
 	public ZombieToastSpawner(Dungeon dungeon, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, "zombie-toast-spawner", position, tickSpawnRate, entitySpecificData);
+		super(dungeon, "zombie_toast_spawner", position, tickSpawnRate, entitySpecificData);
 		toggleDisplay(true);
 	}
 
