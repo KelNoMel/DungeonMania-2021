@@ -20,6 +20,8 @@ public class Armour extends Entity {
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
 	}
 
+	// Armour already gets added into inventory by collectableComponent
+	// Its' effects are seen in battlecomponent
 	protected void inputEntity(InputState inputState) {
 
 	}

@@ -21,6 +21,7 @@ public class InvincibilityPotion extends Entity {
 		super(dungeon, "invincibility_potion", position, false, entitySpecificData);
 	}
 
+	// Player gets the invincible status, can override other effects
 	protected void inputEntity(InputState inputState) {
 		Player player = getDungeon().getPlayer();
 		// Check if item was queued to be used

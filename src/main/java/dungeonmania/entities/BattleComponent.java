@@ -19,6 +19,7 @@ public class BattleComponent extends Component {
 	public void processInput(InputState inputState) {}
 	public void updateComponent() {}
 	
+	// Algorithm for damage given scaled by health
 	public int getScaledAttackDamage() {
 		return (int) Math.ceil(health * attackDamage);
 	}
@@ -28,6 +29,7 @@ public class BattleComponent extends Component {
 	public int getAttackDamage() { return attackDamage; }
 	public void setAttackDamage(int attackDamage) { this.attackDamage = attackDamage; }
 	
+	// Gives damage and kills entities if hp goes to zero
 	public void dealDamage(int damage) {
 		health -= damage;
 		if (health <= 0) {

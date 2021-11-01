@@ -19,6 +19,7 @@ public class InvisibilityPotion extends Entity {
 		super(dungeon, "invisibility_potion", position, false, entitySpecificData);
 	}
 
+	// Player gets invisibility status, can override other effects
 	protected void inputEntity(InputState inputState) {
 		Player player = getDungeon().getPlayer();
 		// Check if item was queued to be used
