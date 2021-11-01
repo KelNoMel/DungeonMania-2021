@@ -8,7 +8,12 @@
         {
             "x": 1,
             "y": 0,
-            "type": "health_potion",
+            "type": "health_potion"
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "type": "mercenary"
         }
     ]
 }

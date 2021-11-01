@@ -22,8 +22,8 @@ import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	
-	private int health = 10;
-	private int attackDamage = 10;
+	private int health = 100;
+	private int attackDamage = 20;
 	
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);

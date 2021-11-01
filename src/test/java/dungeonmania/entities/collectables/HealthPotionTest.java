@@ -26,4 +26,22 @@ public class HealthPotionTest {
     		)
         );
 	}
+
+	@Test
+	public void testhealthPotionConsumption() {
+		DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("health-potion-pickup","Peaceful");
+        DungeonResponse d = mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.LEFT);
+        d = mania.tick(null, Direction.RIGHT);
+		assertTrue(
+        	ResponseHelp.inventoryEqual(
+	    		Arrays.asList(
+	    			"health_potion"
+	    		),
+	    		d
+    		)
+        );
+	}
 }
