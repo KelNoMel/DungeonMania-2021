@@ -24,8 +24,6 @@ public class Bomb extends Entity {
 		if (getDungeon().getPlayer().getUsedList().containsKey(getId())) {
 			
 			// Effects of bomb: Bomb is placed on the current tile the player is on
-			getDungeon().getPlayer().addComponent(EffectComponent(EffectComponent(getDungeon().getPlayer(), 3));
-			getDungeon().getPlayer().setStatus("invincible");
 		}
 	}
 
