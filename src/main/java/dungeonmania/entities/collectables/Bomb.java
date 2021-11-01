@@ -21,6 +21,8 @@ public class Bomb extends Entity {
 		super(dungeon, "bomb", position, false, entitySpecificData);
 	}
 
+	// When bomb is used, it is placed on a position
+	// Detonation will be handled by switch
 	protected void inputEntity(InputState inputState) {
 		// Check if item was queued to be used
 		if (getDungeon().getPlayer().getUsedList().containsKey(getId())) {

@@ -20,6 +20,7 @@ public class HealthPotion extends Entity {
 		super(dungeon, "health_potion", position, false, entitySpecificData);
 	}
 
+	// When health potion gets used, player restores health
 	protected void inputEntity(InputState inputState) {
 		Player player = getDungeon().getPlayer();
 		// Check if item was queued to be used

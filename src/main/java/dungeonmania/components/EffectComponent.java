@@ -15,6 +15,8 @@ public class EffectComponent extends Component {
     public void processInput(InputState input) {
     }
     
+    // Tick down the component to zero.
+    // When timer is zero, reset the status to normal and remove the component
     public void updateComponent() {
         timer = timer - 1;
         if (timer == 0) {
