@@ -11,11 +11,11 @@ import dungeonmania.util.Direction;
 
 public class DefaultGoalTest {
 	@Test
-    public void treasureGoalTest() {
+    public void defaultGoalTest() {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("default-goal","Peaceful");
+    	response = mania.newGame("default-goal2","Peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	
@@ -31,4 +31,17 @@ public class DefaultGoalTest {
         
         assertFalse(ResponseHelp.goalComplete(response));
     }
+	
+	@Test
+    public void defaultGoalTestLoad() {
+    	DungeonManiaController mania = new DungeonManiaController();
+        
+    	DungeonResponse response;
+    	
+    	response = mania.newGame("default-goal","Peaceful");
+    	mania.saveGame("SaveGame");
+    	DungeonResponse newResponse = mania.loadGame("SaveGame");
+    	
+    	ResponseHelp.dungeonEqual(response, newResponse);
+	}
 }

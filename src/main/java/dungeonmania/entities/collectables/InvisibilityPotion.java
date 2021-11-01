@@ -14,6 +14,7 @@ import dungeonmania.util.Position;
 public class InvisibilityPotion extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	private CollectableComponent consumableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	
 	public InvisibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "invisibility_potion", position, false, entitySpecificData);
