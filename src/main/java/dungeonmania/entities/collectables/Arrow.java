@@ -10,12 +10,12 @@ import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
-public class Arrows extends Entity {
+public class Arrow extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
 
-	public Arrows(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "arrows", position, false, entitySpecificData);
+	public Arrow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "arrow", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

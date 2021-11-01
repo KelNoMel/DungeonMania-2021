@@ -5,6 +5,7 @@ import java.util.Random;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.GameMode;
 import dungeonmania.Dungeon.Bounds;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.util.Position;
@@ -19,8 +20,11 @@ public class SpiderSpawner extends Spawner {
 	}
 
 	public void spawnEntity() {
-		if (getDungeon().numEntitiesOfType(Spider.class) < maxSpiders) {
-			Bounds b = getDungeon().getBounds();
+		Dungeon d = getDungeon();
+		if (d.getGameMode() != GameMode.PEACEFUL && 
+				d.numEntitiesOfType(Spider.class) < maxSpiders) {
+			
+			Bounds b = d.getBounds();
 			int xPos = generateRandom(b.getMinBounds().getX(), b.getMaxBounds().getX());
 			int yPos = generateRandom(b.getMinBounds().getY(), b.getMaxBounds().getY());
 			getDungeon().addEntity(new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject()));

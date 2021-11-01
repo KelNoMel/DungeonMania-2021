@@ -2,6 +2,7 @@ package dungeonmania.testhelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Collections;
 
 import dungeonmania.response.models.DungeonResponse;
@@ -250,6 +251,24 @@ public class ResponseHelp {
         }
 
         return dungeonEqualWithId(res1, res2);
+    }
+    
+    public static boolean inventoryEqual(List<String> checkInventory, DungeonResponse res1) {
+        ArrayList<ItemResponse> inventory = new ArrayList<>(res1.getInventory());
+        Collections.sort(inventory, new ItemResponseComparator());
+    	
+        ArrayList<ItemResponse> checkingInventory = new ArrayList<ItemResponse>(checkInventory.stream().map(s->new ItemResponse("id",s)).collect(Collectors.toList()));
+        Collections.sort(checkingInventory, new ItemResponseComparator());
+        
+        int entitiesLen = inventory.size();
+        if (checkInventory.size() != inventory.size()) return false;
+        for (int i = 0; i < entitiesLen; i++) {
+            if (!ResponseHelp.itemEqual(checkingInventory.get(i), inventory.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
     
     public static boolean entityInDungeon(EntityResponse res1, DungeonResponse res2) {

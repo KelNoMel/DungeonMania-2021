@@ -35,6 +35,13 @@ public final class FileLoader {
     	return Paths.get(FileLoader.class.getResource(directory).toURI());
     }
     
+    public static Path getSavePath() throws URISyntaxException {
+    	Path dungeonFolder;
+		dungeonFolder = getFolderPath("/dungeons");
+		dungeonFolder = dungeonFolder.subpath(0, dungeonFolder.getNameCount()-1);
+		return dungeonFolder.resolve("dungeonSaves");
+    }
+    
     /**
      * Lists file names (without extension) within a specified resource directory.
      * 
@@ -64,11 +71,7 @@ public final class FileLoader {
 
 	public static void initialiseSaves() {
 		try {
-			String dungeonFolder = getFolderPath("/dungeons").toString();
-			dungeonFolder = dungeonFolder.substring(0, dungeonFolder.lastIndexOf("\\"));
-			Path savePath = Paths.get(dungeonFolder, "dungeonSaves");
-			System.out.println(savePath);
-			savePath.toFile().mkdirs();
+			getSavePath().toFile().mkdirs();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

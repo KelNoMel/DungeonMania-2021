@@ -14,7 +14,7 @@ public class AndGoal extends Goal {
 	}
 
 	public boolean checkGoal() {
-		return getChild(0).checkGoal() && getChild(1).checkGoal();
+		return (getChild(0).checkGoal() && getChild(1).checkGoal());
 	}
 	
 	public String toString() {
@@ -28,9 +28,9 @@ public class AndGoal extends Goal {
 		if (leftStatus && rightStatus) {
 			return "";
 		} else if (leftStatus) {
-			return getChild(0).response();
-		} else if (rightStatus) {
 			return getChild(1).response();
+		} else if (rightStatus) {
+			return getChild(0).response();
 		} else {			
 			return "( " + getChild(0).response() + " " + toString() + " " + getChild(1).response() + " )";
 		}

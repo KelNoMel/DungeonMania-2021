@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 

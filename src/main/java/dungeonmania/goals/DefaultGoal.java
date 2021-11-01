@@ -15,7 +15,7 @@ public class DefaultGoal extends Goal {
     }
 
     public String response() {
-    	return "";
+    	return "No Goal";
     }
     
 	public String toString() {
