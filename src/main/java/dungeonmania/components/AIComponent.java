@@ -46,4 +46,6 @@ public class AIComponent extends Component {
     public void registerState(AIState state) {
         stateMap.put(state.getName(), state);
     }
+
+    public AIState getAISate() { return currentState; }
 }

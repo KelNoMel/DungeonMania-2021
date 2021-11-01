@@ -80,7 +80,7 @@ public class DungeonManiaController {
      */
     public List<String> allGames() {
 		try {
-			return FileLoader.listFileNamesInResourceDirectory("/dungeonSaves");
+			return FileLoader.listSaves();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return new ArrayList<>();

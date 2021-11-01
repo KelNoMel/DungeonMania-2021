@@ -10,11 +10,14 @@ import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
 public class Armour extends Entity {
+	final private int totalDurability = 6;
+	final private int armour = 4;
 
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
+	public CollectableComponent collectableComponent;
 	
-	public Armour(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+	public Armour(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
 		super(dungeon, "armour", position, false, entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, collectableState);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -27,5 +30,7 @@ public class Armour extends Entity {
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+
+
 
 }

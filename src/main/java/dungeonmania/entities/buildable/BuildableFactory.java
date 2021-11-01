@@ -3,6 +3,7 @@ package dungeonmania.entities.buildable;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -13,9 +14,9 @@ public class BuildableFactory {
 		Position pos = new Position(0, 0);
         switch(buildable) {
 			case "bow":
-                return new Bow(dungeon, pos.asLayer(0), new JSONObject());
+                return new Bow(dungeon, pos.asLayer(0), CollectableState.INVENTORY, new JSONObject());
 			case "shield":
-                return new Shield(dungeon,BuildableEnum.SHIELD.getType(), pos.asLayer(0), BuildableEnum.SHIELD.getRecipes(), new JSONObject());
+                return new Shield(dungeon, pos.asLayer(0), CollectableState.INVENTORY, new JSONObject());
 			default:
 				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}

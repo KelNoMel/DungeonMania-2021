@@ -33,8 +33,28 @@ public class MercenaryTest {
         mania.tick(null, Direction.LEFT);
         mania.tick(null, Direction.LEFT);
         mania.tick(null, Direction.LEFT);
+        
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.LEFT);
+        
         // Spawn!
         d = mania.tick(null, Direction.LEFT);
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
+        mania.tick(null, Direction.UP);
+        mania.tick(null, Direction.UP);
+        mania.tick(null, Direction.DOWN);
+        mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.LEFT);
+        mania.tick(null, Direction.DOWN);
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
     }
+
 }

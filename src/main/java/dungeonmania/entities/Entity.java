@@ -121,6 +121,7 @@ public abstract class Entity {
     public String getId() { return id; }
     public String getType() { return type; }
     public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
+    public List<Component> getComponents() { return components; }
     
     public JSONObject toJSON() {
     	JSONObject entityJSON = new JSONObject();

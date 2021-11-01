@@ -8,6 +8,7 @@ import dungeonmania.components.AIComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIZombieHostile;
+import dungeonmania.entities.BattleComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -15,6 +16,7 @@ public class ZombieToast extends Entity {
 
 	public AIComponent aiComponent = new AIComponent(this, 100);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, 10, 10);
 	
 	public ZombieToast(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "zombie", position, false, entitySpecificData);

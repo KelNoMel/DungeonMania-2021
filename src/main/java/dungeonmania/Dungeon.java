@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import dungeonmania.response.models.AnimationQueue;
@@ -19,6 +20,10 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
+import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.CollectableState;
+import dungeonmania.components.Component;
+import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
 import dungeonmania.entities.moving.*;
@@ -64,7 +69,7 @@ public class Dungeon {
     	// Add the entities
     	Portal.clearPortalLinks();
         entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
-        loadSpawners();
+        loadOther();
         
 		// Adds goals and sets goal condition
 		dungeonGoal = loadGoalFromFile(dungeonJSON);
@@ -113,7 +118,7 @@ public class Dungeon {
     	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
     	Portal.clearPortalLinks();
     	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
-    	loadSpawners();
+    	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
     }
 
@@ -121,7 +126,7 @@ public class Dungeon {
 	///                              JSON Extraction                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
-    private void loadSpawners() {
+    private void loadOther() {
     	// If no merc spawner, load in
     	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
@@ -130,6 +135,12 @@ public class Dungeon {
     	
     	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
     		entities.add(EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this));
+    	}
+    	// Should be singleton??
+    	if (numEntitiesOfType(BattleResolver.class) == 0) {
+    		Entity newResolver = EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
+    		entities.add(newResolver);
+    		Collections.swap(entities, entities.indexOf(newResolver), entities.size()-1);
     	}
     }
     
@@ -209,6 +220,7 @@ public class Dungeon {
      * @param itemUsed 
      */
     public void tick(InputState inputState) {
+    	animations.clear();
     	processInput(inputState);
     	updateGame();
     }
@@ -240,10 +252,13 @@ public class Dungeon {
      * @return DungeonResponse describing the currennt state of the game
      */
     public DungeonResponse response() {
-        //return new DungeonResponse(dungeonId, dungeonName, entityResponse(), 
-        //    itemResponse(), buildables, goals, animations);
+        Player p = getPlayer();
+    	if (p == null) {
+    		return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
+    				new ArrayList<ItemResponse>(), new ArrayList<String>(), dungeonGoal.response());
+    	}
         return new DungeonResponse(dungeonId, dungeonName, entityResponse(),
-        itemResponse(), buildableResponse(), dungeonGoal.response());
+        itemResponse(), buildableResponse(), dungeonGoal.response(), animations);
     }
     
     /**
@@ -262,7 +277,7 @@ public class Dungeon {
     private List<ItemResponse> itemResponse() {
         return getPlayer().getInventoryResponse();
     }
-	    
+    
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity Construction                           ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +291,11 @@ public class Dungeon {
 	///                              Helper Methods                              ///
 	////////////////////////////////////////////////////////////////////////////////
 	
-	public List<Entity> getEntities() {
+	public void queueAnimation(AnimationQueue q) {
+		animations.add(q);
+	}
+	
+	public EntityList getEntities() {
     	return entities;
     }
 
@@ -350,7 +369,10 @@ public class Dungeon {
 	 * @return player
 	 */
 	public Player getPlayer() {
-		return (Player)entities.get(0);
+		if (entities.get(0) instanceof Player) {
+			return (Player)entities.get(0);			
+		}
+		return null;
 	}
 	
 	public GameMode getGameMode() {

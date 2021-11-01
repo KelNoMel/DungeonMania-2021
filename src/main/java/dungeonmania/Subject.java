@@ -1,11 +1,11 @@
 package dungeonmania;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public interface Subject {
 	
-	final List<Observer> listObservers = new ArrayList<Observer>();
+	final LinkedList<Observer> listObservers = new LinkedList<Observer>();
         
     default void attach(Observer o) {
     	if (!listObservers.contains(o)) {

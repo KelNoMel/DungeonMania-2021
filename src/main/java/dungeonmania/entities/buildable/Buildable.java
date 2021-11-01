@@ -11,6 +11,8 @@ import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.entities.buildable.Recipe;
+import dungeonmania.InputState;
 
 
 /**
@@ -23,20 +25,15 @@ public abstract class Buildable extends Entity {
 
     public Buildable(Dungeon dungeon, String type, Position position,  
         boolean isInteractable, List<Recipe> recipes, JSONObject entitySpecificData) throws InvalidActionException {
-		// old constructor parameters
-		// ArrayList<ArrayList<String>> requiredTypeConfigs, 
-		// ArrayList<ArrayList<Integer>> requiredFreqConfigs
-
 
         super(dungeon, type, position, isInteractable, entitySpecificData);
         this.player = dungeon.getPlayer();
 		this.recipes = recipes;
         Recipe recipe  = checkRequirements(player, recipes);
-		if (recipe != null) {
+		if (recipe == null) {
 			throw new InvalidActionException("player does not have sufficient items to craft the buildable");
 		}
 		useRequirements(recipe);
-		//useRequirements(requiredTypes, requiredFreq);
     }
 
 	public static List<String> response(Player player) {
@@ -79,5 +76,8 @@ public abstract class Buildable extends Entity {
 		}
 
 	}
+
+	protected abstract void updateEntity();
+	protected abstract void inputEntity(InputState inputState);
 
 }
