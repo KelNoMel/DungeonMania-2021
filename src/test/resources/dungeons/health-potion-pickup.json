@@ -8,7 +8,28 @@
         {
             "x": 1,
             "y": 0,
-            "type": "health_potion",
+            "type": "health_potion"
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 3,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 4,
+            "y": 0,
+            "type": "mercenary"
+        },
+        {
+            "x": 5,
+            "y": 0,
+            "type": "mercenary"
         }
+        
     ]
 }
