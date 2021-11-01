@@ -27,21 +27,18 @@ public class HealthPotionTest {
         );
 	}
 
+	// Player would die if not using potion
 	@Test
 	public void testhealthPotionConsumption() {
 		DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("health-potion-pickup","Peaceful");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
+		mania.tick("health_potion", Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
-		mania.tick(null, Direction.LEFT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
         d = mania.tick(null, Direction.RIGHT);
-		assertTrue(
-        	ResponseHelp.inventoryEqual(
-	    		Arrays.asList(
-	    			"health_potion"
-	    		),
-	    		d
-    		)
-        );
+		assertTrue(assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(7, 0), false), d));
 	}
 }

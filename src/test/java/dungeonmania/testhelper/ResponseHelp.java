@@ -270,8 +270,6 @@ public class ResponseHelp {
 
         return true;
     }
-
-    public static boolean healthEqual(int checkHealth, )
     
     public static boolean entityInDungeon(EntityResponse res1, DungeonResponse res2) {
     	for (EntityResponse eres : res2.getEntities()) {
