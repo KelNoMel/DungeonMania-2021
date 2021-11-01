@@ -1,7 +1,8 @@
-package dungeonmania.entities;
+package dungeonmania.components;
 
 import dungeonmania.InputState;
-import dungeonmania.components.Component;
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityState;
 
 public class BattleComponent extends Component {
 

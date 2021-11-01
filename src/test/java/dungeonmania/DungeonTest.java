@@ -161,6 +161,13 @@ public class DungeonTest {
         removeSaves();
     }
     
+    @Test
+    public void testLoadGameInvalid() {
+        DungeonManiaController mania = new DungeonManiaController();
+        assertThrows(IllegalArgumentException.class, ()->mania.loadGame("yeet"));
+        removeSaves();
+    }
+    
     // load the current game
 
     // attempt to load a game that doesn't exist

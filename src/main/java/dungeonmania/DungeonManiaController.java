@@ -114,7 +114,7 @@ public class DungeonManiaController {
      * 1. The player moves in the specified direction one square
      * 2. All enemies move respectively
      * 3. Any items which are used are 'actioned' and interact with the relevant entity
-     * @param itemUsed
+     * @param interactID
      * @param movementDirection
      * @return
      * @throws IllegalArgumentException If itemUsed is not one of bomb, invincibility_potion, invisibility_potion

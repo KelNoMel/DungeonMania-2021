@@ -91,13 +91,11 @@ public class EntityFactory {
 				return new Door(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "portal":
 				return new Portal(loadingDungeon, pos.asLayer(bottomLayer), entData);
-			case "spawner":
-				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), 20, entData);
 			
 			// Moving
 			case "spider":
 				return new Spider(loadingDungeon, pos.asLayer(movingLayer), entData);
-			case "zombie":
+			case "zombie_toast":
 				return new ZombieToast(loadingDungeon, pos.asLayer(movingLayer), entData);
 			case "mercenary":
 				return new Mercenary(loadingDungeon, pos.asLayer(movingLayer), entData);
@@ -142,6 +140,9 @@ public class EntityFactory {
 			case "spider_spawner":
 				// TODO load spawner info from save
 				return new SpiderSpawner(loadingDungeon, pos, 10, entData);
+			case "zombie_toast_spawner":
+				// TODO load spawner info from save
+				return new ZombieToastSpawner(loadingDungeon, pos, 10, entData);
 			
 			case "battle_resolver":
 				return new BattleResolver(loadingDungeon, pos, entData);

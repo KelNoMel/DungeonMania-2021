@@ -76,15 +76,4 @@ public class Door extends Entity {
 		
 		return isUnlocked;
 	}
-	
-	private boolean playerOnThisDoor() {
-		List<Entity> moveEntities = getDungeon().getEntitiesAtPosition(getPosition());
-		
-		for (Entity e : moveEntities) {
-			if (e instanceof Player) {
-				return true;
-			}
-		}
-		return false;
-	}
 }
