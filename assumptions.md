@@ -15,6 +15,7 @@ Potions
 - Players cannot consume more than one potion a tick
 - Players can possess multiple of the same potion type
 - When consuming a potion, players don't select an individual potion, but any potion of the requested type.
+- Potion effects can't stack
 
 Health Potion
 - The health restoration takes place in the same tick as consumption
