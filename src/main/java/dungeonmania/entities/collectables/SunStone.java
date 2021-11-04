@@ -10,10 +10,10 @@ import dungeonmania.entities.Entity;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
-public class Sun_stone extends Entity {
+public class SunStone extends Entity {
     private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
-    public Sun_stone(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+    public SunStone(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "sun_stone", position, false, entitySpecificData);
 	}
 
