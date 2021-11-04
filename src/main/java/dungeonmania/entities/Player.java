@@ -12,7 +12,6 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
-import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
@@ -23,9 +22,11 @@ import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	
+	private int health = 10;
+	private int attackDamage = 10;
+	
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
 
 	private EntityList inventory;
 
@@ -62,7 +63,6 @@ public class Player extends Entity {
 				// Bribe away!
 				playerTreasure.get(0).setState(EntityState.DEAD);
 				bribeMercenary.aiComponent.changeState("MercAlly");
-				bribeMercenary.setInteractable(false);
 				break;
 		}
 		inventory.processInput(inputState);
@@ -103,9 +103,19 @@ public class Player extends Entity {
 		return usedList;
 	}
 
+
+	public int getHealth() {
+		return health;
+	}
+
+	// Used to subtract players health by a value, used when taking damage
+	public void takeDamage(int dmg) {
+		health = health - dmg;
+	}
+
 	// Used to set players health, currently used to restore full health on heal
 	public void setHealth(int hp) {
-		battleComponent.setHealth(hp);
+		health = hp;
 	}
 
 	public EntityList getInventory() {
@@ -142,5 +152,4 @@ public class Player extends Entity {
 			inventory = new EntityList();
 		}
 	}
-	
 }
