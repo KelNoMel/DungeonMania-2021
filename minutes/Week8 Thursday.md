@@ -16,7 +16,7 @@ Location: Online
 
 ## Discussion Points
 * Avoid time travel extension because it seems 
-* Dependencies for milestone 2 & 3 | https://drive.google.com/file/d/15OWFlSequIKM4HU-zHDvE_n2zmhV5SWt/view?usp=sharing
+* Dependencies for milestone 2 & 3 | https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Milestone%203%20Dependencies#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D15OWFlSequIKM4HU-zHDvE_n2zmhV5SWt%26export%3Ddownload
 * More than a few enttiy specific JSON need to be complete
 
 #### Hayley
