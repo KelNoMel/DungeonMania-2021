@@ -27,6 +27,7 @@ public class Player extends Entity {
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
 
+
 	private EntityList inventory;
 
 	// Hashmap that tracks which items are used in input tick
@@ -56,13 +57,18 @@ public class Player extends Entity {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
-				if (playerTreasure.size() < 1) {
-					throw new InvalidActionException("You do not have sufficient gold to bribe the Mercenary!");
+				List<Entity> playerSunStone = getTypeInInventory("sun_stone");
+				if (playerTreasure.size() < 1 && playerSunStone.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/sun stone to bribe the Mercenary!");
 				}
 				// Bribe away!
-				playerTreasure.get(0).setState(EntityState.DEAD);
+				if (playerTreasure.size() > 1) {
+					playerTreasure.get(0).setState(EntityState.DEAD);
+				}
+				if (playerSunStone.size() > 1) {
+					playerSunStone.get(0).setState(EntityState.DEAD);
+				}
 				bribeMercenary.aiComponent.changeState("MercAlly");
-				bribeMercenary.setInteractable(false);
 				break;
 		}
 		inventory.processInput(inputState);
@@ -142,5 +148,4 @@ public class Player extends Entity {
 			inventory = new EntityList();
 		}
 	}
-	
 }

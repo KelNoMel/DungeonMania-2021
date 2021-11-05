@@ -18,6 +18,7 @@ import dungeonmania.entities.collectables.HealthPotion;
 import dungeonmania.entities.collectables.InvincibilityPotion;
 import dungeonmania.entities.collectables.InvisibilityPotion;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
@@ -121,6 +122,8 @@ public class EntityFactory {
 				return new Sword(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 			case "armour":
 				return new Armour(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
+			case "sun_stone":
+				return new SunStone(loadingDungeon, pos.asLayer(itemLayer), entData);
 				
 			// Rare Collectable
 			case "the_one_ring":
