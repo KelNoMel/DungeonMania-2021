@@ -57,7 +57,7 @@ public class Player extends Entity {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
-				List<Entity> playerSunStone = getTypeInInventory("sun stone");
+				List<Entity> playerSunStone = getTypeInInventory("sun_stone");
 				if (playerTreasure.size() < 1 && playerSunStone.size() < 1) {
 					throw new InvalidActionException("You do not have sufficient gold/sun stone to bribe the Mercenary!");
 				}
