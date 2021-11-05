@@ -87,7 +87,6 @@ public class Door extends Entity {
 				isUnlocked = true;
 			}
 			if (e instanceof SunStone) {
-				e.setState(EntityState.DEAD);
 				isUnlocked = true;
 			}
 		}

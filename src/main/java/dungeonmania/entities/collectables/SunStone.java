@@ -17,27 +17,14 @@ public class SunStone extends Entity {
 		super(dungeon, "sun_stone", position, false, entitySpecificData);
 	}
 
-    @Override
-    protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     protected void inputEntity(InputState inputState) {
-        // TODO Auto-generated method stub
-        
     }
 
-    @Override
-    protected void updateEntity() {
-        // TODO Auto-generated method stub
-        
+    protected void updateEntity() {   
     }
 
-    @Override
-    public void addJSONEntitySpecific(JSONObject baseJSON) {
-        // TODO Auto-generated method stub
-        
+    protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {        
     }
+
+    public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }
