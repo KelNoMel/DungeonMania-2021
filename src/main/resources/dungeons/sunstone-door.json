@@ -1,0 +1,26 @@
+{
+    "entities": [
+        {
+            "x": 0,
+            "y": 0,
+            "type": "player"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "sun_stone"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "door",
+            "key": 1
+        },
+        {
+            "x": -5,
+            "y": 0,
+            "type": "key",
+            "key": 1
+        }
+    ]
+}
