@@ -57,11 +57,17 @@ public class Player extends Entity {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
-				if (playerTreasure.size() < 1) {
-					throw new InvalidActionException("You do not have sufficient gold to bribe the Mercenary!");
+				List<Entity> playerSunStone = getTypeInInventory("sun stone");
+				if (playerTreasure.size() < 1 && playerSunStone.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/sun stone to bribe the Mercenary!");
 				}
 				// Bribe away!
-				playerTreasure.get(0).setState(EntityState.DEAD);
+				if (playerTreasure.size() > 1) {
+					playerTreasure.get(0).setState(EntityState.DEAD);
+				}
+				if (playerSunStone.size() > 1) {
+					playerSunStone.get(0).setState(EntityState.DEAD);
+				}
 				bribeMercenary.aiComponent.changeState("MercAlly");
 				break;
 		}
