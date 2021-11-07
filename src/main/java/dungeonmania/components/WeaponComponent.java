@@ -1,0 +1,27 @@
+package dungeonmania.components;
+
+import org.json.JSONObject;
+
+import dungeonmania.Dungeon;
+import dungeonmania.InputState;
+import dungeonmania.util.Position;
+import dungeonmania.entities.Entity;
+import dungeonmania.components.Component;
+
+public class WeaponComponent extends Component {
+    // TODO force the entity to be of type BattleItem
+    private int damage;
+    //private weapontype?
+
+    public WeaponComponent(Entity owningEntity, int updateOrder) {
+        super(owningEntity, updateOrder);
+    }
+
+    public void processInput(InputState inputState) {}
+    
+    public void updateComponent() {} 
+
+    public int getDamage() {
+        return damage;
+    }
+}
