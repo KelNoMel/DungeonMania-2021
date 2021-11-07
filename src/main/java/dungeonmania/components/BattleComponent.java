@@ -37,7 +37,7 @@ public class BattleComponent extends Component {
 			getEntity().setState(EntityState.DEAD);
 		}
 	}
-	
+
 	public boolean isAlive() {
 		if (getEntity().getState() == EntityState.ACTIVE) {
 			return true;
