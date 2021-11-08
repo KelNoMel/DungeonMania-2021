@@ -24,6 +24,7 @@ import dungeonmania.response.models.AnimationQueue;
 import dungeonmania.util.Position;
 
 public class BattleResolver extends Entity {
+	private final int allySupportRange = 2;
 
 	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "battle_resolver", position, false, entitySpecificData);
@@ -34,10 +35,33 @@ public class BattleResolver extends Entity {
 
 	protected void updateEntity() {
 		Dungeon d = getDungeon();
+
+		// the good guys
+		List<Mercenary> battleAllies = d.getEntities().stream()
+			.filter(e -> isAlly(e))
+			.map(e -> (Mercenary)e)
+			.collect(Collectors.toList());
+		
+
+		playerBattle(battleAllies);
+		alliesBattle(battleAllies);
+	}
+
+	/**
+	 * Player battles all enemies in its position with weapons and ally support
+	 * Note: player receives damage at the end of each loop to allow for
+	 * predictable damage when added with a weapon
+	 * @param battleAllies
+	 */
+	private void playerBattle(List<Mercenary> battleAllies) {
+		Dungeon d = getDungeon();
 		
 		// the player
 		Player player = d.getPlayer();
 		BattleComponent playerBattleState = player.getComponent(BattleComponent.class);
+
+		// the bad guys at the player's position
+		List<Entity> battleEnemies = getEnemiesToBattle(player);
 
 		// items used in battle
 		List<BattleItemComponent> playerBattleItems = player.getInventory().stream()
@@ -53,28 +77,16 @@ public class BattleResolver extends Entity {
 			.map(e -> (ArmourComponent)e.getEntity().getComponent(ArmourComponent.class))
 			.collect(Collectors.toList());
 
-		// the good guys
-		List<Mercenary> battleAllies = d.getEntities().stream()
-			.filter(e -> isAlly(e))
-			.map(e -> (Mercenary)e)
-			.collect(Collectors.toList());
-		
-		// the bad guys at the player's position
-		List<Entity> battleEnemies = d.getEntitiesAtPosition(player.getPosition()).stream()
-			.filter(e->isEnemy(e))
-			.collect(Collectors.toList());
-
-		// for player battle enemies using ally support
-
 		// Battle time!
 		for (Entity enemy : battleEnemies) {
-			
 			while (true) {
 				BattleComponent enemyBattleState = enemy.getComponent(BattleComponent.class);
-				String preAttackHealth = playerBattleState.getHealthAsString();
-				String enemyPreAttackHealth = enemyBattleState.getHealthAsString();
 
-				
+				// if either fighter died in a previous encounter skip this battle
+				if (!playerBattleState.isAlive()) break;
+				if (!enemyBattleState.isAlive()) break;
+
+				// use armour
 				int currArmour = 0;
 				for (ArmourComponent armour : playerArmour) {
 					if (armour.isBroken()) continue;
@@ -82,110 +94,104 @@ public class BattleResolver extends Entity {
 					armour.useItem();
 				}
 
-				playerBattleState.dealDamage(enemyBattleState.getScaledAttackDamage() / (10 + currArmour));
+				// get damage
+				int playersDamage = playerBattleState.getScaledAttackDamage() / 5;
+				int enemysDamage = enemyBattleState.getScaledAttackDamage() / (10 + currArmour);
 				
+				// get player's new weapon attacks this turn
 				ArrayList<WeaponComponent> singleAttacks = new ArrayList<>();
 				ArrayList<WeaponComponent> extraAttacks = new ArrayList<>();
 
 				// use highest damage single attack and all extra attacks
 				for (WeaponComponent weapon : playerWeapons) {
+					// don't use broken weapons
 					if (weapon.isBroken()) continue;
+
 					if (weapon.getType().equals(AttackTypeEnum.EXTRA)) {
+						// queue all extra attacks
 						extraAttacks.add(weapon);
 					} else if (singleAttacks.size() == 0) {
+						// add single per round weapon to the queue over fists
 						singleAttacks.add(weapon);
 					} else if (weapon.getDamage() > singleAttacks.get(0).getDamage()) {
+						// replace current single weapon with highest damage
+						// weapon in the queue
 						singleAttacks.add(weapon);
 						singleAttacks.remove(0);
 					}
 				}
-				battleAnimation(d, player, playerBattleState, preAttackHealth);
 
 				// use only one single turn weapon or fist fight
 				if (singleAttacks.size() == 0) {
 					// fist fight
-					enemyBattleState.dealDamage(playerBattleState.getScaledAttackDamage() / 5);
-					battleAnimation(d, enemy, enemyBattleState, enemyPreAttackHealth);
+					attackFighter(enemyBattleState, playersDamage);
 				} else {
-					// player uses weapon
-					enemyBattleState.dealDamage(playerBattleState.getScaledAttackDamage(singleAttacks.get(0).getDamage()) / 5);
-					singleAttacks.get(0).useItem();
-					battleAnimation(d, enemy, enemyBattleState, enemyPreAttackHealth);
+					// player uses weapon on enemy
+					playersDamage = playerBattleState.getScaledAttackDamage(singleAttacks.get(0).getDamage()) / 5;
+					if (attackFighter(enemyBattleState, playersDamage)) {
+						// weapon durabability--;
+						singleAttacks.get(0).useItem();
+					}
 				}
 
 				// use extra weapons
 				for (WeaponComponent extraWeapon : extraAttacks) {
-					if (!enemyBattleState.isAlive()) break;
-					
-					enemyBattleState.dealDamage(playerBattleState.getScaledAttackDamage(extraWeapon.getDamage()) / 5);
-					battleAnimation(d, enemy, enemyBattleState, enemyPreAttackHealth);
-					extraWeapon.useItem();
-
+					// player uses weapon
+					playersDamage = playerBattleState.getScaledAttackDamage(extraWeapon.getDamage()) / 5;
+					if (attackFighter(enemyBattleState, playersDamage)) {
+						// weapon durabability--;
+						extraWeapon.useItem();
+					}
 				}
 
-				// allies fight
+				// allies do additional attacks without getting hit
 				for (Mercenary ally : battleAllies) {
-					if (!enemyBattleState.isAlive()) break;
-					
+					// check if ally is within battle range
+					if (!Position.withinRange(ally.getPosition(), player.getPosition(), allySupportRange)) continue;
 					BattleComponent allyBattleState = ally.getComponent(BattleComponent.class);
-					String allyPreAttackHealth = allyBattleState.getHealthAsString();
+					// if either fighter died in a previous encounter skip this battle
 					if (!allyBattleState.isAlive()) break;
-					if (!enemyBattleState.isAlive()) break;
-
-					allyBattleState.dealDamage(enemyBattleState.getScaledAttackDamage() / 10);
-					enemyBattleState.dealDamage(allyBattleState.getScaledAttackDamage() / 5);
-					battleAnimation(d, enemy, enemyBattleState, enemyPreAttackHealth);
-					battleAnimation(d, ally, allyBattleState, allyPreAttackHealth);
+					int allysDamage = allyBattleState.getScaledAttackDamage() / 5;
+					attackFighter(enemyBattleState, allysDamage);
 				}
 
-				if (!enemyBattleState.isAlive()) break;
+				// player gets attacked
+				attackFighter(playerBattleState, enemysDamage);
 			}
 		}
-		
-		
+	}
+
+	private void alliesBattle(List<Mercenary> battleAllies) {
 		for (Mercenary ally : battleAllies) {
 			// the bad guys at the player's position
-			battleEnemies = d.getEntitiesAtPosition(ally.getPosition()).stream()
-				.filter(e->isEnemy(e))
-				.collect(Collectors.toList());
 			BattleComponent allyBattleState = ally.getComponent(BattleComponent.class);
+			List<Entity> battleEnemies = getEnemiesToBattle(ally);
 
 			// for all allies battle enemies
 			// Battle time!
 			for (Entity enemy : battleEnemies) {
 				while (true) {
 					BattleComponent enemyBattleState = enemy.getComponent(BattleComponent.class);
-					String allyPreAttackHealth = allyBattleState.getHealthAsString();
-					String enemyPreAttackHealth = enemyBattleState.getHealthAsString();
+					
+					// get damage
+					int allysDamage = allyBattleState.getScaledAttackDamage() / 5;
+					int enemysDamage = enemyBattleState.getScaledAttackDamage() / 10;
 
-					System.out.println("Ally health was: " + allyPreAttackHealth);
-					System.out.println("Enemy health was: " + enemyPreAttackHealth);
-
-
+					// if either fighter died in a previous encounter skip this battle
 					if (!allyBattleState.isAlive()) break;
 					if (!enemyBattleState.isAlive()) break;
-					
-					enemyBattleState.dealDamage(allyBattleState.getScaledAttackDamage() / 5);
-					if (!enemyBattleState.isAlive()) break;
-					allyBattleState.dealDamage(enemyBattleState.getScaledAttackDamage() / 10);
-					
-					battleAnimation(d, ally, allyBattleState, allyPreAttackHealth);
-					battleAnimation(d, enemy, enemyBattleState, enemyPreAttackHealth);
 
-					allyPreAttackHealth = allyBattleState.getHealthAsString();
-					enemyPreAttackHealth = enemyBattleState.getHealthAsString();
-
-					System.out.println("Ally health is now: " + allyPreAttackHealth);
-					System.out.println("Enemy health is now: " + enemyPreAttackHealth);
-
-
-					if (!allyBattleState.isAlive()) break;
+					attackFighter(enemyBattleState, allysDamage);
+					attackFighter(allyBattleState, enemysDamage);
 				}
 			}
 		}
 	}
 
-	
+	private boolean isPlayer(Entity e) {
+		return e instanceof	Player;
+	}
+
 	private boolean isEnemy(Entity e) {
 		if (
 			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
@@ -206,8 +212,46 @@ public class BattleResolver extends Entity {
 		return false;
 	}
 
-	public static void battleAnimation(Dungeon dungeon, Entity fighter, BattleComponent battleComponent, String preAttackHealth) {
-		dungeon.queueAnimation(
+	private List<Entity> getEnemiesToBattle(Entity entity) {
+		return getDungeon().getEntitiesAtPosition(entity.getPosition()).stream()
+			.filter(e -> isEnemy(e))
+			.collect(Collectors.toList());
+	}
+
+	private boolean attackFighter(BattleComponent fighterBattleState, int damage) {
+		// if this fighter died in a previous encounter skip this attack
+		if (!fighterBattleState.isAlive()) return false;
+		// pre-battle health
+		String fighterPreAttackHealth = fighterBattleState.getHealthAsString();
+		Entity fighter = fighterBattleState.getEntity();
+		// pre-battle
+		if (isPlayer(fighter)) {
+			System.out.println("Player health was: " + fighterPreAttackHealth);
+		} else if (isEnemy(fighter)) {
+			System.out.println("Enemy health was: " + fighterPreAttackHealth);
+		} else if (isAlly(fighter)) {
+			System.out.println("Ally health was: " + fighterPreAttackHealth);
+		}
+		// fighter gets attacked
+		fighterBattleState.dealDamage(damage);
+		// animation
+		battleAnimation(fighter, fighterBattleState, fighterPreAttackHealth);
+		// post-battle
+		if (isPlayer(fighter)) {
+			System.out.println("Player health is now: " + fighterBattleState.getHealthAsString());
+		} else if (isEnemy(fighter)) {
+			System.out.println("Enemy health is now: " + fighterBattleState.getHealthAsString());
+		} else if (isAlly(fighter)) {
+			System.out.println("Ally health is now: " + fighterBattleState.getHealthAsString());
+		}
+		// weapon / other was successfully used
+		return true;
+	}
+
+	public void battleAnimation(Entity fighter, BattleComponent battleComponent, String preAttackHealth) {
+		Dungeon d = getDungeon();
+		
+		d.queueAnimation(
 			new AnimationQueue(
 				"PostTick",
 				fighter.getId(),
@@ -221,7 +265,7 @@ public class BattleResolver extends Entity {
 				-1
 			)
 		);
-		dungeon.queueAnimation(
+		d.queueAnimation(
 			new AnimationQueue(
 				"PostTick",
 				fighter.getId(),

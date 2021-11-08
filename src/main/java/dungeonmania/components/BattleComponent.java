@@ -1,8 +1,16 @@
 package dungeonmania.components;
 
+import java.util.List;
+
+import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
+import java.util.stream.Collectors;
+import java.util.Collections;
+
+
 
 public class BattleComponent extends Component {
 
@@ -53,4 +61,5 @@ public class BattleComponent extends Component {
 	public String getHealthAsString() {
 		return String.format("%.1f", (float)health / (float)maxHealth);
 	}
+
 }
