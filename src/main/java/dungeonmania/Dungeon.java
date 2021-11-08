@@ -59,7 +59,7 @@ public class Dungeon {
         return UUID.randomUUID().toString();
     }
     
-    public Dungeon(String dungeonName, String gameMode) throws IllegalArgumentException {
+    public Dungeon(String dungeonName, String gameMode) throws JSONException {
         this.dungeonName = dungeonName;
     	this.gameMode = GameMode.getGameMode(gameMode);
     	

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
@@ -141,7 +142,7 @@ public class Player extends Entity {
 		baseJSON.put("inventory", inventory.toJSON());
 	}
 
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) throws JSONException {
 		if (entitySpecificData.has("inventory")) {
 			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
 		} else {

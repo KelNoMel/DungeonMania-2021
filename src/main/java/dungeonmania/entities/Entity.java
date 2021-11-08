@@ -148,4 +148,19 @@ public abstract class Entity {
         return new EntityResponse(getId(), "blank", position, isInteractable);
     }
 
+    // Credit: https://stackoverflow.com/questions/14524751/cast-object-to-generic-type-for-returning
+	public <T> T getComponent(Class<T> classType) {
+		for (Component c : components) {
+			try {
+				if (classType.isInstance(c)) {
+					return classType.cast(c);
+				}
+			} catch(ClassCastException exc) {
+				return null;
+			}
+		}
+		// Shouldn't get here...
+		return null;
+	}
+
 }

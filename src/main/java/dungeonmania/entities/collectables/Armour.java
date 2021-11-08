@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.ArmourComponent;
+import dungeonmania.components.BattleItemComponent;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
@@ -14,25 +16,20 @@ public class Armour extends Entity {
 	final private int armour = 4;
 
 	public CollectableComponent collectableComponent;
+	public BattleItemComponent battleItemComponent;
+	public ArmourComponent armourComponent;
 	
 	public Armour(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
 		super(dungeon, "armour", position, false, entitySpecificData);
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
+		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
+		armourComponent = new ArmourComponent(this, 3, armour);
 	}
 
-	// Armour already gets added into inventory by collectableComponent
-	// Its' effects are seen in battlecomponent
-	protected void inputEntity(InputState inputState) {
+	protected void inputEntity(InputState inputState) {}
 
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void updateEntity() {}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-
-
-
 }
