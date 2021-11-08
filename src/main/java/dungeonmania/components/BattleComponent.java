@@ -21,10 +21,15 @@ public class BattleComponent extends Component {
 	public void updateComponent() {}
 	
 	// Algorithm for damage given scaled by health
-	public int getScaledAttackDamage() {
-		return (int) Math.ceil(health * attackDamage);
+	public int getScaledAttackDamage(int weaponDamage) {
+		return (int) Math.ceil(health * (attackDamage + weaponDamage));
 	}
-	
+
+	public int getScaledAttackDamage() {
+		return getScaledAttackDamage(0);
+	}
+
+	public void increaseDamge(int addedDamage) { attackDamage += addedDamage; }
 	public int getHealth() { return health; }
 	public void setHealth(int health) { this.health = health; }
 	public int getAttackDamage() { return attackDamage; }
