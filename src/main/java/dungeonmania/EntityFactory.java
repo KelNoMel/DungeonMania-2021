@@ -3,6 +3,7 @@ package dungeonmania;
 import java.util.Collections;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
@@ -38,7 +39,7 @@ import dungeonmania.util.Position;
 
 public class EntityFactory {
 	
-	public static EntityList loadEntities(JSONArray entityArray, Dungeon loadingDungeon) {
+	public static EntityList loadEntities(JSONArray entityArray, Dungeon loadingDungeon) throws JSONException {
     	
     	EntityList newEntities = new EntityList();
     	
@@ -60,6 +61,7 @@ public class EntityFactory {
      * Used to construct specific entities given their JSON representation
      * @param entData
      * @return
+     * @throws Exception
      */
 	public static Entity constructEntity(JSONObject entData, Dungeon loadingDungeon) {
 		Position pos = new Position(entData.getInt("x"), entData.getInt("y"));
