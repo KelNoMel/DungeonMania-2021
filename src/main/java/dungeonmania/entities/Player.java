@@ -12,6 +12,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
+import dungeonmania.entities.bosses.Assassin;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
@@ -72,7 +73,12 @@ public class Player extends Entity {
 				bribeMercenary.aiComponent.changeState("MercAlly");
 				break;
 			case "assassin":
-				
+				Assassin bribeAssassin = null;
+				if ((bribeAssassin = findAssassin(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
+					throw new InvalidActionException("The player is not within range of an Assassin!");
+				}
+				List<Entity> playerTreasure1 = getTypeInInventory("treasure");
+				List<Entity> playerOneRing = getTypeInInventory("the_one_ring");
 		}
 		inventory.processInput(inputState);
 	}
@@ -135,6 +141,15 @@ public class Player extends Entity {
 		for (Entity e : entities) {
 			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
+			}
+		}
+		return null;
+	}
+
+	public Assassin findAssassin(List<Entity> entities, String AssassinId) {
+		for (Entity e : entities) {
+			if (e instanceof Assassin && AssassinId.equals(e.getId())) {
+				return (Assassin) e;
 			}
 		}
 		return null;
