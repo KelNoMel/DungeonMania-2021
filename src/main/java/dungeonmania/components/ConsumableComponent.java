@@ -5,6 +5,7 @@ import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.collectables.Treasure;
 
 // For all items that can be used (consume, craft, place)
 public class ConsumableComponent extends Component {
@@ -21,9 +22,6 @@ public class ConsumableComponent extends Component {
     }
 
     public void processInput(InputState input) {
-        
-    	System.out.println(input.getItemUsed());
-    	
     	Player player = getEntity().getDungeon().getPlayer();
     	
         // Determine if the required number of items were already used
@@ -34,11 +32,10 @@ public class ConsumableComponent extends Component {
             }
         }
 
-        
         // Item is in inventory, matches input item type and
         // not enough of the item is used yet
         if (player.getInventory().contains(getEntity())
-            && input.getItemUsed().equals(getEntity().getId()) 
+            && input.getItemUsed().equals(getEntity().getId())      // TODO: rare null exception was seen here
             && frequency <= numObjUsed) {
             
                 // All prerequisites are filled, add item to usedList

@@ -38,7 +38,7 @@ public class AIMercHostile extends AIState {
 	}
 
 	public void updateState() {
-		System.out.println("Hostile");
+		//System.out.println("Hostile");
 	}
 
 	public void onEnter() {}

@@ -41,7 +41,7 @@ public class AIMercAlly extends AIState {
 	}
 
 	public void updateState() {
-		System.out.println("Ally!");
+		//System.out.println("Ally!");
 	}
 
 	public void onEnter() {}
