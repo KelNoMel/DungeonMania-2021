@@ -7,39 +7,93 @@ import java.util.Arrays;
 
 // Based on: https://www.baeldung.com/java-enum-iteration
 public enum BuildableEnum {
-    SHIELD("shield", Recipe.createRecipes(
-        new ArrayList<ArrayList<String>>(Arrays.asList(
-			new ArrayList<>(Arrays.asList("wood","treasure")), 
-			new ArrayList<>(Arrays.asList("wood","key")))
-        ), 
-        new ArrayList<ArrayList<Integer>>(Arrays.asList(
-            new ArrayList<>(Arrays.asList(2,1)), 
-            new ArrayList<>(Arrays.asList(2,1)))
-        )
-    )),
-    BOW("bow", Recipe.createRecipes(
-        new ArrayList<ArrayList<String>>(Arrays.asList(
-            new ArrayList<>(Arrays.asList("arrow","wood")))
-        ), 
-        new ArrayList<ArrayList<Integer>>(Arrays.asList(
-            new ArrayList<>(Arrays.asList(3,1)))
-        )
-    ));
+    SHIELD("shield", new Recipe(
+        new ArrayList<ArrayList<Ingredient>>(
+            Arrays.asList(
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("wood",2)
+                    )
+                ),
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("treasure",1), 
+                        new Ingredient("key",1)
+                    )
+                )
+            )
+        ))
+    ),
+    BOW("bow", new Recipe(
+        new ArrayList<ArrayList<Ingredient>>(
+            Arrays.asList(
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("arrow",3)
+                    )
+                ),
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("wood",1)
+                    )
+                )
+            )
+        ))
+    ),
+    SCEPTRE("sceptre", new Recipe(
+        new ArrayList<ArrayList<Ingredient>>(
+            Arrays.asList(
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("wood",1),
+                        new Ingredient("arrow",2)
+                    )
+                ),
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("treasure",1), 
+                        new Ingredient("key",1)
+                    )
+                ),
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("sun_stone",1)
+                    )
+                )
+            )
+        ))
+    ),
+    MIDNIGHT_ARMOUR("midnight_armour", new Recipe(
+        new ArrayList<ArrayList<Ingredient>>(
+            Arrays.asList(
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("armour",1)
+                    )
+                ),
+                new ArrayList<>(
+                    Arrays.asList(
+                        new Ingredient("sun_stone",1)
+                    )
+                )
+            )
+        ))
+    );
 
     private String buildType;
-    private List<Recipe> recipes;
+    private Recipe recipe;
 
-    private BuildableEnum(String buildType, List<Recipe> recipes) {
+    private BuildableEnum(String buildType, Recipe recipe) {
         this.buildType = buildType;
-        this.recipes = recipes;
+        this.recipe = recipe;
     }
 
     public String getType() {
         return buildType;
     }
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
     public static Stream<BuildableEnum> stream() {

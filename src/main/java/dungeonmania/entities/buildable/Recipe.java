@@ -2,49 +2,45 @@ package dungeonmania.entities.buildable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.Player;
 
 /**
  * Strongly typed tuple structure for keeping buildable resource requirements
  * 
  */
 public class Recipe {
-    private List<Ingredient> ingredients;
+    private List<ArrayList<Ingredient>> recipe = new ArrayList<>();
 
-    public Recipe(List<String> requiredType, List<Integer> requiredFreq) {
-        this.ingredients = createRecipe(requiredType, requiredFreq);
+    public Recipe(List<ArrayList<Ingredient>> recipe) {
+        this.recipe = recipe;
     }
 
-    private List<Ingredient> createRecipe(List<String> requiredType, 
-        List<Integer> requiredFreq) {
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
-        int recipeLength = requiredType.size();
-        for (int i = 0; i < recipeLength; i++) {
-            ingredients.add(new Ingredient(requiredType.get(i), requiredFreq.get(i)));
+    protected List<Ingredient> checkRequirements(Player player) {
+		List<Ingredient> ingredients = new ArrayList<>();
+
+        for (List<Ingredient> recipeStep : recipe) {
+            boolean hasRequirementsflag = false;
+
+            for (Ingredient ingredient : recipeStep) {
+                ArrayList<Entity> currReq = new ArrayList<Entity>(player.getInventory().stream()
+					.filter(e -> ingredient.getType().equals(e.getType()))
+                    .collect(Collectors.toList()));
+                // check if there are enough of the required ingredient type
+                if (currReq.size() >= ingredient.getFreq()) {
+                    ingredients.add(ingredient);
+                    hasRequirementsflag = true;
+                    break;
+                }
+            }
+            // if there wasn't enough of any of the ingredients for this step
+            // if no then the recipe is not possible
+            if (!hasRequirementsflag) {
+                return null;
+            }
         }
         return ingredients;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    /**
-     * Creates a list of acceptable requirement configurations. Each configuration
-     * is a list of Recipe tuples
-     * @param requiredTypeConfigs
-     * @param requiredFreqConfigs
-     * @return list of acceptable requirements to build a buildable
-     */
-    public static List<Recipe> createRecipes (
-        ArrayList<ArrayList<String>> requiredTypeConfigs, 
-        ArrayList<ArrayList<Integer>> requiredFreqConfigs) {
-        
-        ArrayList<Recipe> recipes = new ArrayList<>();
-        int recipesListLength = requiredTypeConfigs.size();
-        for (int j = 0; j < recipesListLength; j++) {
-            recipes.add(
-                new Recipe(requiredTypeConfigs.get(j), requiredFreqConfigs.get(j)));
-        }
-        return recipes;
-    }
+	}
 }

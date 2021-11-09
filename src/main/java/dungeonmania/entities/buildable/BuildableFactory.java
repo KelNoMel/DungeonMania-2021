@@ -14,25 +14,17 @@ public class BuildableFactory {
 		Position pos = new Position(0, 0);
         switch(buildable) {
 			case "bow":
-                return new Bow(dungeon, pos.asLayer(0), CollectableState.INVENTORY, new JSONObject());
+                return new Bow(dungeon, pos.asLayer(0), new JSONObject());
 			case "shield":
-                return new Shield(dungeon, pos.asLayer(0), CollectableState.INVENTORY, new JSONObject());
+                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
+			case "sceptre":
+				// TODO: add sceptre
+                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
+			case "midnight_armour":
+				// TODO: add midnight_armour
+                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
 			default:
 				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}
     }
-
-
-
-	// check requirements for every type resonse
-
-	
-	// check requirements for my one type then build entity that gets stored in inventory
-
-
-	// add constructor that allows for a bow / shield to be found on the ground
-	// the methods for this should be done once inside those functions and then 
-	// work on that
-
-
 }
