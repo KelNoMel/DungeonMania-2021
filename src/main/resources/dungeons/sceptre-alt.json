@@ -1,0 +1,30 @@
+{
+    "entities": [
+        {
+            "x": 0,
+            "y": 0,
+            "type": "player"
+        },
+        {
+            "x": 4,
+            "y": 0,
+            "type": "arrow"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "arrow"
+        },
+        {
+            "x": 3,
+            "y": 0,
+            "type": "key",
+            "key": 1
+        },
+        {
+            "x": 2,
+            "y": 0,
+            "type": "sun_stone"
+        }
+    ]
+}
