@@ -71,6 +71,8 @@ public class Player extends Entity {
 				}
 				bribeMercenary.aiComponent.changeState("MercAlly");
 				break;
+			case "assassin":
+				
 		}
 		inventory.processInput(inputState);
 	}
