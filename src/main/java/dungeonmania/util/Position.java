@@ -13,7 +13,7 @@ public final class Position {
 	
 	public static final double epsilon = 0.001;
 	public static boolean withinRange(Position p1, Position p2, int distance) {
-		System.out.println(Math.abs(distance - distanceBetween(p1,p2)));
+		// System.out.println(Math.abs(distance - distanceBetween(p1,p2)));
 		return (distance - distanceBetween(p1,p2) >= 0);
 	}
 	

@@ -188,11 +188,11 @@ public class BattleResolver extends Entity {
 		}
 	}
 
-	private boolean isPlayer(Entity e) {
+	public static boolean isPlayer(Entity e) {
 		return e instanceof	Player;
 	}
 
-	private boolean isEnemy(Entity e) {
+	public static boolean isEnemy(Entity e) {
 		if (
 			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
@@ -203,7 +203,7 @@ public class BattleResolver extends Entity {
 		return false;
 	}
 
-	private boolean isAlly(Entity e) {
+	public static boolean isAlly(Entity e) {
 		if (
 			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 		) {

@@ -9,6 +9,8 @@ public class AIComponent extends Component {
     
 	private HashMap<String, AIState> stateMap = new HashMap<>();
     private AIState currentState = null;
+    private AIState prevState = null;
+    private int temporaryCooldown = 0;
 
     public AIComponent(Entity owningEntity, int updateOrder) {
         super(owningEntity, updateOrder);
@@ -18,6 +20,16 @@ public class AIComponent extends Component {
 		if (currentState == null) return;
     	// garbage dirt-brain level pathfinding
 		currentState.processInput(inputState);
+        
+        // switch back to previous state
+        if (prevState != null) {
+            temporaryCooldown--;
+            if (temporaryCooldown <= 0) {
+                currentState = prevState;
+                prevState = null;
+                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
+            }
+        }
 	}
     
     public void updateComponent() {
@@ -37,6 +49,19 @@ public class AIComponent extends Component {
         if ((currentState = stateMap.get(newState)) != null) {
         	currentState.onEnter();
         }
+    }
+
+    /**
+     * Change from the current state to a new state for specified number of ticks
+     * Note: Even if the state is changed after this functions has been called
+     *      the AIComponent will still revert to the previous state eventually 
+     * @param newState
+     * @param ticks
+     */
+    public void temporaryChangeState(String newState, int ticks) {
+        prevState = currentState;
+        temporaryCooldown = ticks;
+        changeState(newState);
     }
 
     /**
