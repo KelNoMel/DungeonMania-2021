@@ -133,10 +133,10 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
+				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
 				return bow;
 			case "shield":
-				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
+				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), entData);
 				return shield;
 			
 			// Non spec-defined
