@@ -18,11 +18,9 @@ public class BuildableFactory {
 			case "shield":
                 return new Shield(dungeon, pos.asLayer(0), new JSONObject());
 			case "sceptre":
-				// TODO: add sceptre
-                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
+                return new Sceptre(dungeon, pos.asLayer(0), new JSONObject());
 			case "midnight_armour":
-				// TODO: add midnight_armour
-                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
+                return new MidnightArmour(dungeon, pos.asLayer(0), new JSONObject());
 			default:
 				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}
