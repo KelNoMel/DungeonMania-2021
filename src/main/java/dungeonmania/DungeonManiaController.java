@@ -144,7 +144,7 @@ public class DungeonManiaController {
      * @return
      * @throws IllegalArgumentException If entityId is not a valid entity ID
      * @throws InvalidActionException If the player is not cardinally adjacent to the given entity
-     * @throws InvalidActionException If the player does not have any gold and attempts to bribe a mercenary
+     * @throws InvalidActionException If the player does not have any gold, sun stone or sceptre and attempts to bribe a mercenary
      * @throws InvalidActionException If the player does not have a weapon and attempts to destroy a spawner
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {

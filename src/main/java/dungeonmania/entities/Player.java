@@ -13,6 +13,7 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
+import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -57,19 +58,26 @@ public class Player extends Entity {
 				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
+				// do not use resources to bribe a mercenary that is already bribed/controlled
+				if (BattleResolver.isAlly(bribeMercenary)) break;
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
 				List<Entity> playerSunStone = getTypeInInventory("sun_stone");
-				if (playerTreasure.size() < 1 && playerSunStone.size() < 1) {
-					throw new InvalidActionException("You do not have sufficient gold/sun stone to bribe the Mercenary!");
+				List<Entity> playerSceptre = getTypeInInventory("sceptre");
+				if (playerTreasure.size() < 1 && playerSunStone.size() < 1 && playerSceptre.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/sun stone/sceptre to bribe the Mercenary!");
 				}
 				// Bribe away!
-				if (playerTreasure.size() > 1) {
+				if (playerSunStone.size() > 0) {
+					System.out.println("Mercanary has been bribed the sun stone");
+					bribeMercenary.aiComponent.changeState("MercAlly");
+				} else if (playerTreasure.size() > 0) {
+					System.out.println("Mercanary has been bribed using gold");
 					playerTreasure.get(0).setState(EntityState.DEAD);
+					bribeMercenary.aiComponent.changeState("MercAlly");
+				} else if (playerSceptre.size() > 0 ) {
+					System.out.println("Mercanary is being controlled with a sceptre");
+					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", 10);
 				}
-				if (playerSunStone.size() > 1) {
-					playerSunStone.get(0).setState(EntityState.DEAD);
-				}
-				bribeMercenary.aiComponent.changeState("MercAlly");
 				break;
 		}
 		inventory.processInput(inputState);

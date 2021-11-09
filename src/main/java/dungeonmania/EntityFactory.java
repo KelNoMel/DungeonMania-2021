@@ -11,6 +11,8 @@ import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
+import dungeonmania.entities.buildable.MidnightArmour;
+import dungeonmania.entities.buildable.Sceptre;
 import dungeonmania.entities.buildable.Shield;
 import dungeonmania.entities.collectables.Armour;
 import dungeonmania.entities.collectables.Arrow;
@@ -133,12 +135,14 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
-				return bow;
+				return new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "shield":
-				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), entData);
-				return shield;
-			
+				return new Shield(loadingDungeon, pos.asLayer(itemLayer), entData);
+			case "sceptre":
+				return new Sceptre(loadingDungeon, pos.asLayer(itemLayer), entData);
+			case "midnight_armour":
+				return new MidnightArmour(loadingDungeon, pos.asLayer(itemLayer), entData);
+				
 			// Non spec-defined
 			case "mercenary_spawner":
 				return new MercenarySpawner(loadingDungeon, pos, 20, entData);
