@@ -13,6 +13,7 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
+import dungeonmania.entities.buildable.Sceptre;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
@@ -24,10 +25,12 @@ import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-	
+	public final int MAX_HP = 100;
+	public final int DMG = 10;
+
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, MAX_HP, DMG);
 
 
 	private EntityList inventory;
@@ -76,7 +79,7 @@ public class Player extends Entity {
 					bribeMercenary.aiComponent.changeState("MercAlly");
 				} else if (playerSceptre.size() > 0 ) {
 					System.out.println("Mercanary is being controlled with a sceptre");
-					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", 10);
+					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", Sceptre.MINDCONTROL_TIME);
 				}
 				break;
 		}
