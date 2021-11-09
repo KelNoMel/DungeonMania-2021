@@ -79,6 +79,17 @@ public class Player extends Entity {
 				}
 				List<Entity> playerTreasure1 = getTypeInInventory("treasure");
 				List<Entity> playerOneRing = getTypeInInventory("the_one_ring");
+				if (playerTreasure1.size() < 1 && playerOneRing.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/one ring to bribe the Assassin!");
+				}
+				if (playerTreasure1.size() > 1) {
+					playerTreasure1.get(0).setState(EntityState.DEAD);
+				}
+				if (playerOneRing.size() > 1) {
+					playerOneRing.get(0).setState(EntityState.DEAD);
+				}
+				bribeAssassin.aiComponent.changeState("MercAlly");
+				break;
 		}
 		inventory.processInput(inputState);
 	}
