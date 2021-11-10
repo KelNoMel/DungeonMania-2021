@@ -34,9 +34,9 @@ public class Bow extends Buildable {
 	public BattleItemComponent battleItemComponent;
 	public WeaponComponent weaponComponent;
 
-	public Bow(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
-		super(dungeon,  BuildableEnum.BOW.getType(), position, false, BuildableEnum.BOW.getRecipes(), entitySpecificData);
-		collectableComponent = new CollectableComponent(this, 1, collectableState);
+	public Bow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon,  BuildableEnum.BOW.getType(), position, false, BuildableEnum.BOW.getRecipe(), entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, CollectableState.INVENTORY);
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}

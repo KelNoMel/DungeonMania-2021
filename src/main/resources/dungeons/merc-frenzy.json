@@ -8,10 +8,10 @@
         {
             "x": 1,
             "y": 0,
-            "type": "treasure"
+            "type": "mercenary"
         },
         {
-            "x": 4,
+            "x": 3,
             "y": 0,
             "type": "mercenary"
         }

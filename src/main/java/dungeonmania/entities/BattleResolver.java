@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -14,6 +15,8 @@ import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
 import dungeonmania.components.Component;
+import dungeonmania.components.MoveComponent;
+import dungeonmania.components.MovementType;
 import dungeonmania.components.WeaponComponent;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
@@ -25,6 +28,7 @@ import dungeonmania.util.Position;
 
 public class BattleResolver extends Entity {
 	private final int allySupportRange = 2;
+	private final int mercFrenzyRange = 2;
 
 	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "battle_resolver", position, false, entitySpecificData);
@@ -60,6 +64,8 @@ public class BattleResolver extends Entity {
 		Player player = d.getPlayer();
 		BattleComponent playerBattleState = player.getComponent(BattleComponent.class);
 
+		
+
 		// the bad guys at the player's position
 		List<Entity> battleEnemies = getEnemiesToBattle(player);
 
@@ -76,6 +82,11 @@ public class BattleResolver extends Entity {
 			.filter(e -> e.getEntity().getComponent(ArmourComponent.class) != null)
 			.map(e -> (ArmourComponent)e.getEntity().getComponent(ArmourComponent.class))
 			.collect(Collectors.toList());
+
+		if (battleEnemies.size() > 0) {
+			// this should only be called if the player goes into a battle
+			frenzyMercanaries(player);
+		}
 
 		// Battle time!
 		for (Entity enemy : battleEnemies) {
@@ -188,11 +199,11 @@ public class BattleResolver extends Entity {
 		}
 	}
 
-	private boolean isPlayer(Entity e) {
+	public static boolean isPlayer(Entity e) {
 		return e instanceof	Player;
 	}
 
-	private boolean isEnemy(Entity e) {
+	public static boolean isEnemy(Entity e) {
 		if (
 			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
@@ -203,7 +214,7 @@ public class BattleResolver extends Entity {
 		return false;
 	}
 
-	private boolean isAlly(Entity e) {
+	public static boolean isAlly(Entity e) {
 		if (
 			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 		) {
@@ -274,6 +285,23 @@ public class BattleResolver extends Entity {
 				0.5
 			)
 		);
+	}
+
+	/**
+	 * Set all mercanaries within range into the FRENZY movement state for the 
+	 * next tick
+	 * @param player
+	 */
+	private void frenzyMercanaries(Player player) {
+		Dungeon dungeon = getDungeon();
+		List<Mercenary> mercs = dungeon.getEntitiesByType(Mercenary.class)
+			.stream().map(e -> (Mercenary)e).collect(Collectors.toList());
+		for (Mercenary merc : mercs) {
+			if (Position.withinRange(player.getPosition(), merc.getPosition(), mercFrenzyRange)) {
+				// set to frenzy state
+				merc.getComponent(MoveComponent.class).setType(MovementType.FRENZY);
+			}
+		}
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}

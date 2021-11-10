@@ -41,7 +41,7 @@ public class AISpiderHostile extends AIState {
 	}
 
 	public void updateState() {
-		System.out.println("Spider Hostile");
+		// System.out.println("Spider Hostile");
 	}
 
 	public void onEnter() {}

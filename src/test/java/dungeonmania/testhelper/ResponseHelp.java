@@ -300,6 +300,25 @@ public class ResponseHelp {
     }
 
     /**
+     * Get an ItemResponse of the first instance with a matching type in the
+     * DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return ItemResponse of first instance with a matching type or if not
+     *         found it returns null
+     */
+    public static ItemResponse getItemOfType (DungeonResponse dgnRes,
+        String type) {
+        List<ItemResponse> items = dgnRes.getInventory();
+        for (ItemResponse item : items) {
+            if (item.getType().equals(type)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get the EntityResponse of the first Entity matching the type and position
      * of the EntityResponse entRes.
      * Note: the Entity found may have a different id and layer as those are 
