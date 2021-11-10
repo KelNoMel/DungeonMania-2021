@@ -46,11 +46,21 @@
 		"door-locked-silver": "images/tileset/walls/wooden/door_locked_silver.png",
 		"door-locked-gold": "images/tileset/walls/wooden/door_locked_gold.png",
 		"door-unlocked": "images/tileset/walls/wooden/door_unlocked.png",
-		"sword": "images/tileset/items/sword_silver.png",
         "portal-BLUE": "images/tileset/entities/portal_00.png",
         "portal-RED": "images/tileset/entities/portal_04.png",
         "portal-ORANGE": "images/tileset/entities/portal_08.png",
         "portal-GREY": "images/tileset/entities/portal_12.png",
-        "blank": "images/tileset/entities/blank.png"
+        "blank": "images/tileset/entities/blank.png",
+        "assassin": "images/tileset/entities/assassin.png",
+        "hydra": "images/tileset/entities/hydra.png",
+        "wire": "images/tileset/entities/wire.png",
+        "lightbulb": "images/tileset/entities/lightbulb.png",
+        "midnight_armour": "images/tileset/entities/midnight_armour.png",
+        "sceptre": "images/tileset/entities/sceptre.png",
+        "sun_stone": "images/tileset/entities/sun_stone.png",
+        "swamp_tile": "images/tileset/entities/swamp_tile.png",
+        "time_turner": "images/tileset/entities/time_turner.png",
+        "anduril": "images/tileset/entities/anduril.png"
+
     }
 }
