@@ -1,6 +1,7 @@
 package dungeonmania.entities.moving;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,20 @@ public class MercenaryTest {
         mania.tick(null, Direction.LEFT);
         mania.tick(null, Direction.DOWN);
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
+    }
+
+    @Test
+    public void testMercFrenzy() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("merc-frenzy","Peaceful");
+        // player kills the fist mercanary
+        mania.tick(null, Direction.NONE);
+        // second mercanary is now 2 blocks away so it goes to frenzy mode 
+        // to rush to player
+        DungeonResponse res = mania.tick(null, Direction.NONE);
+        // player kills second mercenary
+        assertEquals(null, ResponseHelp.getEntityOfType(res, "mercenary"));
+        
     }
 
 }
