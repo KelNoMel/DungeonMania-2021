@@ -26,7 +26,7 @@ public class MoveComponent extends Component {
 
 	public void updateComponent() {
 		if (moveDirection == null) return;
-		
+
 		// Portal so needs to happen in processInput?????/
 		Entity parentEntity = getEntity();
 		Position newPosition = parentEntity.getPosition();
@@ -37,6 +37,14 @@ public class MoveComponent extends Component {
 			case NORMAL:
 				// Move as normal
 				newPosition = moveNormal(parentEntity); break;
+			case FRENZY:
+				// Move twice in one tick
+				newPosition = moveNormal(parentEntity);
+				parentEntity.setPosition(newPosition);
+				newPosition = moveNormal(parentEntity);
+				// frenzy does not last
+				movementType = MovementType.NORMAL;
+				break;
 		}
 		
 		parentEntity.setPosition(newPosition);
@@ -81,5 +89,9 @@ public class MoveComponent extends Component {
 
 	public void setMoveDirection(Direction moveDirection) {
 		this.moveDirection = moveDirection;
+	}
+
+	public void setType(MovementType movementType) {
+		this.movementType = movementType;
 	}
 }

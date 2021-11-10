@@ -15,6 +15,8 @@ import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.BattleItemComponent;
 
 public class Sceptre extends Buildable {
+	public static final int MINDCONTROL_TIME = 10;
+
 	// if a buildable is found on the map
 	public Sceptre(Dungeon dungeon, Position position, JSONObject entitySpecificData)  {
 		super(dungeon,  BuildableEnum.SCEPTRE.getType(), position, false, BuildableEnum.SCEPTRE.getRecipe(), entitySpecificData);
