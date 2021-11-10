@@ -27,13 +27,13 @@ public class DungeonTest {
     @Test
     public void testNewGame() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze","Peaceful");
+        mania.newGame("maze","peaceful");
         //assertTrue();
         //assertDoesNotThrow(() -> ));
         
-        mania.newGame("boulders","Peaceful");
+        mania.newGame("boulders","peaceful");
         //assertTrue();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         //assertTrue();
     }
 
@@ -42,7 +42,7 @@ public class DungeonTest {
     public void testNewGameBadMap() {
         DungeonManiaController mania = new DungeonManiaController();
         assertThrows(IllegalArgumentException.class, () -> {
-            mania.newGame("squid-game","Hard");
+            mania.newGame("squid-game","hard");
         });
         removeSaves();
     }
@@ -61,7 +61,7 @@ public class DungeonTest {
     @Test
     public void testSaveNoError() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         assertDoesNotThrow(()->mania.saveGame("SaveFile"));
         removeSaves();
     }
@@ -70,7 +70,7 @@ public class DungeonTest {
     @Test
     public void testSameName() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         mania.saveGame("SaveFile");
         assertDoesNotThrow(()->mania.saveGame("SaveFile"));
         removeSaves();
@@ -80,11 +80,11 @@ public class DungeonTest {
     @Test
     public void testMultipleSaves() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         assertDoesNotThrow(()->mania.saveGame("SaveFile1"));
-        mania.newGame("portals","Hard");
+        mania.newGame("portals","hard");
         assertDoesNotThrow(()->mania.saveGame("SaveFile2"));
-        mania.newGame("maze","Standard");
+        mania.newGame("maze","standard");
         assertDoesNotThrow(()->mania.saveGame("SaveFile3"));
         removeSaves();
     }
@@ -107,7 +107,7 @@ public class DungeonTest {
     @Test
     public void testLoadGameBasic() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze","Peaceful");
+        mania.newGame("maze","peaceful");
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
@@ -117,7 +117,7 @@ public class DungeonTest {
     @Test
     public void testLoadGameABitMoreComplex() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
@@ -127,7 +127,7 @@ public class DungeonTest {
     @Test
     public void testLoadGameALOTMORECOMPLEX() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         
         mania.tick(null, Direction.DOWN);
         mania.tick(null, Direction.DOWN);
@@ -154,7 +154,7 @@ public class DungeonTest {
     @Test
     public void testLotsOfStuff() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("alotofstuff","Peaceful");
+        mania.newGame("alotofstuff","peaceful");
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
@@ -192,7 +192,7 @@ public class DungeonTest {
     public void testInteract() {
         // create game
         DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse response = mania.newGame("maze","Peaceful");
+        DungeonResponse response = mania.newGame("maze","peaceful");
         // find player
         EntityResponse res1 = ResponseHelp.getEntityOfType(response, "player");
         response = mania.tick(null, Direction.DOWN);

@@ -15,7 +15,7 @@ public class TreasureTest {
 	@Test
 	public void testTreasurePickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("treasure-pickup","Peaceful");
+        mania.newGame("treasure-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

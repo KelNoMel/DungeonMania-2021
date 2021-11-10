@@ -15,7 +15,7 @@ public class KeyTest {
 	@Test
 	public void testArrowPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("key-pickup","Peaceful");
+        mania.newGame("key-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

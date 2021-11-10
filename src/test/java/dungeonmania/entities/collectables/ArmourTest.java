@@ -22,7 +22,7 @@ public class ArmourTest {
 	@Test
 	public void testArmourPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("armour-pickup","Peaceful");
+        mania.newGame("armour-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

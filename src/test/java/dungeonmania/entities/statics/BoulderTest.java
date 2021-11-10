@@ -18,7 +18,7 @@ public class BoulderTest {
     @Test
     public void testMoveBoulder() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("boulders","Peaceful");
+        mania.newGame("boulders","peaceful");
         
         DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
 
@@ -31,7 +31,7 @@ public class BoulderTest {
     @Test
     public void testBoulderChain() {
     	DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("boulders","Peaceful");
+        mania.newGame("boulders","peaceful");
         
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
@@ -47,7 +47,7 @@ public class BoulderTest {
     @Test
     public void testBoulderWall() {
     	DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("boulders","Peaceful");
+        mania.newGame("boulders","peaceful");
         
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);

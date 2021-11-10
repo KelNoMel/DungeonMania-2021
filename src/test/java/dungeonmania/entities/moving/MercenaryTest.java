@@ -18,7 +18,7 @@ public class MercenaryTest {
     @Test
     public void testBasicMerc() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("mercenary-bribe","Standard");
+        mania.newGame("mercenary-bribe","standard");
         
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
         String mercID = ResponseHelp.getEntityOfType(d, "mercenary").getId();

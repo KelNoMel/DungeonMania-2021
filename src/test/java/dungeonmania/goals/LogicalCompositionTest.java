@@ -16,7 +16,7 @@ public class LogicalCompositionTest {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("logical-composition1","Peaceful");
+    	response = mania.newGame("logical-composition1","peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	
@@ -38,7 +38,7 @@ public class LogicalCompositionTest {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("logical-composition2","Peaceful");
+    	response = mania.newGame("logical-composition2","peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	

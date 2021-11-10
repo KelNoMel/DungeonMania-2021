@@ -17,7 +17,7 @@ public class EnemiesGoalTest {
     public void enemiesGoalTest() {
         // DungeonManiaController mania = new DungeonManiaController();
 
-        // DungeonResponse newGame = mania.newGame("floorswitch","Standard");
+        // DungeonResponse newGame = mania.newGame("floorswitch","standard");
         // assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(0, 0), false), newGame));
         // assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "sword", new Position(1, 0), false), newGame));
         // assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "spider", new Position(2, 0), false), newGame));

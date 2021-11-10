@@ -17,7 +17,7 @@ public class InvincibilityPotionTest {
 	@Test
 	public void testInvincibilityPotionPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("invincibility-potion-pickup","Peaceful");
+        mania.newGame("invincibility-potion-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(
@@ -33,7 +33,7 @@ public class InvincibilityPotionTest {
 	@Test
 	public void testInvinciblePotionConsumption() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("invincibility-potion-pickup","Standard");
+        mania.newGame("invincibility-potion-pickup","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
 		mania.tick("invincibility_potion", Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
