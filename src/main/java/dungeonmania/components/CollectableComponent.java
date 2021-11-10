@@ -39,6 +39,19 @@ public class CollectableComponent extends Component {
     	}
     }
 
+	public void place() {
+		if (collectableState == CollectableState.INVENTORY) {
+	    	Dungeon d = getEntity().getDungeon();
+	    	
+			// Add to dungeon entitylist
+			d.transferToMap(getEntity());
+			// Change collectablestate
+			collectableState = CollectableState.MAP;
+			// Set entity position to where the player is standing
+			getEntity().setPosition(d.getPlayer().getPosition());
+    	}
+	}
+
 	public CollectableState getCollectableState() { return collectableState; }
 	public void setCollectableState(CollectableState collectableState) { this.collectableState = collectableState; }
 }

@@ -374,6 +374,11 @@ public class Dungeon {
 		e.toggleDisplay(false);
 		entities.transferEntity(getPlayer().getInventory(), e);
 	}
+
+	public void transferToMap(Entity e) {
+		e.toggleDisplay(true);
+		entities.transferEntity(entities, e);
+	}
 	
 	public void addEntity(Entity e) {
 		entities.add(e);
