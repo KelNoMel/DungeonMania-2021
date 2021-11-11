@@ -1,8 +1,16 @@
 package dungeonmania.components;
 
+import java.util.List;
+
+import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
+import java.util.stream.Collectors;
+import java.util.Collections;
+
+
 
 public class BattleComponent extends Component {
 
@@ -21,10 +29,15 @@ public class BattleComponent extends Component {
 	public void updateComponent() {}
 	
 	// Algorithm for damage given scaled by health
-	public int getScaledAttackDamage() {
-		return (int) Math.ceil(health * attackDamage);
+	public int getScaledAttackDamage(int weaponDamage) {
+		return (int) Math.ceil(health * (attackDamage + weaponDamage));
 	}
-	
+
+	public int getScaledAttackDamage() {
+		return getScaledAttackDamage(0);
+	}
+
+	public void increaseDamge(int addedDamage) { attackDamage += addedDamage; }
 	public int getHealth() { return health; }
 	public void setHealth(int health) { this.health = health; }
 	public int getAttackDamage() { return attackDamage; }
@@ -37,7 +50,7 @@ public class BattleComponent extends Component {
 			getEntity().setState(EntityState.DEAD);
 		}
 	}
-	
+
 	public boolean isAlive() {
 		if (getEntity().getState() == EntityState.ACTIVE) {
 			return true;
@@ -48,4 +61,5 @@ public class BattleComponent extends Component {
 	public String getHealthAsString() {
 		return String.format("%.1f", (float)health / (float)maxHealth);
 	}
+
 }

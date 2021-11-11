@@ -10,6 +10,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -83,6 +84,9 @@ public class Door extends Entity {
 		for (Entity e : getDungeon().getPlayer().getInventory()) {
 			if (e instanceof Key && ((Key)e).getKeyNumber() == linkedKeyNumber) {
 				e.setState(EntityState.DEAD);
+				isUnlocked = true;
+			}
+			if (e instanceof SunStone) {
 				isUnlocked = true;
 			}
 		}

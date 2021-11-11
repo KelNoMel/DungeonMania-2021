@@ -34,7 +34,7 @@ public class AIZombieHostile extends AIState {
     }
 
     public void updateState() {
-        System.out.println("Zombie Hostile");
+        //System.out.println("Zombie Hostile");
     }
 
     public void onEnter() {

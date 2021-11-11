@@ -17,9 +17,13 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Recipe;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
+import dungeonmania.components.AttackTypeEnum;
+import dungeonmania.components.BattleItemComponent;
+import dungeonmania.components.WeaponComponent;
 
 /**
- * Bow Entity can attack a second time
+ * Bow Entity is a buildable weapon that can attack a extra times to simulate
+ * having extra arrows to shoot at an enemy from a distance
  */
 public class Bow extends Buildable {
 	
@@ -27,19 +31,19 @@ public class Bow extends Buildable {
 	final private int damage = 4;
 
 	public CollectableComponent collectableComponent;
+	public BattleItemComponent battleItemComponent;
+	public WeaponComponent weaponComponent;
 
-	public Bow(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
-		super(dungeon,  BuildableEnum.BOW.getType(), position, false, BuildableEnum.BOW.getRecipes(), entitySpecificData);
-		collectableComponent = new CollectableComponent(this, 1, collectableState);
+	public Bow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon,  BuildableEnum.BOW.getType(), position, false, BuildableEnum.BOW.getRecipe(), entitySpecificData);
+		collectableComponent = new CollectableComponent(this, 1, CollectableState.INVENTORY);
+		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
+		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}
 			
-	protected void inputEntity(InputState inputState) {
+	protected void inputEntity(InputState inputState) {}
 
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void updateEntity() {}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}

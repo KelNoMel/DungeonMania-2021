@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
@@ -12,6 +13,8 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
+import dungeonmania.entities.buildable.Sceptre;
+import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -22,10 +25,13 @@ import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
-	
+	public final int MAX_HP = 100;
+	public final int DMG = 10;
+
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 100, 10);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, MAX_HP, DMG);
+
 
 	private EntityList inventory;
 
@@ -55,14 +61,26 @@ public class Player extends Entity {
 				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
+				// do not use resources to bribe a mercenary that is already bribed/controlled
+				if (BattleResolver.isAlly(bribeMercenary)) break;
 				List<Entity> playerTreasure = getTypeInInventory("treasure");
-				if (playerTreasure.size() < 1) {
-					throw new InvalidActionException("You do not have sufficient gold to bribe the Mercenary!");
+				List<Entity> playerSunStone = getTypeInInventory("sun_stone");
+				List<Entity> playerSceptre = getTypeInInventory("sceptre");
+				if (playerTreasure.size() < 1 && playerSunStone.size() < 1 && playerSceptre.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/sun stone/sceptre to bribe the Mercenary!");
 				}
 				// Bribe away!
-				playerTreasure.get(0).setState(EntityState.DEAD);
-				bribeMercenary.aiComponent.changeState("MercAlly");
-				bribeMercenary.setInteractable(false);
+				if (playerSunStone.size() > 0) {
+					System.out.println("Mercanary has been bribed the sun stone");
+					bribeMercenary.aiComponent.changeState("MercAlly");
+				} else if (playerTreasure.size() > 0) {
+					System.out.println("Mercanary has been bribed using gold");
+					playerTreasure.get(0).setState(EntityState.DEAD);
+					bribeMercenary.aiComponent.changeState("MercAlly");
+				} else if (playerSceptre.size() > 0 ) {
+					System.out.println("Mercanary is being controlled with a sceptre");
+					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", Sceptre.MINDCONTROL_TIME);
+				}
 				break;
 		}
 		inventory.processInput(inputState);
@@ -135,12 +153,11 @@ public class Player extends Entity {
 		baseJSON.put("inventory", inventory.toJSON());
 	}
 
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) throws JSONException {
 		if (entitySpecificData.has("inventory")) {
 			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
 		} else {
 			inventory = new EntityList();
 		}
 	}
-	
 }

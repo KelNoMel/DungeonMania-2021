@@ -3,6 +3,7 @@ package dungeonmania;
 import java.util.Collections;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
@@ -10,6 +11,8 @@ import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.Bow;
+import dungeonmania.entities.buildable.MidnightArmour;
+import dungeonmania.entities.buildable.Sceptre;
 import dungeonmania.entities.buildable.Shield;
 import dungeonmania.entities.collectables.Armour;
 import dungeonmania.entities.collectables.Arrow;
@@ -18,6 +21,7 @@ import dungeonmania.entities.collectables.HealthPotion;
 import dungeonmania.entities.collectables.InvincibilityPotion;
 import dungeonmania.entities.collectables.InvisibilityPotion;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
@@ -38,7 +42,7 @@ import dungeonmania.util.Position;
 
 public class EntityFactory {
 	
-	public static EntityList loadEntities(JSONArray entityArray, Dungeon loadingDungeon) {
+	public static EntityList loadEntities(JSONArray entityArray, Dungeon loadingDungeon) throws JSONException {
     	
     	EntityList newEntities = new EntityList();
     	
@@ -60,6 +64,7 @@ public class EntityFactory {
      * Used to construct specific entities given their JSON representation
      * @param entData
      * @return
+     * @throws Exception
      */
 	public static Entity constructEntity(JSONObject entData, Dungeon loadingDungeon) {
 		Position pos = new Position(entData.getInt("x"), entData.getInt("y"));
@@ -121,6 +126,8 @@ public class EntityFactory {
 				return new Sword(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
 			case "armour":
 				return new Armour(loadingDungeon, pos.asLayer(itemLayer), CollectableState.MAP, entData);
+			case "sun_stone":
+				return new SunStone(loadingDungeon, pos.asLayer(itemLayer), entData);
 				
 			// Rare Collectable
 			case "the_one_ring":
@@ -128,12 +135,14 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				Bow bow = new Bow(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
-				return bow;
+				return new Bow(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "shield":
-				Shield shield = new Shield(loadingDungeon, pos.asLayer(itemLayer), CollectableState.INVENTORY, entData);
-				return shield;
-			
+				return new Shield(loadingDungeon, pos.asLayer(itemLayer), entData);
+			case "sceptre":
+				return new Sceptre(loadingDungeon, pos.asLayer(itemLayer), entData);
+			case "midnight_armour":
+				return new MidnightArmour(loadingDungeon, pos.asLayer(itemLayer), entData);
+				
 			// Non spec-defined
 			case "mercenary_spawner":
 				return new MercenarySpawner(loadingDungeon, pos, 20, entData);

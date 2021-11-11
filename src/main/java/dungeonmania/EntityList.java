@@ -38,7 +38,7 @@ public class EntityList extends ArrayList<Entity> {
 		
     	for (Entity e : this) {
     		if (e.getState() == EntityState.DEAD) {
-    			deadEntities.add(e);
+				deadEntities.add(e);
     		}
     	}
 		
