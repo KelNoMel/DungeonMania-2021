@@ -17,7 +17,7 @@ public class BattleTest {
     @Test
     public void testSimpleBattle() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","Peaceful");
+        mania.newGame("advanced","peaceful");
         
         mania.tick(null, Direction.DOWN);
         mania.tick(null, Direction.DOWN);

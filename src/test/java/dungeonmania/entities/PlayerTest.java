@@ -15,7 +15,7 @@ public class PlayerTest {
     @Test
     public void testCardinalMovement() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze","Peaceful");
+        mania.newGame("maze","peaceful");
         
         DungeonResponse moveResponse = mania.tick(null, Direction.DOWN);
         moveResponse = mania.tick(null, Direction.DOWN);

@@ -18,7 +18,7 @@ public class FloorSwitchBoulderGoalTest {
     public void testSwitchPressed() {
         DungeonManiaController mania = new DungeonManiaController();
 
-        DungeonResponse newGame = mania.newGame("floorswitch","Peaceful");
+        DungeonResponse newGame = mania.newGame("floorswitch","peaceful");
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(0, 0), false), newGame));
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "boulder", new Position(1, 0), false), newGame));
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "switch", new Position(2, 0), false), newGame));

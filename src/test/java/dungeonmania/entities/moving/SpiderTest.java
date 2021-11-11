@@ -14,7 +14,7 @@ public class SpiderTest {
 	@Test
 	public void testSpider() {
 		DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse res = mania.newGame("spider","Hard");
+        DungeonResponse res = mania.newGame("spider","hard");
 		assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 2)));
 		mania.tick(null, Direction.DOWN);
 		res = mania.tick(null, Direction.UP);
@@ -25,7 +25,7 @@ public class SpiderTest {
 	@Test
 	public void testSpiderSpawning() {
 		DungeonManiaController mania = new DungeonManiaController();
-        DungeonResponse res = mania.newGame("spider","Peaceful");
+        DungeonResponse res = mania.newGame("spider","peaceful");
 		assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 2)));
 		
 		mania.tick(null, Direction.DOWN);
@@ -49,7 +49,7 @@ public class SpiderTest {
 	public void testSpiderMovement() {
 		DungeonManiaController mania = new DungeonManiaController();
 
-		DungeonResponse res = mania.newGame("spider","Peaceful");
+		DungeonResponse res = mania.newGame("spider","peaceful");
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "spider", new Position(0, 2), false), res));
 
         res = mania.tick(null, Direction.UP);

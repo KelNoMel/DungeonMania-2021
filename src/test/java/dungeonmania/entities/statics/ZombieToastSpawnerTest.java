@@ -14,7 +14,7 @@ public class ZombieToastSpawnerTest {
 	@Test
 	public void basicZombieToast() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("zombie-toast-test", "Standard");
+        mania.newGame("zombie-toast-test", "standard");
         
         mania.tick(null, Direction.DOWN);
         mania.tick(null, Direction.DOWN);
