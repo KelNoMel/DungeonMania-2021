@@ -1,6 +1,8 @@
 
 package dungeonmania.components;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
@@ -56,5 +58,8 @@ public class ConsumableComponent extends Component {
     }
     
     public void updateComponent() {}
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 
 }

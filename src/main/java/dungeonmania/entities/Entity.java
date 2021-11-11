@@ -31,7 +31,7 @@ public abstract class Entity {
     
     private List<Component> components = new ArrayList<Component>();
 
-    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, JSONObject entitySpecificData) {
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, JSONObject entityData) {
     	this.dungeon = dungeon;
     	this.state = EntityState.ACTIVE;
         this.position = position;
@@ -39,10 +39,8 @@ public abstract class Entity {
         this.type = type;
         this.isInteractable = isInteractable;
         
-        loadJSONEntitySpecific(entitySpecificData);
+        loadJSON(entityData);
     }
-    
-    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                        Entity Loading/Construction                       ///
@@ -56,6 +54,16 @@ public abstract class Entity {
     private static String createId() {
         return UUID.randomUUID().toString();
     }
+    
+    private void loadJSON(JSONObject entityData) {
+    	for (Component c : components) {
+    		c.loadJSONComponentSpecific(entityData);
+    	}
+    	
+    	loadJSONEntitySpecific(entityData);
+    }
+    
+    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity State Change                           ///
@@ -128,6 +136,10 @@ public abstract class Entity {
     	entityJSON.put("x", position.getX());
     	entityJSON.put("y", position.getY());
     	entityJSON.put("type", type);
+    	
+    	for (Component c : components) {
+    		c.addJSONComponentSpecific(entityJSON);
+    	}
     	addJSONEntitySpecific(entityJSON);
     	return entityJSON;
     }
@@ -162,5 +174,4 @@ public abstract class Entity {
 		// Shouldn't get here...
 		return null;
 	}
-
 }

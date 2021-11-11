@@ -2,6 +2,8 @@ package dungeonmania.components;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.statics.Boulder;
@@ -94,4 +96,7 @@ public class MoveComponent extends Component {
 	public void setType(MovementType movementType) {
 		this.movementType = movementType;
 	}
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

@@ -1,5 +1,7 @@
 package dungeonmania.components;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 
@@ -30,5 +32,8 @@ public abstract class Component {
     public int getUpdateOrder() {
         return updateOrder;
     }
+
+	public abstract void loadJSONComponentSpecific(JSONObject entityData);
+	public abstract void addJSONComponentSpecific(JSONObject entityJSON);
 
 }
