@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 import org.json.JSONObject;
 
@@ -20,6 +21,8 @@ import dungeonmania.components.MovementType;
 import dungeonmania.components.WeaponComponent;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
+import dungeonmania.entities.collectables.rare.TheOneRing;
+import dungeonmania.entities.collectables.rare.Anduril;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
@@ -168,6 +171,22 @@ public class BattleResolver extends Entity {
 
 				// player gets attacked
 				attackFighter(playerBattleState, enemysDamage);
+			}
+		}
+
+		//Battle is over and player is alive, potentially award rare items
+		if (playerBattleState.isAlive()) {
+			Random random = new Random();
+			// Chances of getting a rare item 1/5, subject to change
+			if (random.nextInt(100) % 5 == 0) {
+				// The two rare items have an equal chance to be spawned
+				// A bit brittle, but OK since only two rares
+				if (random.nextInt(100) % 2 == 0) {
+					player.addToInventory(new TheOneRing(getDungeon(), player.getPosition(), new JSONObject()));
+				} else {
+					player.addToInventory(new Anduril(getDungeon(), player.getPosition(), new JSONObject()));
+				}
+				
 			}
 		}
 	}
