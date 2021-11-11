@@ -61,7 +61,7 @@ public class MercenaryTest {
     @Test
     public void testMercFrenzy() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("merc-frenzy","Peaceful");
+        mania.newGame("merc-frenzy","peaceful");
         // player kills the fist mercanary
         mania.tick(null, Direction.NONE);
         // second mercanary is now 2 blocks away so it goes to frenzy mode 
