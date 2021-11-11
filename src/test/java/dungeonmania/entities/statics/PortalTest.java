@@ -17,7 +17,7 @@ public class PortalTest {
     @Test
     public void testPortalTeleport() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("portals","Peaceful");
+        mania.newGame("portals","peaceful");
         
         DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
 
@@ -30,7 +30,7 @@ public class PortalTest {
     @Test
     public void testPortalsMultipleColours() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("portals-2","Peaceful");
+        mania.newGame("portals-2","peaceful");
         
         DungeonResponse movedResponse = mania.tick(null, Direction.RIGHT);
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(5, 0), false), movedResponse));

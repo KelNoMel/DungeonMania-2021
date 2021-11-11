@@ -15,7 +15,7 @@ public class DefaultGoalTest {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("default-goal2","Peaceful");
+    	response = mania.newGame("default-goal2","peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	
@@ -38,7 +38,7 @@ public class DefaultGoalTest {
         
     	DungeonResponse response;
     	
-    	response = mania.newGame("default-goal","Peaceful");
+    	response = mania.newGame("default-goal","peaceful");
     	mania.saveGame("SaveGame");
     	DungeonResponse newResponse = mania.loadGame("SaveGame");
     	

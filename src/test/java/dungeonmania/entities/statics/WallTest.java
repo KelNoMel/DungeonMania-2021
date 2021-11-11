@@ -15,7 +15,7 @@ public class WallTest {
 	@Test
     public void testWallBlock() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze","Peaceful");
+        mania.newGame("maze","peaceful");
         
         DungeonResponse moveResponse = mania.tick(null, Direction.LEFT);
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(1, 1), false), moveResponse));
