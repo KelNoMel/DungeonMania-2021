@@ -40,7 +40,7 @@ public class Player extends Entity {
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	// Player states include: Normal, invisible, invincible
+	// Player states include: normal, invisible, invincible
 	public String status = "normal";
 
 	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
