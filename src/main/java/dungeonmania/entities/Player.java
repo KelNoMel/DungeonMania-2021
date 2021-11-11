@@ -52,8 +52,13 @@ public class Player extends Entity {
 	}
 	
 	protected void inputEntity(InputState inputState) {
-		if (inputState.getInteractId() == null) return;
+		// I put inventory usage ahead of entity interaction
+		// in input order (it was getting cancelled by line 61 earlier)
+		if (inputState.getItemUsed() != null) {
+			inventory.processInput(inputState);
+		}
 		
+		if (inputState.getInteractId() == null) return;
 		Entity interactEntity = getDungeon().getEntityFromId(inputState.getInteractId());
 		switch (interactEntity.getType()) {
 			case "mercenary":
@@ -83,7 +88,7 @@ public class Player extends Entity {
 				}
 				break;
 		}
-		inventory.processInput(inputState);
+		
 	}
 
 	protected void updateEntity() {
