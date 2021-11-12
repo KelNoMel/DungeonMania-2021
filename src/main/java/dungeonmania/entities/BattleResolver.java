@@ -118,7 +118,11 @@ public class BattleResolver extends Entity {
 				BattleComponent enemyBattleState = enemy.getComponent(BattleComponent.class);
 
 				// if either fighter died in a previous encounter skip this battle
-				if (!enemyBattleState.isAlive()) break;
+				if (!enemyBattleState.isAlive()) {
+					// Defeated enemies may drop items before ending the battle
+					rewardRares();
+					break;
+				}
 				if (!playerBattleState.isAlive()) break;
 				// use armour
 				int currArmour = 0;
@@ -193,26 +197,6 @@ public class BattleResolver extends Entity {
 				attackFighter(playerBattleState, enemysDamage);
 			}
 		}
-
-		//Battle is over and player is alive, potentially award rare items
-		if (playerBattleState.isAlive()) {
-			Random random = new Random();
-			// Chances of getting a rare item 1/5, subject to change
-			if (random.nextInt(100) % 5 == 0) {
-				// The two rare items have an equal chance to be spawned
-				// A bit brittle, but OK since only two rares
-				if (random.nextInt(100) % 2 == 0) {
-					TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
-					ring.setCollectableState(CollectableState.INVENTORY);
-					player.addToInventory(ring);
-				} else {
-					Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
-					anduril.setCollectableState(CollectableState.INVENTORY);
-					player.addToInventory(anduril);
-				}
-				
-			}
-		}
 	}
 
 	private void alliesBattle(List<Mercenary> battleAllies) {
@@ -238,6 +222,25 @@ public class BattleResolver extends Entity {
 					attackFighter(enemyBattleState, allysDamage);
 					attackFighter(allyBattleState, enemysDamage);
 				}
+			}
+		}
+	}
+
+	private void rewardRares() {
+		Random random = new Random();
+		Player player = getDungeon().getPlayer();
+		// Chances of getting a rare item 1/5, subject to change
+		if (random.nextInt(100) % 5 == 0) {
+			// The two rare items have an equal chance to be spawned
+			// A bit brittle, but OK since only two rares
+			if (random.nextInt(100) % 2 == 0) {
+				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
+				ring.setCollectableState(CollectableState.INVENTORY);
+				player.addToInventory(ring);
+			} else {
+				Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
+				anduril.setCollectableState(CollectableState.INVENTORY);
+				player.addToInventory(anduril);
 			}
 		}
 	}
@@ -295,11 +298,10 @@ public class BattleResolver extends Entity {
 			// If fighter is player, try to revive
 			if (isPlayer(fighter)) {
 				TheOneRing ring = fighter.getDungeon().getPlayer().retrieveTypeFromInventory(TheOneRing.class);
-				System.out.println("Trying to use ring");
 				if (ring != null) {
 					ring.revive();
 				}
-				System.out.println("Used ring");
+				
 			}
 		}
 		

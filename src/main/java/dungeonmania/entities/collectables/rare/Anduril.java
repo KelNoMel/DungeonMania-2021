@@ -15,7 +15,7 @@ public class Anduril extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
 	public Anduril(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "the_one_ring", position, false, entitySpecificData);
+		super(dungeon, "anduril", position, false, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

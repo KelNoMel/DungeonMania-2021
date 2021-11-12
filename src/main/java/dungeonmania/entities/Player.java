@@ -107,10 +107,12 @@ public class Player extends Entity {
 	public void removeTypeFromInventory(String item) {
 		for (Entity i : inventory) {
 			if (i.getType().equals(item)) {
-				inventory.remove(getDungeon().getEntityFromId(id));
+				inventory.remove(i);
+				return;
 			}
 		}
 	}
+
 
 	// Returns the first instance of a class from inventory
 	public <T> T retrieveTypeFromInventory(Class<T> classType) {
