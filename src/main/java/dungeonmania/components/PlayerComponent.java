@@ -1,5 +1,7 @@
 package dungeonmania.components;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Player;
 
@@ -19,4 +21,6 @@ public class PlayerComponent extends Component {
 		
 	}
 
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

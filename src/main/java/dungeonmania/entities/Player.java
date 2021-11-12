@@ -14,7 +14,6 @@ import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
-import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -44,7 +43,8 @@ public class Player extends Entity {
 	public String status = "normal";
 
 	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "player", position, false, entitySpecificData);
+		super(dungeon, "player", position, false, EntityUpdateOrder.PLAYER, entitySpecificData);
+		dungeon.getEntities().removeDeadEntities();
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {
@@ -159,10 +159,9 @@ public class Player extends Entity {
 	}
 
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) throws JSONException {
+		inventory = new EntityList();
 		if (entitySpecificData.has("inventory")) {
-			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
-		} else {
-			inventory = new EntityList();
+			EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon(), inventory);
 		}
 	}
 }

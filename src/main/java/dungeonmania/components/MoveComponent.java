@@ -2,8 +2,11 @@ package dungeonmania.components;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.redstone.SwitchDoor;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
@@ -75,6 +78,9 @@ public class MoveComponent extends Component {
 			} else if (e instanceof Door) {
 				doorUnlocked = ((Door)e).attemptUnlock();
 				break;
+			} else if (e instanceof SwitchDoor) {
+				doorUnlocked = ((SwitchDoor)e).isUnlocked();
+				break;
 			}
 		}
 		
@@ -94,4 +100,7 @@ public class MoveComponent extends Component {
 	public void setType(MovementType movementType) {
 		this.movementType = movementType;
 	}
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

@@ -41,4 +41,7 @@ public class CollectableComponent extends Component {
 
 	public CollectableState getCollectableState() { return collectableState; }
 	public void setCollectableState(CollectableState collectableState) { this.collectableState = collectableState; }
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

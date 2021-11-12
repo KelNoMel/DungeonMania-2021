@@ -8,6 +8,7 @@ import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
@@ -18,7 +19,7 @@ public class Bomb extends Entity {
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 
 	public Bomb(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "bomb", position, false, entitySpecificData);
+		super(dungeon, "bomb", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	// When bomb is used, it is placed on a position

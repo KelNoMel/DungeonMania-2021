@@ -2,6 +2,8 @@ package dungeonmania.components;
 
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 
@@ -27,7 +29,7 @@ public class AIComponent extends Component {
             if (temporaryCooldown <= 0) {
                 currentState = prevState;
                 prevState = null;
-                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
+//                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
             }
         }
 	}
@@ -73,4 +75,10 @@ public class AIComponent extends Component {
     }
 
     public AIState getAISate() { return currentState; }
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		
+	}
+
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

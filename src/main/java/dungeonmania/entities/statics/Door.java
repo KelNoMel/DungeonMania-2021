@@ -1,14 +1,12 @@
 package dungeonmania.entities.statics;
 
-import java.util.List;
-
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
-import dungeonmania.entities.Player;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.response.models.EntityResponse;
@@ -24,7 +22,7 @@ public class Door extends Entity {
 	private int linkedKeyNumber;
 	
 	public Door(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "door", position, false, entitySpecificData);
+		super(dungeon, "door", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

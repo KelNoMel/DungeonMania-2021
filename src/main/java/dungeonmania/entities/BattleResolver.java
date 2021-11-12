@@ -1,20 +1,16 @@
 package dungeonmania.entities;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
-import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.WeaponComponent;
@@ -31,7 +27,7 @@ public class BattleResolver extends Entity {
 	private final int mercFrenzyRange = 2;
 
 	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "battle_resolver", position, false, entitySpecificData);
+		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER, entitySpecificData);
 		toggleDisplay(false);
 	}
 

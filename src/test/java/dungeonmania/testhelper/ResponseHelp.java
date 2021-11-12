@@ -114,11 +114,14 @@ public class ResponseHelp {
      */
     public static boolean dungeonEqual(DungeonResponse res1, DungeonResponse res2) {
         if (!res1.getDungeonName().equals(res2.getDungeonName())) {
-            return false;
+            System.out.println("Name not equal");
+        	return false;
         } else if (!(res1.getBuildables().containsAll(res2.getBuildables())
             && res2.getBuildables().containsAll(res1.getBuildables()))) {
+        	System.out.println("Buildables not equal");
             return false;
         } else if (!res1.getGoals().equals(res2.getGoals())) {
+        	System.out.println("Goals not equal");
             return false;
         } else if (!res1.getGoals().equals(res2.getGoals())) {
             return false;
@@ -133,11 +136,13 @@ public class ResponseHelp {
         Collections.sort(inv1, new ItemResponseComparator());
         Collections.sort(inv2, new ItemResponseComparator());
         if (inv1.size() != inv2.size()) {
+        	System.out.println("Inventory sizes not equal");
             return false;
         } 
         int inventoryLen = inv1.size();
         for (int i = 0; i < inventoryLen; i++) {
             if (!ResponseHelp.itemEqual(inv1.get(i), inv2.get(i))) {
+            	System.out.println("Inventories not equal");
                 return false;
             }
         }
@@ -151,6 +156,7 @@ public class ResponseHelp {
         int entitiesLen = ents1.size();
         for (int i = 0; i < entitiesLen; i++) {
             if (!ResponseHelp.entityEqual(ents1.get(i), ents1.get(i))) {
+            	System.out.println("Entities not equal");
                 return false;
             }
         }

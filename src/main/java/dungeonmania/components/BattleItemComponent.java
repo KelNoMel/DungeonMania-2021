@@ -29,10 +29,11 @@ public class BattleItemComponent extends Component {
         return getEntity().getState().equals(EntityState.DEAD);
     }
 
-    @Override
     public void processInput(InputState inputState) {}
 
-    @Override
     public void updateComponent() {}
+
+    public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 
 }

@@ -15,7 +15,7 @@ public class MercenarySpawner extends Spawner {
 
 	public void spawnEntity() {
 		if (getDungeon().getGameMode() != GameMode.PEACEFUL) {
-			getDungeon().addEntity(new Mercenary(getDungeon(), getPosition(), new JSONObject()));
+			new Mercenary(getDungeon(), getPosition(), new JSONObject());
 		}
 	}
 

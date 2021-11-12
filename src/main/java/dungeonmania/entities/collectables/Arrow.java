@@ -8,6 +8,7 @@ import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Arrow extends Entity {
@@ -15,7 +16,7 @@ public class Arrow extends Entity {
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
 
 	public Arrow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "arrow", position, false, entitySpecificData);
+		super(dungeon, "arrow", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

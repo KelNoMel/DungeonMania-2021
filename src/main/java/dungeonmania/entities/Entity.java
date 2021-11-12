@@ -25,24 +25,26 @@ public abstract class Entity {
     private String id;
     private String type;
     private boolean isInteractable;
+    private int updateOrder;
 
     private Dungeon dungeon;
     private boolean shouldDisplay = true;
     
     private List<Component> components = new ArrayList<Component>();
 
-    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, JSONObject entitySpecificData) {
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, EntityUpdateOrder updateOrder, JSONObject entityData) {
+    	
     	this.dungeon = dungeon;
     	this.state = EntityState.ACTIVE;
         this.position = position;
         this.id = createId();
         this.type = type;
         this.isInteractable = isInteractable;
+        this.updateOrder = updateOrder.updateOrder();
         
-        loadJSONEntitySpecific(entitySpecificData);
+        dungeon.addEntity(this);
+        loadJSON(entityData);
     }
-    
-    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
     
 	////////////////////////////////////////////////////////////////////////////////
 	///                        Entity Loading/Construction                       ///
@@ -56,6 +58,16 @@ public abstract class Entity {
     private static String createId() {
         return UUID.randomUUID().toString();
     }
+    
+    private void loadJSON(JSONObject entityData) {
+    	for (Component c : components) {
+    		c.loadJSONComponentSpecific(entityData);
+    	}
+    	
+    	loadJSONEntitySpecific(entityData);
+    }
+    
+    protected abstract void loadJSONEntitySpecific(JSONObject entitySpecificData);
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                            Entity State Change                           ///
@@ -124,6 +136,7 @@ public abstract class Entity {
     public void setPosition(Position p) { position = p.asLayer(position.getLayer()); }
     public boolean getInteractable() { return isInteractable; }
     public void setInteractable(boolean interactable) { isInteractable = interactable; }
+    public int getUpdateOrder() { return updateOrder; }
     public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }
@@ -135,6 +148,10 @@ public abstract class Entity {
     	entityJSON.put("x", position.getX());
     	entityJSON.put("y", position.getY());
     	entityJSON.put("type", type);
+    	
+    	for (Component c : components) {
+    		c.addJSONComponentSpecific(entityJSON);
+    	}
     	addJSONEntitySpecific(entityJSON);
     	return entityJSON;
     }
@@ -169,5 +186,4 @@ public abstract class Entity {
 		// Shouldn't get here...
 		return null;
 	}
-
 }
