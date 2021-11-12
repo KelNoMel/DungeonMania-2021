@@ -4,38 +4,35 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.RedstoneConduitComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class LightBulb extends Entity {
 
-	public RedstoneConduitComponent redstoneComponent = new RedstoneConduitComponent(this, 1);
+	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 1);
 	
-	public LightBulb(Dungeon dungeon, String type, Position position, JSONObject entityData) {
-		super(dungeon, "light_bulb", position, false, entityData);
+	public LightBulb(Dungeon dungeon, Position position, JSONObject entityData) {
+		super(dungeon, "light_bulb", position, false, EntityUpdateOrder.OTHER, entityData);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 	
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
-
-	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
-
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	
+	private String activationState() {
+		if (redstoneComponent.isActivated()) {
+			return "on";
+		}
+		return "off";
 	}
 	
 	@Override
 	public EntityResponse response() {
-    	return new EntityResponse(getId(), getType() + redstoneComponent, getPosition(), getInteractable());
+    	return new EntityResponse(getId(), getType() + "_" + activationState(), getPosition(), getInteractable());
     }
 
 }

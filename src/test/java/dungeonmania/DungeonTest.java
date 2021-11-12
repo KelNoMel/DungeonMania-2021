@@ -147,6 +147,8 @@ public class DungeonTest {
         
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        System.out.println(saveResponse.getGoals());
+        System.out.println(loadResponse.getGoals());
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
         removeSaves();
     }

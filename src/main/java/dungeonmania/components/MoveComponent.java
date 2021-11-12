@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.redstone.SwitchDoor;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
@@ -76,6 +77,9 @@ public class MoveComponent extends Component {
 				break;
 			} else if (e instanceof Door) {
 				doorUnlocked = ((Door)e).attemptUnlock();
+				break;
+			} else if (e instanceof SwitchDoor) {
+				doorUnlocked = ((SwitchDoor)e).isUnlocked();
 				break;
 			}
 		}

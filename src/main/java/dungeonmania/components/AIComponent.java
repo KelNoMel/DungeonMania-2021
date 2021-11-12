@@ -29,7 +29,7 @@ public class AIComponent extends Component {
             if (temporaryCooldown <= 0) {
                 currentState = prevState;
                 prevState = null;
-                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
+//                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
             }
         }
 	}

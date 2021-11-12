@@ -17,6 +17,8 @@ public abstract class Component {
         owningEntity.addComponent(this);
     }
 
+    public void componentSpecificDestructor() {}
+
     public Entity getEntity() {
         return owningEntity;
     }
@@ -35,5 +37,6 @@ public abstract class Component {
 
 	public abstract void loadJSONComponentSpecific(JSONObject entityData);
 	public abstract void addJSONComponentSpecific(JSONObject entityJSON);
+
 
 }
