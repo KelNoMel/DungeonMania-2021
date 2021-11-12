@@ -114,7 +114,9 @@ public class EntityFactory {
 			// Redstone
 			case "wire":
 				return new Wire(loadingDungeon, pos.asLayer(bottomLayer), entData);
-			case "light_bulb":
+			case "light_bulb_on":
+				return new LightBulb(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "light_bulb_off":
 				return new LightBulb(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "switch_door":
 				return new SwitchDoor(loadingDungeon, pos.asLayer(bottomLayer), entData);
