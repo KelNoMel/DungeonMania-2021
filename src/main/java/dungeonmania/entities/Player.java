@@ -126,6 +126,9 @@ public class Player extends Entity {
 		return usedList;
 	}
 
+	public int getHealth() {
+		return battleComponent.getHealth();
+	}
 	// Used to set players health, currently used to restore full health on heal
 	public void setHealth(int hp) {
 		battleComponent.setHealth(hp);

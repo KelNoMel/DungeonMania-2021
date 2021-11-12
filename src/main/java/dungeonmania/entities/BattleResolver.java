@@ -15,6 +15,7 @@ import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
+import dungeonmania.components.CollectableState;
 import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -201,9 +202,9 @@ public class BattleResolver extends Entity {
 				// The two rare items have an equal chance to be spawned
 				// A bit brittle, but OK since only two rares
 				if (random.nextInt(100) % 2 == 0) {
-					player.addToInventory(new TheOneRing(getDungeon(), player.getPosition(), new JSONObject()));
+					player.addToInventory(new TheOneRing(getDungeon(), player.getPosition(), CollectableState.INVENTORY, new JSONObject()));
 				} else {
-					player.addToInventory(new Anduril(getDungeon(), player.getPosition(), new JSONObject()));
+					player.addToInventory(new Anduril(getDungeon(), player.getPosition(), CollectableState.INVENTORY, new JSONObject()));
 				}
 				
 			}
