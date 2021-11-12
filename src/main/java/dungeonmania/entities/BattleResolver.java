@@ -119,12 +119,7 @@ public class BattleResolver extends Entity {
 
 				// if either fighter died in a previous encounter skip this battle
 				if (!enemyBattleState.isAlive()) break;
-				if (!playerBattleState.isAlive()) {
-					// If player is unable to revive themselves, skip
-					TheOneRing ring = player.retrieveTypeFromInventory(TheOneRing.class);
-					if (ring == null) break;
-					if (!ring.revive()) break;
-				}
+				if (!playerBattleState.isAlive()) break;
 				// use armour
 				int currArmour = 0;
 				for (ArmourComponent armour : playerArmour) {
@@ -293,6 +288,21 @@ public class BattleResolver extends Entity {
 		}
 		// fighter gets attacked
 		fighterBattleState.dealDamage(damage);
+		
+		// If fighter is zero health, kill entity
+		if (fighterBattleState.getHealth() <= 0) {
+			fighterBattleState.getEntity().setState(EntityState.DEAD);
+			// If fighter is player, try to revive
+			if (isPlayer(fighter)) {
+				TheOneRing ring = fighter.getDungeon().getPlayer().retrieveTypeFromInventory(TheOneRing.class);
+				System.out.println("Trying to use ring");
+				if (ring != null) {
+					ring.revive();
+				}
+				System.out.println("Used ring");
+			}
+		}
+		
 		// animation
 		battleAnimation(fighter, fighterBattleState, fighterPreAttackHealth);
 		// post-battle
