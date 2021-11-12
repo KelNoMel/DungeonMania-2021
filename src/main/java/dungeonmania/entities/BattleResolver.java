@@ -78,6 +78,10 @@ public class BattleResolver extends Entity {
 				return;
 			// Kill all the combating enemies automatically and end the battle
 			case "invincible":
+				if (battleEnemies.size() > 0) {
+					// this should only be called if the player goes into a battle
+					frenzyMercanaries(player);
+				}
 				for (Entity enemy : battleEnemies) {
 					enemy.setState(EntityState.DEAD);
 				}
