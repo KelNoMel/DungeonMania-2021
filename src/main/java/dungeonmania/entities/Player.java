@@ -14,6 +14,7 @@ import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
+import dungeonmania.entities.collectables.rare.TheOneRing;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
@@ -104,12 +105,19 @@ public class Player extends Entity {
 	}
 
 	public void removeTypeFromInventory(String item) {
+		String id = retrieveTypeFromInventory(item);
+		if (id != null) {
+			inventory.remove(getDungeon().getEntityFromId(id));
+		}
+	}
+
+	public String retrieveTypeFromInventory(String item) {
 		for (Entity i : inventory) {
 			if (i.getType().equals(item)) {
-				inventory.remove(i);
-				return;
+				return i.getId();
 			}
 		}
+		return null;
 	}
 
 	public void removeFromInventory(Entity item) {
@@ -155,6 +163,16 @@ public class Player extends Entity {
 			}
 		}
 		return null;
+	}
+
+	public boolean revive() {
+		String ringId = retrieveTypeFromInventory("one_ring");
+		if (ringId != null) {
+			TheOneRing ring = (TheOneRing) getDungeon().getEntityFromId(ringId);
+			ring.revive();
+			return true;
+		}
+		return false;
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {

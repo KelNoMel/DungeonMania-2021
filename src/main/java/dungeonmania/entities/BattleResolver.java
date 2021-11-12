@@ -118,9 +118,11 @@ public class BattleResolver extends Entity {
 				BattleComponent enemyBattleState = enemy.getComponent(BattleComponent.class);
 
 				// if either fighter died in a previous encounter skip this battle
-				if (!playerBattleState.isAlive()) break;
 				if (!enemyBattleState.isAlive()) break;
-
+				if (!playerBattleState.isAlive()) {
+					// If player is unable to revive themselves, skip
+					if (!player.revive()) break;
+				}
 				// use armour
 				int currArmour = 0;
 				for (ArmourComponent armour : playerArmour) {

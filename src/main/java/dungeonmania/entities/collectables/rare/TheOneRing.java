@@ -23,6 +23,10 @@ public class TheOneRing extends Entity {
 	}
 
 	protected void updateEntity() {
+
+	}
+
+	public void revive() {
 		Player p = getDungeon().getPlayer();
 		// Automatically revives the player at hp <= 0, should override battleComponent saying player is dead
 		if (p.getHealth() <= 0 || p.getState() == EntityState.DEAD 
@@ -33,7 +37,6 @@ public class TheOneRing extends Entity {
 			// Item gets used
 			this.setState(EntityState.DEAD);
 		}
-
 	}
 
 	public void setCollectableState(CollectableState state) {
