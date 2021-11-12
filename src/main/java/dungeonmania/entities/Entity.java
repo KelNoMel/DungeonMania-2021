@@ -46,14 +46,6 @@ public abstract class Entity {
         loadJSON(entityData);
     }
     
-    public void destructor() {
-    	for (Component c : components) {
-    		c.componentSpecificDestructor();
-    	}
-    	entitySpecificDestructor();
-    }
-    public void entitySpecificDestructor() {}
-    
 	////////////////////////////////////////////////////////////////////////////////
 	///                        Entity Loading/Construction                       ///
 	////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +116,6 @@ public abstract class Entity {
     }
 
     public void removeComponent(Component component) {
-    	component.componentSpecificDestructor();
         components.remove(component);
     }
     

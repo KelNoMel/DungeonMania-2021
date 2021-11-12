@@ -14,7 +14,6 @@ public class RedstoneComponent extends Component {
 	private List<RedstoneComponent> adjRedstone = new ArrayList<>();
 	
 	private int powerLevel;
-	private LogicType activationLogic;
 	
 	public RedstoneComponent(Entity owningEntity, int updateOrder) {
 		super(owningEntity, updateOrder);
@@ -33,13 +32,6 @@ public class RedstoneComponent extends Component {
 		}
 	}
 	
-	@Override
-	public void componentSpecificDestructor() {
-		for (RedstoneComponent adj : adjRedstone) {
-			adj.removeAdjacent(adj);
-		}
-	}
-
 	private void addAdjacent(RedstoneComponent adj) {
 		if (!adjRedstone.contains(adj)) adjRedstone.add(adj);
 	}
@@ -51,19 +43,8 @@ public class RedstoneComponent extends Component {
 	public void processInput(InputState inputState) {}
 	public void updateComponent() {}
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {
-		if (entityData.has("logic")) {
-			activationLogic = LogicType.getLogicType(entityData.getString("logic"));
-		} else {
-			activationLogic = null;
-		}
-	}
-	
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		if (activationLogic != null) {
-			entityJSON.put("logic", activationLogic.getType());
-		}
-	}
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 	
 	public void powerOn() {
 		increasePower(16, this);

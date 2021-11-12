@@ -17,8 +17,6 @@ public abstract class Component {
         owningEntity.addComponent(this);
     }
 
-    public void componentSpecificDestructor() {}
-
     public Entity getEntity() {
         return owningEntity;
     }
