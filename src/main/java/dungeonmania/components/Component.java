@@ -7,10 +7,12 @@ public abstract class Component {
     
 	private Entity owningEntity;
     protected int updateOrder;
+    private boolean expired;
 
     public Component(Entity owningEntity, int updateOrder) {
         this.owningEntity = owningEntity;
         this.updateOrder = updateOrder;
+        this.expired = false;
         
         owningEntity.addComponent(this);
     }
@@ -29,6 +31,14 @@ public abstract class Component {
     
     public int getUpdateOrder() {
         return updateOrder;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpiry(boolean expired) {
+        this.expired = expired;
     }
 
 }
