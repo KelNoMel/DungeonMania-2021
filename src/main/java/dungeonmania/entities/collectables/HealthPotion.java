@@ -27,7 +27,7 @@ public class HealthPotion extends Entity {
 		if (player.getUsedList().containsKey(getId())) {
 			
 			// Effects of potion: Restore health
-			player.setHealth(10);
+			player.setHealth(100);
 		}
 	}
 
