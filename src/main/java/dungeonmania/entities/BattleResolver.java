@@ -121,7 +121,9 @@ public class BattleResolver extends Entity {
 				if (!enemyBattleState.isAlive()) break;
 				if (!playerBattleState.isAlive()) {
 					// If player is unable to revive themselves, skip
-					if (!player.revive()) break;
+					TheOneRing ring = player.retrieveTypeFromInventory(TheOneRing.class);
+					if (ring == null) break;
+					if (!ring.revive()) break;
 				}
 				// use armour
 				int currArmour = 0;

@@ -105,18 +105,21 @@ public class Player extends Entity {
 	}
 
 	public void removeTypeFromInventory(String item) {
-		String id = retrieveTypeFromInventory(item);
-		if (id != null) {
-			inventory.remove(getDungeon().getEntityFromId(id));
+		for (Entity i : inventory) {
+			if (i.getType().equals(item)) {
+				inventory.remove(getDungeon().getEntityFromId(id));
+			}
 		}
 	}
 
-	public String retrieveTypeFromInventory(String item) {
-		for (Entity i : inventory) {
-			if (i.getType().equals(item)) {
-				return i.getId();
+	// Returns the first instance of a class from inventory
+	public <T> T retrieveTypeFromInventory(Class<T> classType) {
+		for (Entity e : getInventory()) {
+			if (classType.isInstance(e)) {
+				return classType.cast(e);
 			}
 		}
+		// Item couldn't be found in inventory
 		return null;
 	}
 
@@ -163,16 +166,6 @@ public class Player extends Entity {
 			}
 		}
 		return null;
-	}
-
-	public boolean revive() {
-		String ringId = retrieveTypeFromInventory("one_ring");
-		if (ringId != null) {
-			TheOneRing ring = (TheOneRing) getDungeon().getEntityFromId(ringId);
-			ring.revive();
-			return true;
-		}
-		return false;
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
