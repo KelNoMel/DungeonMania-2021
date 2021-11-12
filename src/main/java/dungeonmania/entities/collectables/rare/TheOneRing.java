@@ -12,11 +12,10 @@ import dungeonmania.components.CollectableState;
 import dungeonmania.util.Position;
 
 public class TheOneRing extends Entity {
-	private CollectableComponent collectableComp;
+	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
-	public TheOneRing(Dungeon dungeon, Position position, CollectableState itemState, JSONObject entitySpecificData) {
+	public TheOneRing(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "the_one_ring", position, false, entitySpecificData);
-		collectableComp = new CollectableComponent(this, 1, itemState);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -35,6 +34,10 @@ public class TheOneRing extends Entity {
 			this.setState(EntityState.DEAD);
 		}
 
+	}
+
+	public void setCollectableState(CollectableState state) {
+		collectableComp.setCollectableState(state);
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}

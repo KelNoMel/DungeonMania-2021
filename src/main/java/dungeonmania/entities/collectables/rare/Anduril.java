@@ -12,11 +12,10 @@ import dungeonmania.components.CollectableState;
 import dungeonmania.util.Position;
 
 public class Anduril extends Entity {
-	private CollectableComponent collectableComp;
+	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
-	public Anduril(Dungeon dungeon, Position position, CollectableState itemState, JSONObject entitySpecificData) {
+	public Anduril(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "the_one_ring", position, false, entitySpecificData);
-		collectableComp = new CollectableComponent(this, 1, itemState);
 	}
 
 	protected void inputEntity(InputState inputState) {
@@ -25,6 +24,10 @@ public class Anduril extends Entity {
 
 	protected void updateEntity() {
 
+	}
+	
+	public void setCollectableState(CollectableState state) {
+		collectableComp.setCollectableState(state);
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
