@@ -39,7 +39,7 @@ public class Player extends Entity {
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	// Player states include: Normal, invisible, invincible
+	// Player states include: normal, invisible, invincible
 	public String status = "normal";
 
 	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
@@ -52,8 +52,13 @@ public class Player extends Entity {
 	}
 	
 	protected void inputEntity(InputState inputState) {
-		if (inputState.getInteractId() == null) return;
+		// I put inventory usage ahead of entity interaction
+		// in input order (it was getting cancelled by line 61 earlier)
+		if (inputState.getItemUsed() != null) {
+			inventory.processInput(inputState);
+		}
 		
+		if (inputState.getInteractId() == null) return;
 		Entity interactEntity = getDungeon().getEntityFromId(inputState.getInteractId());
 		switch (interactEntity.getType()) {
 			case "mercenary":
@@ -83,7 +88,7 @@ public class Player extends Entity {
 				}
 				break;
 		}
-		inventory.processInput(inputState);
+		
 	}
 
 	protected void updateEntity() {

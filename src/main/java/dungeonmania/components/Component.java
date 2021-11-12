@@ -9,10 +9,12 @@ public abstract class Component {
     
 	private Entity owningEntity;
     protected int updateOrder;
+    private boolean expired;
 
     public Component(Entity owningEntity, int updateOrder) {
         this.owningEntity = owningEntity;
         this.updateOrder = updateOrder;
+        this.expired = false;
         
         owningEntity.addComponent(this);
     }
@@ -36,5 +38,11 @@ public abstract class Component {
 	public abstract void loadJSONComponentSpecific(JSONObject entityData);
 	public abstract void addJSONComponentSpecific(JSONObject entityJSON);
 
+    public boolean isExpired() {
+        return expired;
+    }
 
+    public void setExpiry(boolean expired) {
+        this.expired = expired;
+    }
 }

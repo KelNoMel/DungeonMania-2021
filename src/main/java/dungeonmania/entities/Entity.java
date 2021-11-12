@@ -90,9 +90,16 @@ public abstract class Entity {
     
     private void updateComponents() {
     	// Update components in order!
-    	for (Component comp : components) {
+    	List<Component> removalList = new ArrayList<Component>();
+        for (Component comp : components) {
     		comp.updateComponent();
+            
+            if (comp.isExpired()) {
+                removalList.add(comp);
+            }
     	}
+
+        components.removeAll(removalList);
     }
     
     protected abstract void updateEntity();

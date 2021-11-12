@@ -59,11 +59,30 @@ public class BattleResolver extends Entity {
 		// the player
 		Player player = d.getPlayer();
 		BattleComponent playerBattleState = player.getComponent(BattleComponent.class);
-
-		
+		String playerStatus = d.getPlayer().getStatus();
 
 		// the bad guys at the player's position
 		List<Entity> battleEnemies = getEnemiesToBattle(player);
+
+		// Potion effects can prematurely end the player battle with different outcomes
+		switch(playerStatus) {
+			// Continue as normal towards battle
+			case "normal":
+				break;
+			// Immediately stop the battle for the player, noone takes damage
+			case "invisible":
+				return;
+			// Kill all the combating enemies automatically and end the battle
+			case "invincible":
+				if (battleEnemies.size() > 0) {
+					// this should only be called if the player goes into a battle
+					frenzyMercanaries(player);
+				}
+				for (Entity enemy : battleEnemies) {
+					enemy.setState(EntityState.DEAD);
+				}
+				return;
+		}
 
 		// items used in battle
 		List<BattleItemComponent> playerBattleItems = player.getInventory().stream()

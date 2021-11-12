@@ -81,6 +81,7 @@
         "wire13": "images/tileset/entities/wire13.png",
         "wire14": "images/tileset/entities/wire14.png",
         "wire15": "images/tileset/entities/wire15.png",
-        "wire16": "images/tileset/entities/wire16.png"
+        "wire16": "images/tileset/entities/wire16.png",
+        "the_one_ring": "images/tileset/items/ring_0_special.png"
     }
 }
