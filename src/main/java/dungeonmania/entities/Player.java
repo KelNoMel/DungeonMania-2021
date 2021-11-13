@@ -13,6 +13,7 @@ import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
 import dungeonmania.Gamemode;
 import dungeonmania.InputState;
+import dungeonmania.entities.bosses.Assassin;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
 import dungeonmania.components.BattleComponent;
@@ -96,6 +97,23 @@ public class Player extends Entity {
 					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", Sceptre.MINDCONTROL_TIME);
 				}
 				break;
+			case "assassin":
+				Assassin bribeAssassin = null;
+				if ((bribeAssassin = findAssassin(getDungeon().getEntitiesInRadius(getPosition(), 2.0), interactEntity.getId())) == null) {
+					throw new InvalidActionException("The player is not within range of an Assassin!");
+				}
+				List<Entity> playerTreasure1 = getTypeInInventory("treasure");
+				List<Entity> playerOneRing = getTypeInInventory("the_one_ring");
+				if (playerTreasure1.size() < 1 && playerOneRing.size() < 1) {
+					throw new InvalidActionException("You do not have sufficient gold/one ring to bribe the Assassin!");
+				}
+				if (playerTreasure1.size() > 1) {
+					playerTreasure1.get(0).setState(EntityState.DEAD);
+				}
+				if (playerOneRing.size() > 1) {
+					playerOneRing.get(0).setState(EntityState.DEAD);
+				}
+				bribeAssassin.aiComponent.changeState("MercAlly");
 			case "zombie_toast_spawner":
 				ZombieToastSpawner spawner = null;
 				// Is the player cardinally adjacent to this spawner
@@ -198,6 +216,15 @@ public class Player extends Entity {
 		for (Entity e : entities) {
 			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
+			}
+		}
+		return null;
+	}
+
+	public Assassin findAssassin(List<Entity> entities, String AssassinId) {
+		for (Entity e : entities) {
+			if (e instanceof Assassin && AssassinId.equals(e.getId())) {
+				return (Assassin) e;
 			}
 		}
 		return null;
