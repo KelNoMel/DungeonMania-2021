@@ -17,14 +17,14 @@ public class Assassin extends Mercenary {
 
     public Assassin(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
         super(dungeon, position, entitySpecificData);
-        battleComponent.setHealth(100);    
+        battleComponent.setHealth(150);    
     }
 
     protected void inputEntity(InputState inputState) {
         List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
         for (Entity e : entities) {
             if (e instanceof Player) {
-                battleComponent.setAttackDamage(50);
+                battleComponent.setAttackDamage(15);
             }
         }
     }

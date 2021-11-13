@@ -34,6 +34,9 @@ public class Hydra extends Entity {
 
     @Override
     protected void updateEntity() {
+        List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
+        for (Entity e : entities) {
+            if (e instanceof Player
         
     }
 
