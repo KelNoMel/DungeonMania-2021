@@ -1,4 +1,4 @@
-package dungeonmania.entities.collectables;
+package dungeonmania.entities.collectables.rare;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,31 +13,31 @@ import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class InvincibilityPotionTest {
+public class OneTrueRingTest {
 	@Test
-	public void testInvincibilityPotionPickup() {
+	public void testRingPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("invincibility-potion-pickup","peaceful");
+        mania.newGame("one-true-ring","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(
 	    		Arrays.asList(
-	    			"invincibility_potion"
+	    			"the_one_ring"
 	    		),
 	    		response
     		)
         );
 	}
 
-	// Player would die if not using potion
+	// Player would die if not using ring
 	@Test
-	public void testInvinciblePotionConsumption() {
+	public void testRingRevival() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("invincibility-potion-pickup","standard");
+        mania.newGame("one-true-ring","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
 		
         mania.tick(null, Direction.RIGHT);
-		mania.tick("invincibility_potion", Direction.RIGHT);
+		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);

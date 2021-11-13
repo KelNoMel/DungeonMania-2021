@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.ItemResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -37,15 +36,8 @@ public class HealthPotionTest {
         mania.newGame("health-potion-pickup","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
 		
-        String id = "";
-        for (ItemResponse e : d.getInventory()) {
-        	if (e.getType().equals("health_potion")) {
-        		id = e.getId();
-        	}
-        }
-        
-        mania.tick(id, Direction.RIGHT);
-		mania.tick(null, Direction.RIGHT);
+        mania.tick(null, Direction.RIGHT);
+		mania.tick("health_potion", Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);

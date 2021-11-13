@@ -35,8 +35,9 @@ public class InvisibilityPotionTest {
 		DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("invisibility-potion-pickup","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
+		
+        mania.tick(null, Direction.RIGHT);
 		mania.tick("invisibility_potion", Direction.RIGHT);
-		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
