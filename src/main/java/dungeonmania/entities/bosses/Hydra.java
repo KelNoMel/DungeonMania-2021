@@ -31,14 +31,10 @@ public class Hydra extends Entity {
     }
 
     @Override
-    protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
-        
-    }
+    protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
     @Override
-    protected void inputEntity(InputState inputState) {
-        
-    }
+    protected void inputEntity(InputState inputState) {}
 
     @Override
     protected void updateEntity() {
@@ -68,8 +64,5 @@ public class Hydra extends Entity {
     }
 
     @Override
-    public void addJSONEntitySpecific(JSONObject baseJSON) {
-        
-        
-    }
+    public void addJSONEntitySpecific(JSONObject baseJSON) {}
 }
