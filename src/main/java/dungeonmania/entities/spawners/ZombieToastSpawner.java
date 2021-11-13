@@ -14,7 +14,7 @@ public class ZombieToastSpawner extends Spawner {
 	}
 
 	public void spawnEntity() {
-		getDungeon().addEntity(new ZombieToast(getDungeon(), getPosition(), new JSONObject()));
+		new ZombieToast(getDungeon(), getPosition(), new JSONObject());
 	}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}

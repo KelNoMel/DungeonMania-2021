@@ -9,13 +9,14 @@ import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class TheOneRing extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
 	public TheOneRing(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "the_one_ring", position, false, entitySpecificData);
+		super(dungeon, "the_one_ring", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

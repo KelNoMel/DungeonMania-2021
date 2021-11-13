@@ -1,63 +1,31 @@
 package dungeonmania;
 
-import java.util.Collections;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
-import dungeonmania.entities.BattleResolver;
-import dungeonmania.entities.Entity;
-import dungeonmania.entities.Player;
-import dungeonmania.entities.buildable.Bow;
-import dungeonmania.entities.buildable.MidnightArmour;
-import dungeonmania.entities.buildable.Sceptre;
-import dungeonmania.entities.buildable.Shield;
-import dungeonmania.entities.collectables.Armour;
-import dungeonmania.entities.collectables.Arrow;
-import dungeonmania.entities.collectables.Bomb;
-import dungeonmania.entities.collectables.HealthPotion;
-import dungeonmania.entities.collectables.InvincibilityPotion;
-import dungeonmania.entities.collectables.InvisibilityPotion;
-import dungeonmania.entities.collectables.Key;
-import dungeonmania.entities.collectables.SunStone;
-import dungeonmania.entities.collectables.Sword;
-import dungeonmania.entities.collectables.Treasure;
-import dungeonmania.entities.collectables.Wood;
-import dungeonmania.entities.collectables.rare.TheOneRing;
-import dungeonmania.entities.moving.Mercenary;
-import dungeonmania.entities.moving.Spider;
-import dungeonmania.entities.moving.ZombieToast;
-import dungeonmania.entities.spawners.MercenarySpawner;
-import dungeonmania.entities.spawners.SpiderSpawner;
-import dungeonmania.entities.spawners.ZombieToastSpawner;
-import dungeonmania.entities.statics.Boulder;
-import dungeonmania.entities.statics.Door;
-import dungeonmania.entities.statics.Exit;
-import dungeonmania.entities.statics.FloorSwitch;
-import dungeonmania.entities.statics.Portal;
-import dungeonmania.entities.statics.Wall;
+import dungeonmania.entities.*;
+import dungeonmania.entities.buildable.*;
+import dungeonmania.entities.collectables.*;
+import dungeonmania.entities.collectables.rare.*;
+import dungeonmania.entities.moving.*;
+import dungeonmania.entities.redstone.*;
+import dungeonmania.entities.spawners.*;
+import dungeonmania.entities.statics.*;
 import dungeonmania.util.Position;
 
 public class EntityFactory {
 	
-	public static EntityList loadEntities(JSONArray entityArray, Dungeon loadingDungeon) throws JSONException {
+	public static void loadEntities(JSONArray entityArray, Dungeon loadingDungeon, EntityList loadList) throws JSONException {
     	
-    	EntityList newEntities = new EntityList();
-    	
+		boolean inventory = (loadingDungeon.getEntities() != loadList);
+		
     	int numEntities = entityArray.length();
     	for (int i = 0; i < numEntities; i++) {
-    		Entity newEntity = constructEntity(entityArray.getJSONObject(i), loadingDungeon);
-    		if (newEntity != null) {
-    			newEntities.add(newEntity);
-        		if (newEntity instanceof Player) {
-        			Collections.swap(newEntities, 0, newEntities.indexOf(newEntity));
-        		}
-    		}
+    		Entity constructedEntity = constructEntity(entityArray.getJSONObject(i), loadingDungeon);
+    		if (inventory) loadingDungeon.transferToInventory(constructedEntity);
     	}
-    	
-    	return newEntities;
     }
     
     /**
@@ -89,7 +57,7 @@ public class EntityFactory {
 			case "exit":
 				return new Exit(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "boulder":
-				return new Boulder(loadingDungeon, pos.asLayer(bottomLayer), entData);
+				return new Boulder(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "switch":
 				return new FloorSwitch(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "door":
@@ -142,6 +110,16 @@ public class EntityFactory {
 				return new Sceptre(loadingDungeon, pos.asLayer(itemLayer), entData);
 			case "midnight_armour":
 				return new MidnightArmour(loadingDungeon, pos.asLayer(itemLayer), entData);
+
+			// Redstone
+			case "wire":
+				return new Wire(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "light_bulb_on":
+				return new LightBulb(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "light_bulb_off":
+				return new LightBulb(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "switch_door":
+				return new SwitchDoor(loadingDungeon, pos.asLayer(bottomLayer), entData);
 				
 			// Non spec-defined
 			case "mercenary_spawner":

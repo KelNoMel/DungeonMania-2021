@@ -7,6 +7,7 @@ import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -18,7 +19,7 @@ public class Key extends Entity {
 	private String colour;
 	
 	public Key(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "key", position, false, entitySpecificData);
+		super(dungeon, "key", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	protected void inputEntity(InputState inputState) {

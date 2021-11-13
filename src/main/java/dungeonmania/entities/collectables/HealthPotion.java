@@ -8,6 +8,7 @@ import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
@@ -17,7 +18,7 @@ public class HealthPotion extends Entity {
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 	
 	public HealthPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "health_potion", position, false, entitySpecificData);
+		super(dungeon, "health_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	// When health potion gets used, player restores health
