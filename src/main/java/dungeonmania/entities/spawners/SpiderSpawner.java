@@ -15,8 +15,8 @@ public class SpiderSpawner extends Spawner {
 	static private final Random randomiser = new Random();
 	static private final int maxSpiders = 3;
 	
-	public SpiderSpawner(Dungeon dungeon, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, "spider_spawner", position, tickSpawnRate, entitySpecificData);
+	public SpiderSpawner(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "spider_spawner", position, 30, entitySpecificData);
 	}
 
 	public void spawnEntity() {

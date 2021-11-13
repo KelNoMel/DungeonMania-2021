@@ -27,6 +27,10 @@ public class ZombieToastSpawnerTest {
         mania.tick(null, Direction.UP);
         DungeonResponse response = mania.tick(null, Direction.UP);
         
+//        for (EntityResponse r : response.getEntities()) {
+//        	System.out.println(r.getType() + r.getPosition());
+//        }
+        
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "zombie_toast", new Position(4, 0), false), response));
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "zombie_toast_spawner", new Position(4, 0), false), response));
 	}

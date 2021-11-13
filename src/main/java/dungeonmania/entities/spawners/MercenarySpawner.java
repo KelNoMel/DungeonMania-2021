@@ -11,8 +11,8 @@ public class MercenarySpawner extends Spawner {
 
 	static private final int maxMercenaries = 2;
 	
-	public MercenarySpawner(Dungeon dungeon, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, "mercenary_spawner", position, tickSpawnRate, entitySpecificData);
+	public MercenarySpawner(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
+		super(dungeon, "mercenary_spawner", position, 40, entitySpecificData);
 	}
 
 	public void spawnEntity() {
