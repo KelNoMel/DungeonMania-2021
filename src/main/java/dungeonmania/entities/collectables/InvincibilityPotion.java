@@ -3,12 +3,14 @@ package dungeonmania.entities.collectables;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.Gamemode;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.components.EffectComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityState;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
@@ -27,6 +29,10 @@ public class InvincibilityPotion extends Entity {
 		Player player = getDungeon().getPlayer();
 		// Check if item was queued to be used
 		if (player.getUsedList().containsKey(getId())) {
+			if (getDungeon().getGamemode() == Gamemode.HARD) {				
+				setState(EntityState.DEAD);
+				return;
+			}
 			
 			// Effects of potion: Make all enemies go into afraid AI state
 			// Afraid AI: Run away from player, battle auto-resolves to win

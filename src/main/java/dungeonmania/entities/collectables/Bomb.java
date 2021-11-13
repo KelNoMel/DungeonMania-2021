@@ -3,7 +3,6 @@ package dungeonmania.entities.collectables;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
@@ -12,7 +11,6 @@ import dungeonmania.entities.redstone.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;

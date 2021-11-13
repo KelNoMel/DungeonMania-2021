@@ -27,13 +27,8 @@ public class Spider extends Entity {
 		aiComponent.changeState("SpiderHostile");
 	}
 
-	protected void inputEntity(InputState inputState) {
-		
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
