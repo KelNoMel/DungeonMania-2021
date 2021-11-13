@@ -20,7 +20,7 @@ public class DoorTest {
         
 		DungeonResponse response;
 		
-		response = mania.newGame("key-door", "Peaceful");
+		response = mania.newGame("key-door", "peaceful");
         
         assertTrue(ResponseHelp.dungeonEqual(response, mania.tick(null, Direction.RIGHT)));
         assertTrue(ResponseHelp.dungeonEqual(response, mania.tick(null, Direction.DOWN)));

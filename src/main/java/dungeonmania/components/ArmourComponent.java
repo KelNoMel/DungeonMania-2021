@@ -41,4 +41,7 @@ public class ArmourComponent extends Component {
     }
 
     public int getArmour() { return armour; }
+
+    public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

@@ -2,8 +2,11 @@ package dungeonmania.components;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.redstone.SwitchDoor;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Wall;
@@ -26,7 +29,7 @@ public class MoveComponent extends Component {
 
 	public void updateComponent() {
 		if (moveDirection == null) return;
-		
+
 		// Portal so needs to happen in processInput?????/
 		Entity parentEntity = getEntity();
 		Position newPosition = parentEntity.getPosition();
@@ -37,6 +40,14 @@ public class MoveComponent extends Component {
 			case NORMAL:
 				// Move as normal
 				newPosition = moveNormal(parentEntity); break;
+			case FRENZY:
+				// Move twice in one tick
+				newPosition = moveNormal(parentEntity);
+				parentEntity.setPosition(newPosition);
+				newPosition = moveNormal(parentEntity);
+				// frenzy does not last
+				movementType = MovementType.NORMAL;
+				break;
 		}
 		
 		parentEntity.setPosition(newPosition);
@@ -67,6 +78,9 @@ public class MoveComponent extends Component {
 			} else if (e instanceof Door) {
 				doorUnlocked = ((Door)e).attemptUnlock();
 				break;
+			} else if (e instanceof SwitchDoor) {
+				doorUnlocked = ((SwitchDoor)e).isUnlocked();
+				break;
 			}
 		}
 		
@@ -82,4 +96,11 @@ public class MoveComponent extends Component {
 	public void setMoveDirection(Direction moveDirection) {
 		this.moveDirection = moveDirection;
 	}
+
+	public void setType(MovementType movementType) {
+		this.movementType = movementType;
+	}
+
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

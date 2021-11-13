@@ -27,7 +27,7 @@ public class SpiderSpawner extends Spawner {
 			Bounds b = d.getBounds();
 			int xPos = generateRandom(b.getMinBounds().getX(), b.getMaxBounds().getX());
 			int yPos = generateRandom(b.getMinBounds().getY(), b.getMaxBounds().getY());
-			getDungeon().addEntity(new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject()));
+			new Spider(getDungeon(), new Position(xPos, yPos), new JSONObject());
 		}
 	}
 

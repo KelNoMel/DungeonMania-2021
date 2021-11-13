@@ -9,6 +9,7 @@ import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.components.EffectComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
@@ -18,7 +19,7 @@ public class InvisibilityPotion extends Entity {
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 	
 	public InvisibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "invisibility_potion", position, false, entitySpecificData);
+		super(dungeon, "invisibility_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	// Player gets invisibility status, can override other effects
@@ -30,7 +31,7 @@ public class InvisibilityPotion extends Entity {
 			// Effects of potion: Make all enemies go into afraid AI state
 			// Afraid AI: Run away from player, battle auto-resolves to win
 			player.addComponent(new EffectComponent(getDungeon().getPlayer(), 3));
-			player.setStatus("invincible");
+			player.setStatus("invisible");
 		}
 	}
 	

@@ -2,7 +2,7 @@ package dungeonmania;
 
 public enum GameMode {
     
-	PEACEFUL("Peaceful"), STANDARD("Standard"), HARD("Hard");
+	PEACEFUL("peaceful"), STANDARD("standard"), HARD("hard");
     
 	private String gameMode;
 	
@@ -16,11 +16,11 @@ public enum GameMode {
 
 	public static GameMode getGameMode(String gameMode) throws IllegalArgumentException {
     	switch (gameMode) {
-    	case "Peaceful":
+    	case "peaceful":
     		return PEACEFUL;
-    	case "Standard":
+    	case "standard":
     		return STANDARD;
-    	case "Hard":
+    	case "hard":
     		return HARD;
     	default:
     		throw new IllegalArgumentException();

@@ -18,7 +18,9 @@ public class TreasureGoal extends Goal {
         List<Entity> entityList = getDungeon().getEntities();
         
         for (Entity entity : entityList) {
-            if (entity instanceof Treasure) return false;
+            if (entity instanceof Treasure) {
+            	return false;
+            }
         }
         return true;
     }

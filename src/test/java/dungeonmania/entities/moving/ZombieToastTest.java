@@ -9,6 +9,6 @@ public class ZombieToastTest {
 	@Test
 	public void testStub() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("maze","Peaceful");
+        mania.newGame("maze","peaceful");
 	}
 }
