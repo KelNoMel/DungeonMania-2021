@@ -3,7 +3,6 @@ package dungeonmania.entities.spawners;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.GameMode;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
@@ -15,13 +14,18 @@ public abstract class Spawner extends Entity {
 	private int ticksUntilNextSpawn;
 	
 	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, type, position, false, EntityUpdateOrder.SPAWNER, entitySpecificData);
+		super(dungeon, type, position, true, EntityUpdateOrder.SPAWNER, entitySpecificData);
 		toggleDisplay(false);
 		this.tickSpawnRate = tickSpawnRate;
 		ticksUntilNextSpawn = tickSpawnRate;
 	}
 
 	public void inputEntity(InputState inputState) {}
+	
+	public void changeSpawnRate(int newSpawnRate) {
+		tickSpawnRate = newSpawnRate;
+		ticksUntilNextSpawn = newSpawnRate;
+	}
 	
 	public abstract void spawnEntity();
 	public void updateEntity() {

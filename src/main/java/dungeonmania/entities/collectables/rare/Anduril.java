@@ -5,8 +5,6 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
-import dungeonmania.entities.Player;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.EntityUpdateOrder;

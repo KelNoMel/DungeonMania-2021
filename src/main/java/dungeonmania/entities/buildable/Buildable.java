@@ -12,7 +12,6 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.entities.buildable.Recipe;
 import dungeonmania.InputState;
 
 

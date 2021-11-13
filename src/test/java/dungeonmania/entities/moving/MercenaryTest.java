@@ -25,14 +25,14 @@ public class MercenaryTest {
         
         assertDoesNotThrow(()->mania.interact(mercID));
         
-        
-        for (int i = 0; i < 19; i++) {
+        for (int i = 0; i < 37; i++) {
         	mania.tick(null, Direction.DOWN);        	
         }
         
         // Spawn!
         d = mania.tick(null, Direction.DOWN);
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 2), true), d));
+
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 0), true), d));
     }
 
     @Test
