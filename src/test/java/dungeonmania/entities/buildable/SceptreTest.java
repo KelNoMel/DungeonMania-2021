@@ -58,7 +58,7 @@ public class SceptreTest {
     @Test
 	public void testSceptreBribe() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","peaceful");
+		mania.newGame("sceptre-basic","standard");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
@@ -84,7 +84,7 @@ public class SceptreTest {
     @Test
     public void testSceptreOutOfRange() {
         DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","peaceful");
+		mania.newGame("sceptre-basic","standard");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         DungeonResponse res = mania.tick(null, Direction.RIGHT);
