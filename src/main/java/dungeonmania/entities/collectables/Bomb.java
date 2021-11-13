@@ -55,7 +55,7 @@ public class Bomb extends Entity {
 			return;
 		}
 
-		for (Entity e : getDungeon().getEntitiesInRadius(getPosition(), 3)) {
+		for (Entity e : getDungeon().getEntitiesInRadius(getPosition(), 1.5)) {
 			// Removes all entities except player within a radius of 3
 			if (e.getType() != "player") {
 				e.setState(EntityState.DEAD);

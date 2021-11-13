@@ -289,7 +289,7 @@ public class Dungeon {
     	return entities;
     }
 
-    public List<Entity> getEntitiesInRadius(Position origin, int radius) {
+    public List<Entity> getEntitiesInRadius(Position origin, Double radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
     		if (Position.withinRange(origin, e.getPosition(), radius)) {
@@ -367,7 +367,7 @@ public class Dungeon {
 
 	public void transferToMap(Entity e) {
 		e.toggleDisplay(true);
-		entities.transferEntity(entities, e);
+		getPlayer().getInventory().transferEntity(entities, e);
 	}
 	
 	public void addEntity(Entity e) {
