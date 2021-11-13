@@ -3,6 +3,7 @@ package dungeonmania.entities.spawners;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.Gamemode;
 import dungeonmania.entities.bosses.Hydra;
 import dungeonmania.util.Position;
 
