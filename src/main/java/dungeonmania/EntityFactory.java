@@ -37,6 +37,7 @@ import dungeonmania.entities.statics.Door;
 import dungeonmania.entities.statics.Exit;
 import dungeonmania.entities.statics.FloorSwitch;
 import dungeonmania.entities.statics.Portal;
+import dungeonmania.entities.statics.SwampTile;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.util.Position;
 
@@ -96,6 +97,8 @@ public class EntityFactory {
 				return new Door(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "portal":
 				return new Portal(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "swamp_tile":
+				return new SwampTile(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			
 			// Moving
 			case "spider":
