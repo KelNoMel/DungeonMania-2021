@@ -19,7 +19,7 @@ public class RedstoneComponent extends Component {
 		super(owningEntity, updateOrder);
 		
 		// TODO FIX GET ENTITIES IN RADDIUS
-		List<Entity> cardinallyAdjacent = owningEntity.getDungeon().getEntitiesInRadius(owningEntity.getPosition(), 1);
+		List<Entity> cardinallyAdjacent = owningEntity.getDungeon().getEntitiesInRadius(owningEntity.getPosition(), 1.0);
 		cardinallyAdjacent.remove(owningEntity);
 		for (Entity adj : cardinallyAdjacent) {
 			RedstoneComponent adjRedstone = adj.getComponent(RedstoneComponent.class);

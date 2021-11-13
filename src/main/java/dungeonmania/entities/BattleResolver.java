@@ -29,8 +29,8 @@ import dungeonmania.response.models.AnimationQueue;
 import dungeonmania.util.Position;
 
 public class BattleResolver extends Entity {
-	private final int allySupportRange = 2;
-	private final int mercFrenzyRange = 2;
+	private final Double allySupportRange = 2.0;
+	private final Double mercFrenzyRange = 2.0;
 
 	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER, entitySpecificData);
