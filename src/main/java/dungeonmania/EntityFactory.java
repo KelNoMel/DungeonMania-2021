@@ -17,6 +17,11 @@ import dungeonmania.util.Position;
 
 public class EntityFactory {
 	
+	public static final int topLayer = 3;
+	public static final int movingLayer = 2;
+	public static final int itemLayer = 1;
+	public static final int bottomLayer = 0;
+	
 	public static void loadEntities(JSONArray entityArray, Dungeon loadingDungeon, EntityList loadList) throws JSONException {
     	
 		boolean inventory = (loadingDungeon.getEntities() != loadList);
@@ -37,10 +42,7 @@ public class EntityFactory {
 	public static Entity constructEntity(JSONObject entData, Dungeon loadingDungeon) {
 		Position pos = new Position(entData.getInt("x"), entData.getInt("y"));
 		
-		int topLayer = 3;
-		int movingLayer = 2;
-		int itemLayer = 1;
-		int bottomLayer = 0;
+		
 		
 		String entityType = entData.getString("type");
 		
@@ -129,7 +131,7 @@ public class EntityFactory {
 				return new SpiderSpawner(loadingDungeon, pos, entData);
 			case "zombie_toast_spawner":
 				// TODO load spawner info from save
-				return new ZombieToastSpawner(loadingDungeon, pos, entData);
+				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			
 			case "battle_resolver":
 				return new BattleResolver(loadingDungeon, pos, entData);

@@ -56,4 +56,5 @@ Spawning
 - Mercenaries spawn every 40 ticks
 - Spiders spawn every 30 ticks
 - A maximum of two mercenaries can be on the map at any one time
-- A maximum of three spiders can be on the map at any one time
+- A maximum of four spiders can be on the map at any one time
+- A maximum of three zombies can be on the map at any one time

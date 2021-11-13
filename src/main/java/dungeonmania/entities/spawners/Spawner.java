@@ -14,7 +14,7 @@ public abstract class Spawner extends Entity {
 	private int ticksUntilNextSpawn;
 	
 	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, type, position, false, EntityUpdateOrder.SPAWNER, entitySpecificData);
+		super(dungeon, type, position, true, EntityUpdateOrder.SPAWNER, entitySpecificData);
 		toggleDisplay(false);
 		this.tickSpawnRate = tickSpawnRate;
 		ticksUntilNextSpawn = tickSpawnRate;
