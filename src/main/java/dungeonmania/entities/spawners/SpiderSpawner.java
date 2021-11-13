@@ -22,7 +22,7 @@ public class SpiderSpawner extends Spawner {
 	public void spawnEntity() {
 		Dungeon d = getDungeon();
 		if (d.getGameMode() != GameMode.PEACEFUL && 
-				d.numEntitiesOfType(Spider.class) < maxSpiders) {
+				d.getEntities().numEntitiesOfType(Spider.class) < maxSpiders) {
 			
 			Bounds b = d.getBounds();
 			int xPos = generateRandom(b.getMinBounds().getX(), b.getMaxBounds().getX());

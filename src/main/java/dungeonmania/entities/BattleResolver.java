@@ -352,7 +352,7 @@ public class BattleResolver extends Entity {
 	 */
 	private void frenzyMercanaries(Player player) {
 		Dungeon dungeon = getDungeon();
-		List<Mercenary> mercs = dungeon.getEntitiesByType(Mercenary.class)
+		List<Mercenary> mercs = dungeon.getEntities().getEntitiesByType(Mercenary.class)
 			.stream().map(e -> (Mercenary)e).collect(Collectors.toList());
 		for (Mercenary merc : mercs) {
 			if (Position.withinRange(player.getPosition(), merc.getPosition(), mercFrenzyRange)) {

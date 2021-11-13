@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.collectables.Key;
 
 /**
  * CollectableComponent will automatically add a component from the map to the 
@@ -23,6 +24,12 @@ public class CollectableComponent extends Component {
     public void processInput(InputState inputState) {}
     
     public void updateComponent() {
+    	Entity parent = getEntity();
+    	// Ensure if a key, only one can be picked up at a time
+		if (parent instanceof Key && parent.getDungeon().getPlayer().getInventory().numEntitiesOfType(Key.class) > 0) {
+			return;
+		}
+    	
     	if (collectableState == CollectableState.MAP) {
 	    	Dungeon d = getEntity().getDungeon();
 	    	
@@ -30,7 +37,8 @@ public class CollectableComponent extends Component {
 		        // player is standing on the item
 		        // item will be removed from entity list at the end of the tick
 		        
-		        d.transferToInventory(getEntity());
+	    		// Key pickup check
+	    		d.transferToInventory(getEntity());
 		        collectableState = CollectableState.INVENTORY;
 		        // item is will be added to the inventory at the end of the tick
 		        // TODO: some items may need to be used on the same tick as they 

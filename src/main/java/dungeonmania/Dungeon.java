@@ -120,16 +120,16 @@ public class Dungeon {
     
     private void loadOther() {
     	// If no merc spawner, load in
-    	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
+    	if (entities.numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
     		EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this);
     	}
     	
-    	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
+    	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
     	// Should be singleton??
-    	if (numEntitiesOfType(BattleResolver.class) == 0) {
+    	if (entities.numEntitiesOfType(BattleResolver.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
     	}
     }
@@ -316,22 +316,6 @@ public class Dungeon {
     		}
     	}
     	return null;
-    }
-
-	// Returns a list of enitities by a certain type
-	// Not used now
-	public List<Entity> getEntitiesByType(Class<?> classType) {
-		List<Entity> entTypeList = new ArrayList<>();
-		for (Entity e : entities) {
-			if (classType.isInstance(e)) {
-				entTypeList.add(e);
-			}
-		}
-		return entTypeList;
-	}
-	
-	public int numEntitiesOfType(Class<?> classType) {
-    	return getEntitiesByType(classType).size();
     }
 	
 	/**
