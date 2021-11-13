@@ -11,6 +11,7 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
+import dungeonmania.entities.moving.ZombieToast;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -46,6 +47,8 @@ public class Portal extends Entity {
 		
 		Portal teleportPortal = getCorrespondingPortal();
 		for (Entity e : entitiesOnThisPortal) {
+			// Don't teleport zombie toast
+			if (e instanceof ZombieToast) continue;
 			// Teleport!
 			e.setPosition(teleportPortal.getPosition());
 			teleportPortal.teleportedEntities.add(e);
