@@ -47,9 +47,6 @@ public class BattleComponent extends Component {
 	// Gives damage and kills entities if hp goes to zero
 	public void dealDamage(int damage) {
 		health -= damage;
-		if (health <= 0) {
-			getEntity().setState(EntityState.DEAD);
-		}
 	}
 
 	public boolean isAlive() {
