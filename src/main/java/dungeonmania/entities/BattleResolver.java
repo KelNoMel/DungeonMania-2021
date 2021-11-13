@@ -191,7 +191,7 @@ public class BattleResolver extends Entity {
 				}
 
 				// player gets attacked
-				if (getDungeon().getGamemode().asString() == "peaceful") {
+				if (getDungeon().getGamemode().asString().equals("peaceful")) {
 					continue;
 				} else {
 					attackFighter(playerBattleState, enemysDamage);
