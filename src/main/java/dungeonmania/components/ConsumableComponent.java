@@ -33,7 +33,6 @@ public class ConsumableComponent extends Component {
             }
         }
 
-
         if (input == null) System.out.println("input was null in ConsumableComponent");
         if (input.getItemUsed() == null) System.out.println("item used was null in ConsumableComponent");
 
