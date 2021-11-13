@@ -9,6 +9,7 @@ import java.util.Random;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
+import dungeonmania.Gamemode;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
@@ -190,7 +191,11 @@ public class BattleResolver extends Entity {
 				}
 
 				// player gets attacked
-				attackFighter(playerBattleState, enemysDamage);
+				if (getDungeon().getGamemode().asString().equals("peaceful")) {
+					continue;
+				} else {
+					attackFighter(playerBattleState, enemysDamage);
+				}
 			}
 		}
 	}
