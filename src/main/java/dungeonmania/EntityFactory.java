@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.*;
+import dungeonmania.entities.bosses.Assassin;
 import dungeonmania.entities.bosses.Hydra;
 import dungeonmania.entities.buildable.*;
 import dungeonmania.entities.collectables.*;
