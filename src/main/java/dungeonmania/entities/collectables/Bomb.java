@@ -8,6 +8,7 @@ import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
+import dungeonmania.entities.redstone.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.EntityUpdateOrder;
@@ -22,6 +23,8 @@ public class Bomb extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	// Durability is 999 so entity doesn't die when placed
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 999, 1);
+	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 3);
+
 
 	public Bomb(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "bomb", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
@@ -39,11 +42,9 @@ public class Bomb extends Entity {
 
 	// Check if any adjacent positions contain a triggering entity and explode if that's the case
 	protected void updateEntity() {
-		for (Entity e : observingList) {
-			// Explodes if adjacent to an activated object
-			if (Position.isAdjacent(getPosition(), e.getPosition())) {
-				explode();
-			}
+		// Explodes if adjacent to an activated object
+		if (redstoneComponent.isActivated()) {
+			explode();
 		}
 	}
 
