@@ -13,21 +13,19 @@ import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class BattleTest {
+public class BattlePeacefulModeTest {
     @Test
     public void testSimpleBattle() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced","standard");
+        mania.newGame("health-potion-pickup","peaceful");
         
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.LEFT);
+        for (int i = 0; i < 20; i++) {
+            mania.tick(null, Direction.NONE);
+          }
+          
+        DungeonResponse d = mania.tick(null, Direction.NONE);
         
-        DungeonResponse battleResponse = mania.tick(null, Direction.LEFT);
-        assertNull(ResponseHelp.getEntityOfType(battleResponse, "mercenary"));
-        assertNotNull(ResponseHelp.getEntityOfType(battleResponse, "player"));
+        assertNull(ResponseHelp.getEntityOfType(d, "mercenary"));
+        assertNotNull(ResponseHelp.getEntityOfType(d, "player"));
     }
 }
