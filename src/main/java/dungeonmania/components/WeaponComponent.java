@@ -2,11 +2,8 @@ package dungeonmania.components;
 
 import org.json.JSONObject;
 
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
-import dungeonmania.components.Component;
 
 /**
  * A component containing the damage amount and type for a weapon
@@ -55,4 +52,7 @@ public class WeaponComponent extends Component {
 
     public int getDamage() { return damage; }
     public AttackTypeEnum getType() { return attackType; }
+
+    public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

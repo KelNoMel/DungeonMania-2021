@@ -1,5 +1,7 @@
 package dungeonmania.components;
 
+import org.json.JSONObject;
+
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 
@@ -21,8 +23,11 @@ public class EffectComponent extends Component {
         timer = timer - 1;
         if (timer == 0) {
             getEntity().getDungeon().getPlayer().setStatus("normal");
-            getEntity().removeComponent(this);
+            setExpiry(true);
         }
     }
+
+    public void loadJSONComponentSpecific(JSONObject entityData) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 
 }

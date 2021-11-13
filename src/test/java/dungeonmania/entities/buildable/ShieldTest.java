@@ -10,7 +10,7 @@ public class ShieldTest {
 	@Test
 	public void testShield() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("advanced-2","Peaceful");
+		mania.newGame("advanced-2","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
@@ -42,7 +42,7 @@ public class ShieldTest {
 	@Test
 	public void testShieldInvalid() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("advanced-2","Peaceful");
+		mania.newGame("advanced-2","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);

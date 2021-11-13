@@ -11,8 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import dungeonmania.response.models.AnimationQueue;
@@ -20,17 +18,11 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.*;
-import dungeonmania.components.CollectableComponent;
-import dungeonmania.components.CollectableState;
-import dungeonmania.components.Component;
 import dungeonmania.entities.*;
 import dungeonmania.entities.statics.*;
 import dungeonmania.goals.*;
-import dungeonmania.entities.moving.*;
 import dungeonmania.entities.spawners.MercenarySpawner;
 import dungeonmania.entities.spawners.SpiderSpawner;
-import dungeonmania.entities.collectables.*;
-import dungeonmania.entities.collectables.rare.*;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildable.*;
@@ -44,7 +36,7 @@ public class Dungeon {
 
 	private String dungeonId;
     private String dungeonName;
-    private GameMode gameMode;
+    private Gamemode gamemode;
     
     private EntityList entities = new EntityList();
     private List<AnimationQueue> animations = new ArrayList<AnimationQueue>();  
@@ -59,16 +51,16 @@ public class Dungeon {
         return UUID.randomUUID().toString();
     }
     
-    public Dungeon(String dungeonName, String gameMode) throws JSONException {
+    public Dungeon(String dungeonName, String gamemode) throws JSONException {
         this.dungeonName = dungeonName;
-    	this.gameMode = GameMode.getGameMode(gameMode);
+    	this.gamemode = Gamemode.getGamemode(gamemode);
     	
     	// Load file
     	JSONObject dungeonJSON = readDungeonJSON(dungeonName);
     	
     	// Add the entities
     	Portal.clearPortalLinks();
-        entities = EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this);        
+        EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this, entities);        
         loadOther();
         
 		// Adds goals and sets goal condition
@@ -115,9 +107,9 @@ public class Dungeon {
     	System.out.println(fileData.toString(2));
     	
     	dungeonName = fileData.getString("dungeon-name");
-    	gameMode = GameMode.getGameMode(fileData.getString("gamemode"));
+    	gamemode = Gamemode.getGamemode(fileData.getString("gamemode"));
     	Portal.clearPortalLinks();
-    	entities = EntityFactory.loadEntities(fileData.getJSONArray("entities"), this);
+    	EntityFactory.loadEntities(fileData.getJSONArray("entities"), this, entities);
     	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
     }
@@ -128,19 +120,17 @@ public class Dungeon {
     
     private void loadOther() {
     	// If no merc spawner, load in
-    	if (numEntitiesOfType(MercenarySpawner.class) == 0) {
+    	if (entities.numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
-    		entities.add(EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this));
+    		EntityFactory.constructEntity(newEntityJSON(p.getX(), p.getY(), "mercenary_spawner"), this);
     	}
     	
-    	if (numEntitiesOfType(SpiderSpawner.class) == 0) {
-    		entities.add(EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this));
+    	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
     	// Should be singleton??
-    	if (numEntitiesOfType(BattleResolver.class) == 0) {
-    		Entity newResolver = EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
-    		entities.add(newResolver);
-    		Collections.swap(entities, entities.indexOf(newResolver), entities.size()-1);
+    	if (entities.numEntitiesOfType(BattleResolver.class) == 0) {
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
     	}
     }
     
@@ -195,7 +185,7 @@ public class Dungeon {
 		JSONObject saveData = new JSONObject();
 		saveData.put("entities", entities.toJSON());
 		saveData.put("goal-condition", dungeonGoal.toJSON());
-		saveData.put("gamemode", gameMode.asString());
+		saveData.put("gamemode", gamemode.asString());
 		saveData.put("dungeon-name", dungeonName);
 		
 		try {
@@ -299,7 +289,7 @@ public class Dungeon {
     	return entities;
     }
 
-    public List<Entity> getEntitiesInRadius(Position origin, int radius) {
+    public List<Entity> getEntitiesInRadius(Position origin, Double radius) {
     	List<Entity> radEnts = new ArrayList<>();
     	for (Entity e : entities) {
     		if (Position.withinRange(origin, e.getPosition(), radius)) {
@@ -327,22 +317,6 @@ public class Dungeon {
     	}
     	return null;
     }
-
-	// Returns a list of enitities by a certain type
-	// Not used now
-	public List<Entity> getEntitiesByType(Class<?> classType) {
-		List<Entity> entTypeList = new ArrayList<>();
-		for (Entity e : entities) {
-			if (classType.isInstance(e)) {
-				entTypeList.add(e);
-			}
-		}
-		return entTypeList;
-	}
-	
-	public int numEntitiesOfType(Class<?> classType) {
-    	return getEntitiesByType(classType).size();
-    }
 	
 	/**
 	 * Get the player
@@ -357,8 +331,8 @@ public class Dungeon {
 		return null;
 	}
 	
-	public GameMode getGameMode() {
-		return gameMode;
+	public Gamemode getGamemode() {
+		return gamemode;
 	}
 	
 	/**
@@ -373,6 +347,11 @@ public class Dungeon {
 	public void transferToInventory(Entity e) {
 		e.toggleDisplay(false);
 		entities.transferEntity(getPlayer().getInventory(), e);
+	}
+
+	public void transferToMap(Entity e) {
+		e.toggleDisplay(true);
+		getPlayer().getInventory().transferEntity(entities, e);
 	}
 	
 	public void addEntity(Entity e) {

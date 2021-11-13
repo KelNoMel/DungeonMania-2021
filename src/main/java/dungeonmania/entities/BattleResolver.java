@@ -1,25 +1,25 @@
 package dungeonmania.entities;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
-import dungeonmania.components.Component;
+import dungeonmania.components.CollectableState;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.WeaponComponent;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
+import dungeonmania.entities.collectables.rare.TheOneRing;
+import dungeonmania.entities.collectables.rare.Anduril;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.entities.moving.ZombieToast;
@@ -27,11 +27,11 @@ import dungeonmania.response.models.AnimationQueue;
 import dungeonmania.util.Position;
 
 public class BattleResolver extends Entity {
-	private final int allySupportRange = 2;
-	private final int mercFrenzyRange = 2;
+	private final Double allySupportRange = 2.0;
+	private final Double mercFrenzyRange = 2.0;
 
 	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "battle_resolver", position, false, entitySpecificData);
+		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER, entitySpecificData);
 		toggleDisplay(false);
 	}
 
@@ -63,11 +63,31 @@ public class BattleResolver extends Entity {
 		// the player
 		Player player = d.getPlayer();
 		BattleComponent playerBattleState = player.getComponent(BattleComponent.class);
-
-		
+		String playerStatus = d.getPlayer().getStatus();
 
 		// the bad guys at the player's position
 		List<Entity> battleEnemies = getEnemiesToBattle(player);
+
+		// Potion effects can prematurely end the player battle with different outcomes
+		switch(playerStatus) {
+			// Continue as normal towards battle
+			case "normal":
+				break;
+			// Immediately stop the battle for the player, noone takes damage
+			case "invisible":
+				return;
+			// Kill all the combating enemies automatically and end the battle
+			case "invincible":
+				// Mercenaries still frenzy	
+				if (battleEnemies.size() > 0) {
+					frenzyMercanaries(player);
+				}
+				for (Entity enemy : battleEnemies) {
+					enemy.setState(EntityState.DEAD);
+					rewardRares();
+				}
+				return;
+		}
 
 		// items used in battle
 		List<BattleItemComponent> playerBattleItems = player.getInventory().stream()
@@ -94,9 +114,12 @@ public class BattleResolver extends Entity {
 				BattleComponent enemyBattleState = enemy.getComponent(BattleComponent.class);
 
 				// if either fighter died in a previous encounter skip this battle
+				if (!enemyBattleState.isAlive()) {
+					// Defeated enemies may drop items before ending the battle
+					rewardRares();
+					break;
+				}
 				if (!playerBattleState.isAlive()) break;
-				if (!enemyBattleState.isAlive()) break;
-
 				// use armour
 				int currArmour = 0;
 				for (ArmourComponent armour : playerArmour) {
@@ -199,6 +222,27 @@ public class BattleResolver extends Entity {
 		}
 	}
 
+	private void rewardRares() {
+		Random random = new Random();
+		Dungeon d = getDungeon();
+		Player player = d.getPlayer();
+		// Chances of getting a rare item 1/5, subject to change
+		if (random.nextInt(100) % 5 == 0) {
+			// The two rare items have an equal chance to be spawned
+			// A bit brittle, but OK since only two rares
+			if (random.nextInt(100) % 2 == 0) {
+				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
+				ring.setCollectableState(CollectableState.INVENTORY);
+				d.transferToInventory(ring);
+			} else {
+				Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
+
+				anduril.setCollectableState(CollectableState.INVENTORY);
+				d.transferToInventory(anduril);
+			}
+		}
+	}
+
 	public static boolean isPlayer(Entity e) {
 		return e instanceof	Player;
 	}
@@ -245,6 +289,20 @@ public class BattleResolver extends Entity {
 		}
 		// fighter gets attacked
 		fighterBattleState.dealDamage(damage);
+		
+		// If fighter is zero health, kill entity
+		if (fighterBattleState.getHealth() <= 0) {
+			fighterBattleState.getEntity().setState(EntityState.DEAD);
+			// If fighter is player, try to revive
+			if (isPlayer(fighter)) {
+				TheOneRing ring = fighter.getDungeon().getPlayer().retrieveTypeFromInventory(TheOneRing.class);
+				if (ring != null) {
+					ring.revive();
+				}
+				
+			}
+		}
+		
 		// animation
 		battleAnimation(fighter, fighterBattleState, fighterPreAttackHealth);
 		// post-battle
@@ -294,7 +352,7 @@ public class BattleResolver extends Entity {
 	 */
 	private void frenzyMercanaries(Player player) {
 		Dungeon dungeon = getDungeon();
-		List<Mercenary> mercs = dungeon.getEntitiesByType(Mercenary.class)
+		List<Mercenary> mercs = dungeon.getEntities().getEntitiesByType(Mercenary.class)
 			.stream().map(e -> (Mercenary)e).collect(Collectors.toList());
 		for (Mercenary merc : mercs) {
 			if (Position.withinRange(player.getPosition(), merc.getPosition(), mercFrenzyRange)) {

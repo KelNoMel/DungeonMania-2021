@@ -11,22 +11,26 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
+import dungeonmania.Gamemode;
 import dungeonmania.InputState;
 import dungeonmania.entities.bosses.Assassin;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
-import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
+import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
+import dungeonmania.components.WeaponComponent;
 import dungeonmania.entities.moving.Mercenary;
+import dungeonmania.entities.spawners.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	public final int MAX_HP = 100;
+	public final int HARD_HP = 100;
 	public final int DMG = 10;
 
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
@@ -41,11 +45,14 @@ public class Player extends Entity {
 	// Can swap with deadInventory and make deadInventory a method only field?
 	public HashMap<String, String> usedList = new HashMap<String, String>();
 
-	// Player states include: Normal, invisible, invincible
+	// Player states include: normal, invisible, invincible
 	public String status = "normal";
 
 	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "player", position, false, entitySpecificData);
+		super(dungeon, "player", position, false, EntityUpdateOrder.PLAYER, entitySpecificData);
+		dungeon.getEntities().removeDeadEntities();
+		
+		if (dungeon.getGamemode() == Gamemode.HARD) battleComponent.setHealth(50);
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {
@@ -53,13 +60,20 @@ public class Player extends Entity {
 	}
 	
 	protected void inputEntity(InputState inputState) {
+		// I put inventory usage ahead of entity interaction
+		// in input order (it was getting cancelled by line 61 earlier)
+		if (inputState.getItemUsed() != null) {
+			inventory.processInput(inputState);
+		}
+		
 		if (inputState.getInteractId() == null) return;
 		
 		Entity interactEntity = getDungeon().getEntityFromId(inputState.getInteractId());
+		
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
-				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2.0), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				// do not use resources to bribe a mercenary that is already bribed/controlled
@@ -100,9 +114,34 @@ public class Player extends Entity {
 					playerOneRing.get(0).setState(EntityState.DEAD);
 				}
 				bribeAssassin.aiComponent.changeState("MercAlly");
+			case "zombie_toast_spawner":
+				ZombieToastSpawner spawner = null;
+				// Is the player cardinally adjacent to this spawner
+				if ((spawner = findToastSpawner(getDungeon().getEntitiesInRadius(getPosition(), 1.0), interactEntity.getId())) == null) {
+					throw new InvalidActionException("The player is cardinally adjacent to that spawner!");
+				}
+				
+				// Does the player have a weapon
+				boolean hasWeapon = false;
+				for (Entity e : inventory) {
+					for (Component c : e.getComponents()) {
+						if (c instanceof WeaponComponent) {
+							hasWeapon = true;
+							break;
+						}
+					}
+					if (hasWeapon) break;
+				}
+				
+				if (!hasWeapon) {
+					throw new InvalidActionException("The player needs a weapon to break this spawner");
+				}
+				
+				// Break away!
+				spawner.setState(EntityState.DEAD);
 				break;
 		}
-		inventory.processInput(inputState);
+		
 	}
 
 	protected void updateEntity() {
@@ -126,6 +165,18 @@ public class Player extends Entity {
 		}
 	}
 
+
+	// Returns the first instance of a class from inventory
+	public <T> T retrieveTypeFromInventory(Class<T> classType) {
+		for (Entity e : getInventory()) {
+			if (classType.isInstance(e)) {
+				return classType.cast(e);
+			}
+		}
+		// Item couldn't be found in inventory
+		return null;
+	}
+
 	public void removeFromInventory(Entity item) {
 		inventory.remove(item);
 	}
@@ -140,6 +191,9 @@ public class Player extends Entity {
 		return usedList;
 	}
 
+	public int getHealth() {
+		return battleComponent.getHealth();
+	}
 	// Used to set players health, currently used to restore full health on heal
 	public void setHealth(int hp) {
 		battleComponent.setHealth(hp);
@@ -157,7 +211,6 @@ public class Player extends Entity {
 	public void setStatus(String state) {
 		status = state;
 	}
-
 
 	public Mercenary findMercenary(List<Entity> entities, String mercenaryId) {
 		for (Entity e : entities) {
@@ -177,15 +230,23 @@ public class Player extends Entity {
 		return null;
 	}
 	
+	public ZombieToastSpawner findToastSpawner(List<Entity> entities, String spawnerId) {
+		for (Entity e : entities) {
+			if (e instanceof ZombieToastSpawner && spawnerId.equals(e.getId())) {
+				return (ZombieToastSpawner) e;
+			}
+		}
+		return null;
+	}
+	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("inventory", inventory.toJSON());
 	}
 
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) throws JSONException {
+		inventory = new EntityList();
 		if (entitySpecificData.has("inventory")) {
-			inventory = EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon());
-		} else {
-			inventory = new EntityList();
+			EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon(), inventory);
 		}
 	}
 }

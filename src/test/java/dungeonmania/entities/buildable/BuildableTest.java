@@ -11,7 +11,7 @@ public class BuildableTest {
     @Test
 	public void testShieldInvalid() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("advanced-2","Peaceful");
+		mania.newGame("advanced-2","peaceful");
 
 		assertThrows(IllegalArgumentException.class, () -> mania.build("gabagool"));
 	}

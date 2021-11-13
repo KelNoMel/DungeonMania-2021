@@ -15,7 +15,7 @@ public class WoodTest {
 	@Test
 	public void testArrowPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("wood-pickup","Peaceful");
+        mania.newGame("wood-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

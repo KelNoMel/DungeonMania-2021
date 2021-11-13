@@ -3,10 +3,10 @@ package dungeonmania;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.json.JSONArray;
 
-import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 
@@ -38,32 +38,35 @@ public class EntityList extends ArrayList<Entity> {
 		
     	for (Entity e : this) {
     		if (e.getState() == EntityState.DEAD) {
-				deadEntities.add(e);
+    			deadEntities.add(e);
     		}
     	}
 		
-    	removeAll(deadEntities);    	
-    	deadEntities.clear();
+    	removeDeadEntities();
     	
-    	addAll(newEntities);
-    	newEntities.clear();
-    	
-    	for (Entity e : this) {
-    		if (e instanceof BattleResolver) {
-    			Collections.swap(this, indexOf(e), size()-1);
-    			break;
-    		}
+    	for (Entity newEntity : newEntities) {
+    		add(newEntity);
     	}
+    	newEntities.clear();
+	}
+	
+	public void removeDeadEntities() {
+		removeAll(deadEntities);
+		deadEntities.clear();
 	}
 	
 	@Override
 	public boolean add(Entity e) {
 		if (updatingActors) {
 			newEntities.add(e);
-			return true;
 		} else {
-			return super.add(e);
+			super.add(e);
 		}
+		Comparable<Integer> cmp = (Comparable<Integer>) e.getUpdateOrder();
+        for (int i = size()-1; i > 0 && cmp.compareTo(get(i-1).getUpdateOrder()) < 0; i--) {
+            Collections.swap(this, i, i-1);
+        }
+		return true;
 	}
 	
 	public boolean queueAdd(Entity e) {
@@ -76,11 +79,19 @@ public class EntityList extends ArrayList<Entity> {
 	}
 	
 	public void transferEntity(EntityList dest, Entity transferEntity) throws InvalidParameterException {
-		if (!contains(transferEntity)) {
+		boolean mainContain = contains(transferEntity);
+		boolean newContain = newEntities.contains(transferEntity);
+		if (!mainContain && !newContain) {
 			throw new InvalidParameterException("This array does not contain this entity");
 		}
+		
 		dest.add(transferEntity);
-		deadEntities.add(transferEntity);
+		if (mainContain) {
+			deadEntities.add(transferEntity);			
+		} else {
+			newEntities.remove(transferEntity);
+		}
+		
 	}
 	
 	public JSONArray toJSON() {
@@ -90,4 +101,20 @@ public class EntityList extends ArrayList<Entity> {
 		}
 		return entities;
 	}
+	
+	// Returns a list of enitities by a certain type
+	// Not used now
+	public List<Entity> getEntitiesByType(Class<?> classType) {
+		List<Entity> entTypeList = new ArrayList<>();
+		for (Entity e : this) {
+			if (classType.isInstance(e)) {
+				entTypeList.add(e);
+			}
+		}
+		return entTypeList;
+	}
+	
+	public int numEntitiesOfType(Class<?> classType) {
+    	return getEntitiesByType(classType).size();
+    }
 }

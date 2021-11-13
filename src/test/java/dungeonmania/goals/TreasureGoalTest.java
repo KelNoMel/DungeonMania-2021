@@ -17,7 +17,7 @@ public class TreasureGoalTest {
     	DungeonManiaController mania = new DungeonManiaController();
         
     	DungeonResponse response;
-    	response = mania.newGame("treasure-pickup","Peaceful");
+    	response = mania.newGame("treasure-pickup","peaceful");
     	
     	assertFalse(ResponseHelp.goalComplete(response));
     	

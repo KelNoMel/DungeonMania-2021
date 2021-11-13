@@ -15,7 +15,7 @@ public class ArrowTest {
 	@Test
 	public void testArrowPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("arrow-pickup","Peaceful");
+        mania.newGame("arrow-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(
