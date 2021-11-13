@@ -10,7 +10,7 @@ import java.util.Objects;
 public final class Position {
 	
 	public static final double epsilon = 0.001;
-	public static boolean withinRange(Position p1, Position p2, int distance) {
+	public static boolean withinRange(Position p1, Position p2, Double distance) {
 		return (distance - distanceBetween(p1,p2)) >= -epsilon;
 	}
 	

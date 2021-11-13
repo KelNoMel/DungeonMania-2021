@@ -65,7 +65,7 @@ public class Player extends Entity {
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
-				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
+				if ((bribeMercenary = findMercenary(getDungeon().getEntitiesInRadius(getPosition(), 2.0), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of a Mercenary!");
 				}
 				// do not use resources to bribe a mercenary that is already bribed/controlled
