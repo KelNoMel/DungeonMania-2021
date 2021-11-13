@@ -3,13 +3,10 @@ package dungeonmania.entities.spawners;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-<<<<<<< HEAD
 import dungeonmania.GameMode;
 import dungeonmania.entities.bosses.Assassin;
-=======
 import dungeonmania.EntityFactory;
 import dungeonmania.Gamemode;
->>>>>>> master
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
 
