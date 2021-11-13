@@ -14,6 +14,8 @@ import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
+import dungeonmania.entities.collectables.rare.TheOneRing;
+import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -112,6 +114,18 @@ public class Player extends Entity {
 		}
 	}
 
+
+	// Returns the first instance of a class from inventory
+	public <T> T retrieveTypeFromInventory(Class<T> classType) {
+		for (Entity e : getInventory()) {
+			if (classType.isInstance(e)) {
+				return classType.cast(e);
+			}
+		}
+		// Item couldn't be found in inventory
+		return null;
+	}
+
 	public void removeFromInventory(Entity item) {
 		inventory.remove(item);
 	}
@@ -126,6 +140,9 @@ public class Player extends Entity {
 		return usedList;
 	}
 
+	public int getHealth() {
+		return battleComponent.getHealth();
+	}
 	// Used to set players health, currently used to restore full health on heal
 	public void setHealth(int hp) {
 		battleComponent.setHealth(hp);
