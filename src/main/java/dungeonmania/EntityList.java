@@ -79,11 +79,19 @@ public class EntityList extends ArrayList<Entity> {
 	}
 	
 	public void transferEntity(EntityList dest, Entity transferEntity) throws InvalidParameterException {
-		if (!contains(transferEntity)) {
+		boolean mainContain = contains(transferEntity);
+		boolean newContain = newEntities.contains(transferEntity);
+		if (!mainContain && !newContain) {
 			throw new InvalidParameterException("This array does not contain this entity");
 		}
+		
 		dest.add(transferEntity);
-		deadEntities.add(transferEntity);
+		if (mainContain) {
+			deadEntities.add(transferEntity);			
+		} else {
+			newEntities.remove(transferEntity);
+		}
+		
 	}
 	
 	public JSONArray toJSON() {

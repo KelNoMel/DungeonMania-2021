@@ -226,7 +226,8 @@ public class BattleResolver extends Entity {
 
 	private void rewardRares() {
 		Random random = new Random();
-		Player player = getDungeon().getPlayer();
+		Dungeon d = getDungeon();
+		Player player = d.getPlayer();
 		// Chances of getting a rare item 1/5, subject to change
 		if (random.nextInt(100) % 5 == 0) {
 			// The two rare items have an equal chance to be spawned
@@ -234,11 +235,12 @@ public class BattleResolver extends Entity {
 			if (random.nextInt(100) % 2 == 0) {
 				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
 				ring.setCollectableState(CollectableState.INVENTORY);
-				player.addToInventory(ring);
+				d.transferToInventory(ring);
 			} else {
 				Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
+
 				anduril.setCollectableState(CollectableState.INVENTORY);
-				player.addToInventory(anduril);
+				d.transferToInventory(anduril);
 			}
 		}
 	}

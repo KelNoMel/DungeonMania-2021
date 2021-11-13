@@ -59,7 +59,7 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void increasePower(int newPower, RedstoneComponent settingComponent) {
-		System.out.println("Increasing power at " + getEntity().getPosition() + " to " + newPower);
+//		System.out.println("Increasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		powerLevel = newPower;
@@ -74,7 +74,7 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void decreasePower(int newPower, RedstoneComponent settingComponent, List<RedstoneComponent> repropagaters) {
-		System.out.println("Decreasing power at " + getEntity().getPosition() + " to " + newPower);
+//		System.out.println("Decreasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		int previousPower = powerLevel;
