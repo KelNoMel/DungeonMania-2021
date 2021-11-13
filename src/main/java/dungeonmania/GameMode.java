@@ -15,7 +15,8 @@ public enum GameMode {
     }
 
 	public static GameMode getGameMode(String gameMode) throws IllegalArgumentException {
-    	switch (gameMode) {
+    	gameMode = gameMode.toLowerCase();
+		switch (gameMode) {
     	case "peaceful":
     		return PEACEFUL;
     	case "standard":
