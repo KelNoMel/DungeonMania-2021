@@ -3,7 +3,6 @@ package dungeonmania.entities.buildable;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 

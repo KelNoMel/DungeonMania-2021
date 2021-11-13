@@ -38,10 +38,21 @@ public class BombTest {
 		DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("bomb-pickup","peaceful");
         mania.tick(null, Direction.LEFT);
-		mania.tick(null, Direction.LEFT);
-		DungeonResponse d = mania.tick("bomb", Direction.NONE);
+        DungeonResponse d = mania.tick(null, Direction.LEFT);
+		
+        // Get bomb id
+        String bombId = null;
+        for (ItemResponse r : d.getInventory()) {
+        	if (r.getType().equals("bomb")) {
+        		bombId = r.getId();
+        		break;
+        	}
+        }
+		
+		d = mania.tick(bombId, null);
+		
 		// Bomb is out of inventory, bomb and player occupy same tile
-		assertTrue(ResponseHelp.inventoryEqual(empty, d));
+		assertTrue(ResponseHelp.inventoryEqual(Arrays.asList(),d));
 		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(-4, 0), false), d));
 		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "bomb", new Position(-4, 0), false), d));
 		d = mania.tick(null, Direction.LEFT);

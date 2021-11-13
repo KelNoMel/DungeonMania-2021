@@ -1,17 +1,10 @@
 package dungeonmania.components;
 
-import java.util.List;
-
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
-import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-
-import java.util.Collections;
 
 public class BattleComponent extends Component {
 
