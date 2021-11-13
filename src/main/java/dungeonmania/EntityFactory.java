@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.*;
+import dungeonmania.entities.bosses.Hydra;
 import dungeonmania.entities.buildable.*;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.collectables.rare.*;
@@ -122,6 +123,12 @@ public class EntityFactory {
 				return new LightBulb(loadingDungeon, pos.asLayer(bottomLayer), entData);
 			case "switch_door":
 				return new SwitchDoor(loadingDungeon, pos.asLayer(bottomLayer), entData);
+
+			// Bosses
+			case "assassin":
+				return new Assassin(loadingDungeon, pos.asLayer(bottomLayer), entData);
+			case "hydra":
+				return new Hydra(loadingDungeon, pos.asLayer(bottomLayer), entData);
 				
 			// Non spec-defined
 			case "mercenary_spawner":

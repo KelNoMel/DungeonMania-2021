@@ -99,7 +99,7 @@ public class Player extends Entity {
 				break;
 			case "assassin":
 				Assassin bribeAssassin = null;
-				if ((bribeAssassin = findAssassin(getDungeon().getEntitiesInRadius(getPosition(), 2), interactEntity.getId())) == null) {
+				if ((bribeAssassin = findAssassin(getDungeon().getEntitiesInRadius(getPosition(), 2.0), interactEntity.getId())) == null) {
 					throw new InvalidActionException("The player is not within range of an Assassin!");
 				}
 				List<Entity> playerTreasure1 = getTypeInInventory("treasure");
