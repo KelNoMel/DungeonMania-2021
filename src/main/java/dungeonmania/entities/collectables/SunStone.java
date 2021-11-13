@@ -8,7 +8,6 @@ import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class SunStone extends Entity {

@@ -7,7 +7,6 @@ import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.collectables.Treasure;
 
 // For all items that can be used (consume, craft, place)
 public class ConsumableComponent extends Component {

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.EntityFactory;
 import dungeonmania.EntityList;
+import dungeonmania.Gamemode;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
@@ -28,6 +29,7 @@ import dungeonmania.util.Position;
 
 public class Player extends Entity {
 	public final int MAX_HP = 100;
+	public final int HARD_HP = 100;
 	public final int DMG = 10;
 
 	public PlayerComponent playerComponent = new PlayerComponent(this, 1);
@@ -48,6 +50,8 @@ public class Player extends Entity {
 	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
 		super(dungeon, "player", position, false, EntityUpdateOrder.PLAYER, entitySpecificData);
 		dungeon.getEntities().removeDeadEntities();
+		
+		if (dungeon.getGamemode() == Gamemode.HARD) battleComponent.setHealth(50);
 	}
 	
 	private List<Entity> getTypeInInventory(String entityType) {

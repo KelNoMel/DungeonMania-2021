@@ -2,11 +2,7 @@ package dungeonmania.components.aistates;
 
 import java.util.Random;
 
-import org.json.JSONObject;
-
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.Dungeon.Bounds;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
 import dungeonmania.entities.moving.ZombieToast;
@@ -29,7 +25,7 @@ public class AIZombieHostile extends AIState {
     }
 
     private static Direction generateRandom() {
-        int pick = new Random().nextInt(Direction.values().length);
+        int pick = randomiser.nextInt(Direction.values().length);
         return Direction.values()[pick];
     }
 
