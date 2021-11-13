@@ -22,6 +22,11 @@ public abstract class Spawner extends Entity {
 
 	public void inputEntity(InputState inputState) {}
 	
+	public void changeSpawnRate(int newSpawnRate) {
+		tickSpawnRate = newSpawnRate;
+		ticksUntilNextSpawn = newSpawnRate;
+	}
+	
 	public abstract void spawnEntity();
 	public void updateEntity() {
 		ticksUntilNextSpawn--;

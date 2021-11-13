@@ -28,6 +28,21 @@ public class ZombieToastSpawnerTest {
 	}
 	
 	@Test
+	public void zombieToastSpawnHard() {
+		DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("zombie-toast-test", "hard");
+        
+        for (int i = 0; i < 14; i++) {
+        	mania.tick(null, Direction.DOWN);        	
+        }
+        
+        DungeonResponse response = mania.tick(null, Direction.UP);
+        
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "zombie_toast", new Position(4, 0), false), response));
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "zombie_toast_spawner", new Position(4, 0), true), response));
+	}
+	
+	@Test
 	public void zombieToastSpawnerBreak() {
 		DungeonManiaController mania = new DungeonManiaController();
         DungeonResponse response = mania.newGame("zombie-toast-spawner-break", "standard");

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.EntityFactory;
-import dungeonmania.GameMode;
+import dungeonmania.Gamemode;
 import dungeonmania.Dungeon.Bounds;
 import dungeonmania.entities.moving.Spider;
 import dungeonmania.util.Position;
@@ -22,7 +22,7 @@ public class SpiderSpawner extends Spawner {
 
 	public void spawnEntity() {
 		Dungeon d = getDungeon();
-		if (d.getGameMode() != GameMode.PEACEFUL && 
+		if (d.getGamemode() != Gamemode.PEACEFUL && 
 				d.getEntities().numEntitiesOfType(Spider.class) < maxSpiders) {
 			
 			Bounds b = d.getBounds();
