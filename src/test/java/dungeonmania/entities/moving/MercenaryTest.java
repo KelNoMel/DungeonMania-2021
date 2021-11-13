@@ -25,7 +25,6 @@ public class MercenaryTest {
         
         assertDoesNotThrow(()->mania.interact(mercID));
         
-        
         for (int i = 0; i < 37; i++) {
         	mania.tick(null, Direction.DOWN);        	
         }

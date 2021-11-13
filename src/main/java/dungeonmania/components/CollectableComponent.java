@@ -53,8 +53,8 @@ public class CollectableComponent extends Component {
 	public void place() {
 		if (collectableState == CollectableState.INVENTORY) {
 	    	Dungeon d = getEntity().getDungeon();
-	    	System.out.println(getEntity().getDungeon().getPlayer().getInventory());
-			// Add to dungeon entitylist
+			
+	    	// Add to dungeon entitylist
 			d.transferToMap(getEntity());
 			// Change collectablestate
 			collectableState = CollectableState.MAP;

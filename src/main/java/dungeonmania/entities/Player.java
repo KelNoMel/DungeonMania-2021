@@ -14,13 +14,14 @@ import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.entities.buildable.BuildableFactory;
 import dungeonmania.entities.buildable.Sceptre;
-import dungeonmania.entities.collectables.rare.TheOneRing;
-import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
+import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.PlayerComponent;
+import dungeonmania.components.WeaponComponent;
 import dungeonmania.entities.moving.Mercenary;
+import dungeonmania.entities.spawners.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
@@ -61,7 +62,9 @@ public class Player extends Entity {
 		}
 		
 		if (inputState.getInteractId() == null) return;
+		
 		Entity interactEntity = getDungeon().getEntityFromId(inputState.getInteractId());
+		
 		switch (interactEntity.getType()) {
 			case "mercenary":
 				Mercenary bribeMercenary = null;
@@ -88,6 +91,32 @@ public class Player extends Entity {
 					System.out.println("Mercanary is being controlled with a sceptre");
 					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", Sceptre.MINDCONTROL_TIME);
 				}
+				break;
+			case "zombie_toast_spawner":
+				ZombieToastSpawner spawner = null;
+				// Is the player cardinally adjacent to this spawner
+				if ((spawner = findToastSpawner(getDungeon().getEntitiesInRadius(getPosition(), 1.0), interactEntity.getId())) == null) {
+					throw new InvalidActionException("The player is cardinally adjacent to that spawner!");
+				}
+				
+				// Does the player have a weapon
+				boolean hasWeapon = false;
+				for (Entity e : inventory) {
+					for (Component c : e.getComponents()) {
+						if (c instanceof WeaponComponent) {
+							hasWeapon = true;
+							break;
+						}
+					}
+					if (hasWeapon) break;
+				}
+				
+				if (!hasWeapon) {
+					throw new InvalidActionException("The player needs a weapon to break this spawner");
+				}
+				
+				// Break away!
+				spawner.setState(EntityState.DEAD);
 				break;
 		}
 		
@@ -161,11 +190,19 @@ public class Player extends Entity {
 		status = state;
 	}
 
-
 	public Mercenary findMercenary(List<Entity> entities, String mercenaryId) {
 		for (Entity e : entities) {
 			if (e instanceof Mercenary && mercenaryId.equals(e.getId())) {
 				return (Mercenary) e;
+			}
+		}
+		return null;
+	}
+	
+	public ZombieToastSpawner findToastSpawner(List<Entity> entities, String spawnerId) {
+		for (Entity e : entities) {
+			if (e instanceof ZombieToastSpawner && spawnerId.equals(e.getId())) {
+				return (ZombieToastSpawner) e;
 			}
 		}
 		return null;
