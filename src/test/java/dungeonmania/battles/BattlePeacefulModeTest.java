@@ -21,7 +21,7 @@ public class BattlePeacefulModeTest {
         
         for (int i = 0; i < 20; i++) {
             mania.tick(null, Direction.NONE);
-          }
+        }
           
         DungeonResponse d = mania.tick(null, Direction.NONE);
         

@@ -36,14 +36,10 @@ public class OneTrueRingTest {
         mania.newGame("one-true-ring","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
 		
+        for (int i = 0; i < 20; i++) {
+            d = mania.tick(null, Direction.NONE);
+        }
         mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-		mania.tick(null, Direction.NONE);
-        d = mania.tick(null, Direction.NONE);
-		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(7, 0), false), d));
+		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(1, 0), false), d));
 	}
 }
