@@ -17,7 +17,7 @@ public class SunStoneTest {
     @Test
 	public void testSunStonePickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("sunstone-pickup","Peaceful");
+        mania.newGame("sunstone-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

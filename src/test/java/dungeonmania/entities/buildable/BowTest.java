@@ -11,7 +11,7 @@ public class BowTest {
 	@Test
 	public void createBow() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced-2","Peaceful");
+        mania.newGame("advanced-2","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
@@ -43,7 +43,7 @@ public class BowTest {
 	@Test
 	public void createBowLowMats() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("advanced-2","Peaceful");
+        mania.newGame("advanced-2","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);

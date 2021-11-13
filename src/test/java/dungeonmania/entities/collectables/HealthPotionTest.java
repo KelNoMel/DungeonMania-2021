@@ -18,7 +18,7 @@ public class HealthPotionTest {
 	@Test
 	public void testhealthPotionPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("health-potion-pickup","Peaceful");
+        mania.newGame("health-potion-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(
@@ -34,7 +34,7 @@ public class HealthPotionTest {
 	@Test
 	public void testHealthPotionConsumption() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("health-potion-pickup","Standard");
+        mania.newGame("health-potion-pickup","standard");
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
 		
         String id = "";

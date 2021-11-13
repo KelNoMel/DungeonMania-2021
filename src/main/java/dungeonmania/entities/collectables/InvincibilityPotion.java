@@ -9,6 +9,7 @@ import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
 import dungeonmania.components.EffectComponent;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
@@ -18,7 +19,7 @@ public class InvincibilityPotion extends Entity {
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 
 	public InvincibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "invincibility_potion", position, false, entitySpecificData);
+		super(dungeon, "invincibility_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
 	}
 
 	// Player gets the invincible status, can override other effects

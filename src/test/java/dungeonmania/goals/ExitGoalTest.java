@@ -14,7 +14,7 @@ public class ExitGoalTest {
 		DungeonManiaController mania = new DungeonManiaController();
 		DungeonResponse response;
 		
-		response = mania.newGame("exit-basic","Peaceful");
+		response = mania.newGame("exit-basic","peaceful");
 		
 		assertFalse(ResponseHelp.goalComplete(response));
         

@@ -15,7 +15,7 @@ public class BombTest {
 	@Test
 	public void testArrowPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("bomb-pickup","Peaceful");
+        mania.newGame("bomb-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

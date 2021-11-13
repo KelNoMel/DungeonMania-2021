@@ -15,54 +15,31 @@ import dungeonmania.util.Position;
 
 public class MercenaryTest {
 	
-    // Succeed at moving a boulder with nothing behind it
     @Test
     public void testBasicMerc() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("mercenary-bribe","Standard");
+        mania.newGame("mercenary-bribe","standard");
         
         DungeonResponse d = mania.tick(null, Direction.RIGHT);
         String mercID = ResponseHelp.getEntityOfType(d, "mercenary").getId();
         
         assertDoesNotThrow(()->mania.interact(mercID));
         
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
         
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.LEFT);
+        for (int i = 0; i < 19; i++) {
+        	mania.tick(null, Direction.DOWN);        	
+        }
         
         // Spawn!
-        d = mania.tick(null, Direction.LEFT);
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
-        mania.tick(null, Direction.UP);
-        mania.tick(null, Direction.UP);
-        mania.tick(null, Direction.DOWN);
-        mania.tick(null, Direction.RIGHT);
-        mania.tick(null, Direction.LEFT);
-        mania.tick(null, Direction.DOWN);
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(-1, 0), true), d));
+        d = mania.tick(null, Direction.DOWN);
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 2), true), d));
     }
 
     @Test
     public void testMercFrenzy() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("merc-frenzy","Peaceful");
-        // player kills the fist mercanary
+        mania.newGame("merc-frenzy","peaceful");
+        // player kills the fist mercenary
         mania.tick(null, Direction.NONE);
         // second mercanary is now 2 blocks away so it goes to frenzy mode 
         // to rush to player

@@ -1,0 +1,57 @@
+{
+    "main_menu": {
+        "background_image": "images/tileset/custom/pokemon-wallpaper.png",
+        "text_color": "red"
+    },
+    "game": {
+        "background_image": {
+            "images/tileset/custom/grass.png": 5
+        },
+        "resolution_px": 16,
+        "item_box": "images/ui/box.png",
+        "text_color": "red"
+    },
+    "entities": {
+        "boulder": "images/tileset/custom/snorlax.png",
+        "bow": "images/tileset/custom/minecraft-bow.png",
+        "shield": "images/tileset/custom/zelda-shield.png",
+        "player": "images/tileset/custom/pikachu_rect.png",
+        "bomb": "images/tileset/custom/emoticon-bomb.png",
+        "wood": "images/tileset/custom/minecraft-stick.png",
+        "arrow": "images/tileset/custom/minecraft-arrow.png",
+        "exit": "images/tileset/entities/stairs_down.png",
+        "treasure": "images/tileset/custom/pokeball-small.png",
+        "wall": "images/tileset/custom/castle-wall.png",
+        "spider": "images/tileset/custom/eevee.png",
+        "mercenary": "images/tileset/custom/charmander.png",
+        "switch": "images/tileset/floor_switch.png",
+        "health_potion": "images/tileset/custom/minecraft-health-potion.png",
+        "invisibility_potion": "images/tileset/custom/invisibility-cloak.png",
+        "invincibility_potion": "images/tileset/custom/ssbb-smash-ball.png",
+        "key": "images/tileset/items/key_silver.png",
+        "key-silver": "images/tileset/items/key_silver.png",
+        "key-gold": "images/tileset/items/key_gold.png",
+        "door-locked-silver": "images/tileset/walls/wooden/door_locked_silver.png",
+        "door-locked-gold": "images/tileset/walls/wooden/door_locked_gold.png",
+        "door-unlocked": "images/tileset/walls/wooden/door_unlocked.png",
+        "sword": "images/tileset/custom/lightning-bolt.png",
+		"zombie_toast_spawner": "images/tileset/entities/zombie_spawner.png",
+		"zombie_toast": "images/tileset/custom/magikarp.png",
+        "portal-BLUE": "images/tileset/entities/portal_00.png",
+        "portal-RED": "images/tileset/entities/portal_04.png",
+        "portal-ORANGE": "images/tileset/entities/portal_08.png",
+        "portal-GREY": "images/tileset/entities/portal_12.png",
+        "blank": "images/tileset/entities/blank.png",
+        "assassin": "images/tileset/custom/charizard.png",
+        "hydra": "images/tileset/custom/rayquaza.png",
+        "wire": "images/tileset/entities/wire.png",
+        "lightbulb": "images/tileset/entities/lightbulb.png",
+        "midnight_armour": "images/tileset/entities/midnight_armour.png",
+        "sceptre": "images/tileset/custom/bitcoin.png",
+        "sun_stone": "images/tileset/custom/master-ball-small.png",
+        "swamp_tile": "images/tileset/entities/swamp_tile.png",
+        "time_turner": "images/tileset/entities/time_turner.png",
+        "anduril": "images/tileset/custom/blue-lightning.png",
+        "the_one_ring": "images/tileset/custom/the-one-ring-lotr.png"
+    }
+}

@@ -37,7 +37,6 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If dungeonName is not a dungeon that exists
      */
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
-    	System.out.println(dungeonName);
     	game = new Dungeon(dungeonName, gameMode);
         return game.response();
     }
@@ -164,7 +163,7 @@ public class DungeonManiaController {
     }
 
     public List<String> getGameModes() {
-        return Arrays.asList("Standard", "Peaceful", "Hard");
+        return Arrays.asList("standard", "peaceful", "hard");
     }
 
     public static List<String> dungeons() {

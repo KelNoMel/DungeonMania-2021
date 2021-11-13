@@ -15,7 +15,7 @@ public class SwordTest {
 	@Test
 	public void testSwordPickup() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("sword-pickup","Peaceful");
+        mania.newGame("sword-pickup","peaceful");
         DungeonResponse response = mania.tick(null, Direction.RIGHT);
         assertTrue(
         	ResponseHelp.inventoryEqual(

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.entities.buildable.Recipe;
@@ -25,7 +26,7 @@ public abstract class Buildable extends Entity {
     public Buildable(Dungeon dungeon, String type, Position position,  
         boolean isInteractable, Recipe recipe, JSONObject entitySpecificData) throws InvalidActionException {
        
-		super(dungeon, type, position, isInteractable, entitySpecificData);
+		super(dungeon, type, position, isInteractable, EntityUpdateOrder.OTHER, entitySpecificData);
         this.player = dungeon.getPlayer();
 		List<Ingredient> ingredients = recipe.checkRequirements(player);
 		if (ingredients == null) {

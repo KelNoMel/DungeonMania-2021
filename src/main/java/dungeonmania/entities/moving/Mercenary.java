@@ -11,6 +11,7 @@ import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIMercAlly;
 import dungeonmania.components.aistates.AIMercHostile;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Mercenary extends Entity {
@@ -21,7 +22,7 @@ public class Mercenary extends Entity {
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
 	
 	public Mercenary(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "mercenary", position, true, entitySpecificData);
+		super(dungeon, "mercenary", position, true, EntityUpdateOrder.OTHER, entitySpecificData);
 		aiComponent.registerState(new AIMercHostile(aiComponent, this));
 		aiComponent.registerState(new AIMercAlly(aiComponent, this));
 		if (startState == null) {

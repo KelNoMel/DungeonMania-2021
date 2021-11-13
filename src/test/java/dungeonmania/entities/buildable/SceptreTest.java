@@ -19,7 +19,7 @@ public class SceptreTest {
     @Test
 	public void testSceptreBuild() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","Peaceful");
+		mania.newGame("sceptre-basic","peaceful");
         mania.tick(null, Direction.RIGHT);
         assertThrows(InvalidActionException.class, () -> mania.build("sceptre"));
         mania.tick(null, Direction.RIGHT);
@@ -34,7 +34,7 @@ public class SceptreTest {
     @Test
 	public void testSceptreBuildAlternate() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-alt","Peaceful");
+		mania.newGame("sceptre-alt","peaceful");
         mania.tick(null, Direction.RIGHT);
         assertThrows(InvalidActionException.class, () -> mania.build("sceptre"));
         mania.tick(null, Direction.RIGHT);
@@ -51,14 +51,14 @@ public class SceptreTest {
     @Test
     public void testSceptreInvalidBuild() {
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("sceptre-basic","Peaceful");
+        mania.newGame("sceptre-basic","peaceful");
         assertThrows(InvalidActionException.class, () -> mania.build("sceptre"));
     }
 
     @Test
 	public void testSceptreBribe() {
 		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","Peaceful");
+		mania.newGame("sceptre-basic","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
@@ -84,7 +84,7 @@ public class SceptreTest {
     @Test
     public void testSceptreOutOfRange() {
         DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","Peaceful");
+		mania.newGame("sceptre-basic","peaceful");
         mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
         DungeonResponse res = mania.tick(null, Direction.RIGHT);
