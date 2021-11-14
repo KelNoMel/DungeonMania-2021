@@ -28,7 +28,17 @@ public class Spider extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {}
-	protected void updateEntity() {}
+	protected void updateEntity() {
+		String playerState = getDungeon().getPlayer().getStatus();
+		switch (playerState) {
+			case "normal":
+				aiComponent.changeState("SpiderHostile");
+				break;
+			case "invincible":
+				aiComponent.changeState("enemyRunAway");
+				break;
+		}
+	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}

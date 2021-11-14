@@ -73,6 +73,11 @@ public class MoveComponent extends Component {
 	// Checks whether or not current set move is allowed
 	private Boolean canIMove(Entity entityToMove) {
 		Position moveLocation = moveGhost(entityToMove);
+
+		// Spider can pretty much move anywhere, (boulder checking is in its' ai)
+		if (entityToMove.getType().equals("spider")) {
+			return true;
+		}
 		
 		List<Entity> moveEntities = entityToMove.getDungeon().getEntitiesAtPosition(moveLocation);
 		
