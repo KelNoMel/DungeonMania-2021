@@ -15,52 +15,52 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BattleItemsTest {
-    @Test
-	public void testPlayerDiesNoItems() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("","standard");
-        mania.tick(null, Direction.RIGHT);
-	}
+    // @Test
+	// public void testPlayerDiesNoItems() {
+	// 	DungeonManiaController mania = new DungeonManiaController();
+	// 	mania.newGame("","standard");
+    //     mania.tick(null, Direction.RIGHT);
+	// }
     
-    @Test
-	public void testArmourDurability() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("","standard");
-        mania.tick(null, Direction.RIGHT);
-	}
+    // @Test
+	// public void testArmourDurability() {
+	// 	DungeonManiaController mania = new DungeonManiaController();
+	// 	mania.newGame("","standard");
+    //     mania.tick(null, Direction.RIGHT);
+	// }
 
-    @Test
-	public void testShieldDurability() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("","standard");
-        mania.tick(null, Direction.RIGHT);
-	}
+    // @Test
+	// public void testShieldDurability() {
+	// 	DungeonManiaController mania = new DungeonManiaController();
+	// 	mania.newGame("","standard");
+    //     mania.tick(null, Direction.RIGHT);
+	// }
 
-    @Test
-    public void testArmourCombo() {
-        DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("sceptre-basic","standard");
-        mania.tick(null, Direction.RIGHT);
-    }
+    // @Test
+    // public void testArmourCombo() {
+    //     DungeonManiaController mania = new DungeonManiaController();
+    //     mania.newGame("sceptre-basic","standard");
+    //     mania.tick(null, Direction.RIGHT);
+    // }
 
-    @Test
-    public void testBowDurability() {
-        DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("","standard");
-        mania.tick(null, Direction.RIGHT);
-    }
+    // @Test
+    // public void testBowDurability() {
+    //     DungeonManiaController mania = new DungeonManiaController();
+    //     mania.newGame("","standard");
+    //     mania.tick(null, Direction.RIGHT);
+    // }
 
-    @Test
-	public void testSwordDurability() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("","standard");
-        mania.tick(null, Direction.RIGHT);
-	}
+    // @Test
+	// public void testSwordDurability() {
+	// 	DungeonManiaController mania = new DungeonManiaController();
+	// 	mania.newGame("","standard");
+    //     mania.tick(null, Direction.RIGHT);
+	// }
 
-    @Test
-	public void testWeaponCombo() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("sceptre-basic","standard");
-        mania.tick(null, Direction.RIGHT);
-	}
+    // @Test
+	// public void testWeaponCombo() {
+	// 	DungeonManiaController mania = new DungeonManiaController();
+	// 	mania.newGame("sceptre-basic","standard");
+    //     mania.tick(null, Direction.RIGHT);
+	// }
 }

@@ -53,7 +53,6 @@ public class AllyBattleTest {
         } while (ResponseHelp.inventorySize(d) != 3);
         // only armour in inventory
         mania.tick(null, Direction.NONE);
-        mania.tick(null, Direction.NONE);
         d = mania.tick(null, Direction.NONE);
         // player dies fighting the assassin
         assertEquals(null, ResponseHelp.getEntityOfType(d, "player"));
@@ -87,7 +86,6 @@ public class AllyBattleTest {
         // bribe mercenary
         String mercID = ResponseHelp.getEntityOfType(d, "mercenary").getId();
         mania.interact(mercID);
-        mania.tick(null, Direction.NONE);
         // player dies fighting the assassin
         // assassin dies by getting attacked by both the player and the ally
         d = mania.tick(null, Direction.NONE);
