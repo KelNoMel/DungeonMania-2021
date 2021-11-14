@@ -9,9 +9,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * See Section 7.1
- */
 public final class FileLoader {
     /**
      * Loads a resource file given a certain path that is relative to resources/
@@ -26,22 +23,11 @@ public final class FileLoader {
             path = "/" + path;
         try {
             return new String(Files.readAllBytes(Path.of(FileLoader.class.getResource(path).toURI())));
-        } catch (Exception e) {
+        } catch (URISyntaxException e) {
             throw new FileNotFoundException(path);
         }
     }
-    
-    public static Path getFolderPath(String directory) throws URISyntaxException {
-    	return Paths.get(FileLoader.class.getResource(directory).toURI());
-    }
-    
-    public static Path getSavePath() throws URISyntaxException {
-    	Path dungeonFolder;
-		dungeonFolder = getFolderPath("/dungeons");
-		dungeonFolder = dungeonFolder.subpath(0, dungeonFolder.getNameCount()-1);
-		return dungeonFolder.resolve("dungeonSaves");
-    }
-    
+
     /**
      * Lists file names (without extension) within a specified resource directory.
      * 
@@ -53,12 +39,10 @@ public final class FileLoader {
      * @throws IOException If directory path is invalid or some other sort of IO issue occurred.
      */
     public static List<String> listFileNamesInResourceDirectory(String directory) throws IOException {
-        if (!directory.startsWith("/")) {
+        if (!directory.startsWith("/"))
             directory = "/" + directory;
-        }
         try {
-            Path root = getFolderPath(directory);
-            
+            Path root = Paths.get(FileLoader.class.getResource(directory).toURI());
             return Files.walk(root).filter(Files::isRegularFile).map(x -> {
                 String nameAndExt = x.toFile().getName();
                 int extIndex = nameAndExt.lastIndexOf('.');
@@ -69,20 +53,6 @@ public final class FileLoader {
         }
     }
     
-    public static List<String> listSaves() throws IOException {
-        try {
-            Path root = getSavePath();
-            
-            return Files.walk(root).filter(Files::isRegularFile).map(x -> {
-                String nameAndExt = x.toFile().getName();
-                int extIndex = nameAndExt.lastIndexOf('.');
-                return nameAndExt.substring(0, extIndex > -1 ? extIndex : nameAndExt.length());
-            }).collect(Collectors.toList());
-        } catch (URISyntaxException e) {
-            throw new FileNotFoundException("/dungeonSaves not found");
-        }
-    }
-
     /**
      * Lists file names (without extension) within a specified non-resource directory.
      * 
@@ -101,11 +71,30 @@ public final class FileLoader {
         }).collect(Collectors.toList());
     }
 
-	public static void initialiseSaves() {
+    public static String getSaveDir() {
+    	return "DungeonSaves";
+    }
+    
+    public static Path getSavePath() {
+    	return Paths.get(getSaveDir());
+    }
+    
+    public static List<String> listSaves() throws IOException {
+    	return listFileNamesInDirectoryOutsideOfResources(getSaveDir());
+    }
+
+	public static boolean isValidSave(String checkName) {
 		try {
-			getSavePath().toFile().mkdirs();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			for (String saveName : listSaves()) {
+				System.out.println("Testing " + saveName + " against " + checkName);
+				if (saveName.equals(checkName)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (IOException e) {
+			System.out.println("Problem with supplied file loader");
+			return false;
 		}
 	}
 }

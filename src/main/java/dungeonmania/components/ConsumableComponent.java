@@ -57,7 +57,18 @@ public class ConsumableComponent extends Component {
     
     public void updateComponent() {}
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("durability")) {
+    		curDurability = entityData.getInt("durability");
+    	}
+		if (entityData.has(null)) {
+    		numObjUsed = entityData.getInt("numUsed");
+    	}
+	}
+	
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("durability", curDurability);
+		entityJSON.put("numUsed", numObjUsed);		
+	}
 
 }

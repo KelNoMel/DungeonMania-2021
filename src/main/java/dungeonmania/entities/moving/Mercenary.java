@@ -21,8 +21,8 @@ public class Mercenary extends Entity {
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
 	
-	public Mercenary(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "mercenary", position, true, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Mercenary(Dungeon dungeon, Position position) {
+		super(dungeon, "mercenary", position, true, EntityUpdateOrder.OTHER);
 		aiComponent.registerState(new AIMercHostile(aiComponent, this));
 		aiComponent.registerState(new AIMercAlly(aiComponent, this));
 		if (startState == null) {

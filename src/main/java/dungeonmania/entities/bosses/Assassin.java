@@ -2,21 +2,17 @@ package dungeonmania.entities.bosses;
 
 import java.util.List;
 
-import org.json.JSONObject;
-
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.BattleComponent;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
 
-    public Assassin(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-        super(dungeon, position, entitySpecificData);
+    public Assassin(Dungeon dungeon, Position position) {
+        super(dungeon, position);
         battleComponent.setHealth(150);    
     }
 

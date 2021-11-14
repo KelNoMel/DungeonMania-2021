@@ -27,7 +27,14 @@ public class EffectComponent extends Component {
         }
     }
 
-    public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+    public void loadJSONComponentSpecific(JSONObject entityData) {
+    	if (entityData.has("timer")) {
+    		timer = entityData.getInt("timer");
+    	}
+    }
+    
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("timer", timer);
+	}
 
 }

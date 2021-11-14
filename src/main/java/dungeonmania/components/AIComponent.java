@@ -77,8 +77,18 @@ public class AIComponent extends Component {
     public AIState getAISate() { return currentState; }
 
 	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("currentState")) {
+    		changeState(entityData.getString("currentState"));
+    	}
+		
+		if (entityData.has("cooldown")) {
+    		temporaryCooldown = entityData.getInt("cooldown");
+    	}
 		
 	}
 
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("currentState", currentState.getName());
+		entityJSON.put("cooldown", temporaryCooldown);
+	}
 }

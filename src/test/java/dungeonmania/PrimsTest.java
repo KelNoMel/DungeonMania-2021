@@ -21,7 +21,7 @@ public class PrimsTest {
     public void testPrimsAlgorithm() {
         DungeonManiaController mania = new DungeonManiaController();
         
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
         	Position randStart = randPos();
         	Position randEnd = randPos();
         	
@@ -50,17 +50,16 @@ public class PrimsTest {
 		for (int i = 0; i < 2601; i++) {
 			visited.add(false);
 		}
-		boolean found = false;
 		
 		visited.set(posToInt(start), true);
 		
 		Queue<Position> q = new LinkedList<>();
 		
 		q.add(start);
-		while (!found && q.size() > 0) {
+		while (q.size() > 0) {
 			Position pos = q.remove();
 			if (pos.getX() == end.getX() && pos.getY() == end.getY()) {
-				found = true;
+				return true;
 			} else {
 				for (Position p : pos.getCardinalPositions()) {
 					if (!walkable(entities, p)) continue;
@@ -70,7 +69,8 @@ public class PrimsTest {
 				}
 			}
 		}
-		return found;
+		
+		return false;
 	}
 	
 	private boolean walkable(List<EntityResponse> entities, Position p) {
@@ -94,10 +94,45 @@ public class PrimsTest {
 	}
 
 	private Position randPos() {
-		return new Position(randInt(2,98)/2, randInt(2,98)/2);
+		int randX = randInt(1,49);
+		int randY = randInt(1,49);
+		// Ensure is odd
+		if (randX % 2 == 0) randX--;
+		if (randY % 2 == 0) randY--;
+		
+		return new Position(randX, randY);
 	}
 
 	private int randInt(int min, int max) {
 		return ThreadLocalRandom.current().nextInt(min, max + 1);
 	}
+	/*
+	private void prettyPrintEntityResponseArray(List<EntityResponse> ents) {
+		List<EntityResponse> removeEnts = new ArrayList<>();
+		for (int i = 0; i < 51; i++) {
+			for (int j = 0; j < 51; j++) {
+				boolean blank = true;
+				for (EntityResponse e : ents) {
+					if (e.getPosition().getX() == i && e.getPosition().getY() == j) {
+						if (e.getType().equals("player")) {
+							
+							System.out.print(e.getType() + " ");
+						} else {							
+							System.out.print(e.getType() + "   ");
+						}
+						
+						removeEnts.add(e);
+						blank = false;
+						break;
+					}
+				}
+				
+				if (blank) System.out.print("------ ");
+				
+				ents.removeAll(removeEnts);
+				removeEnts.clear();
+			}
+			System.out.println();
+		}
+	}*/
 }
