@@ -26,4 +26,11 @@ public class MidnightArmourTest {
         response = mania.tick(null, Direction.NONE);
         assertNotEquals(null, ResponseHelp.getItemOfType(response, "midnight_armour"));
     }
+
+    @Test
+    public void testInvalid() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("midnight-armour","hard");
+        assertThrows(InvalidActionException.class, () -> mania.build("midnight_armour"));
+    }
 }
