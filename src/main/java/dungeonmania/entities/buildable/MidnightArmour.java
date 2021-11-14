@@ -35,9 +35,7 @@ public class MidnightArmour extends Buildable {
 		}
 	}
 
-	protected void updateEntity() {
-		battleComponent.setAttackDamage(15);
-	}
+	protected void updateEntity() {}
 
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
