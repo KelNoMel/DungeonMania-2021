@@ -126,4 +126,15 @@ public final class Position {
         adjacentPositions.add(new Position(x-1, y));
         return adjacentPositions;
     }
+    
+    public List<Position> getTwoAwayPositions() {
+        List<Position> twoAway = new ArrayList<>();
+        // B
+        twoAway.add(new Position(x,   y-2));
+        twoAway.add(new Position(x+2, y  ));
+        twoAway.add(new Position(x  , y+2));
+        twoAway.add(new Position(x-2, y  ));
+
+        return twoAway;
+    }
 }

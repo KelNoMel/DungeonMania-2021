@@ -20,6 +20,7 @@ import dungeonmania.components.WeaponComponent;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
 import dungeonmania.entities.collectables.rare.TheOneRing;
+import dungeonmania.entities.bosses.Hydra;
 import dungeonmania.entities.collectables.rare.Anduril;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
@@ -257,6 +258,7 @@ public class BattleResolver extends Entity {
 			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
 			|| e instanceof ZombieToast
+			|| e instanceof Hydra
 		) {
 			return true;
 		}

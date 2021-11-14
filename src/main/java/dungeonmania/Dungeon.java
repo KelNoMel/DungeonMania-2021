@@ -51,6 +51,14 @@ public class Dungeon {
         return UUID.randomUUID().toString();
     }
     
+    public Dungeon(String id, String name, Gamemode gamemode) {
+    	this.dungeonId = id;
+    	this.dungeonName = name;
+    	this.gamemode = gamemode;
+    	this.dungeonGoal = new DefaultGoal(this);
+    	Portal.clearPortalLinks();
+    }
+    
     public Dungeon(String dungeonName, String gamemode) throws JSONException {
         this.dungeonName = dungeonName;
     	this.gamemode = Gamemode.getGamemode(gamemode);
@@ -112,13 +120,14 @@ public class Dungeon {
     	EntityFactory.loadEntities(fileData.getJSONArray("entities"), this, entities);
     	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
+    	dungeonId = fileData.getString("dungeon-id");
     }
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                              JSON Extraction                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
-    private void loadOther() {
+	private void loadOther() {
     	// If no merc spawner, load in
     	if (entities.numEntitiesOfType(MercenarySpawner.class) == 0) {
     		Position p = getPlayer().getPosition();
@@ -187,6 +196,7 @@ public class Dungeon {
 		saveData.put("goal-condition", dungeonGoal.toJSON());
 		saveData.put("gamemode", gamemode.asString());
 		saveData.put("dungeon-name", dungeonName);
+		saveData.put("dungeon-id", dungeonId);
 		
 		try {
 			// Write the file
@@ -404,6 +414,170 @@ public class Dungeon {
 		
 		return new Bounds(new Position(minX, minY), new Position(maxX, maxY));
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	///                            Dungeon Generation                            ///
+	////////////////////////////////////////////////////////////////////////////////
+
+	public static Dungeon generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String inputMode) {
+		Dungeon generatedDungeon = new Dungeon(Dungeon.createId(), "name", Gamemode.getGamemode(inputMode));
+
+		// Loads array as per provided prims algorithm
+		Position start = new Position(xStart, yStart);
+		Position end = new Position(xEnd, yEnd);
+		int width = 50;
+		int height = 50;
+		ArrayList<ArrayList<Boolean>> maze = randomisedPrims(width, height, start, end);
+		
+		// TODO Iterator pattern?
+		// Add walls to map
+		for (int x = 0; x <= width; x++) {
+			for (int y = 0; y <= height; y++) {
+				// If is a wall
+				Position newEntityPos = new Position(x,y);
+				if (!getCoord(maze, newEntityPos)) {
+					// Add wall to map
+					new Wall(generatedDungeon, newEntityPos, new JSONObject());
+				}
+			}
+		}
+		
+		// Add player to start
+		new Player(generatedDungeon, start, new JSONObject());
+
+		// Add goal to end
+		new Exit(generatedDungeon, end, new JSONObject());
+		
+		// Generate spawners
+		generatedDungeon.loadOther();
+		
+		// Make dungeon goal end
+		generatedDungeon.dungeonGoal = new ExitGoal(generatedDungeon);
+		
+		return generatedDungeon;
+	}
+	
+	private static ArrayList<ArrayList<Boolean>> randomisedPrims(int width, int height, Position start, Position end) {
+		// let maze be a 2D array of booleans (of size width and height) default false
+		// You should presume all game maps are 50 by 50.
+		int numSquares = 0;
+		ArrayList<ArrayList<Boolean>> maze = new ArrayList<>();
+		for (int i = 0; i <= width; i++) {
+			maze.add(new ArrayList<>());
+			for (int j = 0; j <= height; j++) {
+				maze.get(i).add(false);
+				numSquares++;
+				System.out.println(numSquares + " squares generated");
+			}
+		}
+		
+		// maze[start] = empty
+		setCoord(maze, start, true);
+		System.out.println("Setting " + start + " to empty");
+
+		// let options be a list of positions
+		List<Position> options;
+		// add to options all NEIGHBOURS of 'start' not on boundary that are of distance 2 away and are walls
+		options = neighboursNotBoundaryTwoAway(maze, start, false, width, height);
+		
+		// while options is not empty:
+		while (options.size() > 0) {
+			// let next = remove random from options
+			Position next = options.remove(random(options.size()));
+
+			// let neighbours = each neighbour of distance 2 from next not on boundary that are empty
+			List<Position> neighbours = neighboursNotBoundaryTwoAway(maze, next, true, width, height);
+			
+			// if neighbours is not empty:
+			if (neighbours.size() > 0) {
+				// let neighbour = random from neighbours
+				Position neighbour = neighbours.remove(random(neighbours.size()));
+				System.out.println("  next-neighbour = " + neighbour);
+				
+				// maze[ next ] = empty (i.e. true)
+				setCoord(maze, next, true);
+				// maze[ position inbetween next and neighbour ] = empty (i.e. true)
+				setCoord(maze, positionInbetween(next, neighbour), true);
+				// maze[ neighbour ] = empty (i.e. true)
+				setCoord(maze, neighbour, true);
+			}
+			
+			// add to options all neighbours of 'next' not on boundary that are of distance 2 away and are walls
+			options.addAll(neighboursNotBoundaryTwoAway(maze, next, false, width, height));
+		}
+		
+		// if maze[end] is a wall:
+		if (getCoord(maze, end) == false) {
+			// maze[end] = empty
+			setCoord(maze, end, true);
+			
+			// let neighbours = neighbours not on boundary of distance 1 from maze[end]
+			List<Position> neighbours = new ArrayList<>();
+			for (Position p : end.getAdjacentPositions()) {
+				// Is on boundary?
+				if (onBoundary(p, width, height)) continue;
+				neighbours.add(p);
+			}
+			// if there are no cells in neighbours that are empty:
+			boolean noneEmpty = true;
+			for (Position p : neighbours) {
+				if (getCoord(maze, p)) noneEmpty = false;
+			}
+			
+			if (noneEmpty) {
+				// let's connect it to the grid
+				// let neighbour = random from neighbours
+				Position neighbour = neighbours.remove(random(neighbours.size()));
+				// maze[neighbour] = empty
+				setCoord(maze, neighbour, true);
+			}
+		}
+		
+		return maze;
+	}
+	
+	private static List<Position> neighboursNotBoundaryTwoAway(ArrayList<ArrayList<Boolean>> maze, Position src, boolean getEmpty, int width, int height) {
+		List<Position> neighbours = new ArrayList<>();
+		// Get all two away
+		for (Position p : src.getTwoAwayPositions()) {
+			// Not on boundary
+			if (onBoundary(p, width, height)) continue;
+			
+			// Is wall
+			if (getCoord(maze, p) == getEmpty) neighbours.add(p); 
+		}
+		return neighbours;
+	}
+	
+	private static Position positionInbetween(Position p1, Position p2) {
+		 return new Position((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
+	}
+	
+	// random in [0,max)
+	private static int random(int max) {
+		return (int) Math.floor(Math.random() * max);
+	}
+	
+	public static boolean onBoundary(Position p, int width, int height) {
+		int x = p.getX();
+		if (x <= 0 || x >= width) {
+			return true;
+		}
+		int y = p.getY();
+		if (y <= 0 || y >= height) {
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean getCoord(ArrayList<ArrayList<Boolean>> maze, Position p) {
+		return maze.get(p.getX()).get(p.getY());
+	}
+	
+	private static void setCoord(ArrayList<ArrayList<Boolean>> maze, Position p, boolean setValue) {
+		maze.get(p.getX()).set(p.getY(), setValue);
+	}
+	
 }
 
 
