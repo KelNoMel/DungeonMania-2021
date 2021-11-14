@@ -27,6 +27,13 @@ public class Armour extends Entity {
 		armourComponent = new ArmourComponent(this, 3, armour);
 	}
 
+	public Armour(Dungeon dungeon, Position position, CollectableState collectableState, int dur) {
+		super(dungeon, "armour", position, false, EntityUpdateOrder.OTHER);
+		collectableComponent = new CollectableComponent(this, 1, collectableState);
+		battleItemComponent = new BattleItemComponent(this, 2, dur);
+		armourComponent = new ArmourComponent(this, 3, armour);
+	}
+
 	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {}

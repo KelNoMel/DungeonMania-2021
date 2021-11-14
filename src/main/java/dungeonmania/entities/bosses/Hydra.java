@@ -19,10 +19,12 @@ import java.util.List;
 import org.json.JSONObject;
 
 public class Hydra extends Entity {
-
+	final int maxHealth = 150;
+	final int damage = 20;
+    
     public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 150, 20);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, maxHealth, damage);
     
     public Hydra(Dungeon dungeon, Position position) {
 		super(dungeon, "hydra", position, true, EntityUpdateOrder.OTHER);

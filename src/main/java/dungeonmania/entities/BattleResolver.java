@@ -20,6 +20,7 @@ import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
 import dungeonmania.entities.collectables.rare.TheOneRing;
 import dungeonmania.entities.bosses.Hydra;
+import dungeonmania.entities.collectables.Armour;
 import dungeonmania.entities.collectables.rare.Anduril;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
@@ -85,7 +86,7 @@ public class BattleResolver extends Entity {
 				}
 				for (Entity enemy : battleEnemies) {
 					enemy.setState(EntityState.DEAD);
-					rewardRares();
+					rewardItems(enemy);
 				}
 				return;
 		}
@@ -117,7 +118,7 @@ public class BattleResolver extends Entity {
 				// if either fighter died in a previous encounter skip this battle
 				if (!enemyBattleState.isAlive()) {
 					// Defeated enemies may drop items before ending the battle
-					rewardRares();
+					rewardItems(enemy);
 					break;
 				}
 				if (!playerBattleState.isAlive()) break;
@@ -235,12 +236,19 @@ public class BattleResolver extends Entity {
 		}
 	}
 
-	private void rewardRares() {
+	private void rewardItems(Entity enemy) {
 		Random random = new Random();
 		Dungeon d = getDungeon();
 		Player player = d.getPlayer();
-		// Chances of getting a rare item 1/5, subject to change
-		if (random.nextInt(100) % 5 == 0) {
+		
+		// Mercenaries have a 1/5 chance to drop armour, random durability with a max of 10
+		if (random.nextInt(100) % 5 == 0 && enemy.getType().equals("mercenary")) {
+			Armour armour = new Armour(getDungeon(), player.getPosition(), CollectableState.INVENTORY, (random.nextInt(9)+1));
+				d.transferToInventory(armour);
+		}
+		
+		// Chances of getting a rare item 1/10, subject to change
+		if (random.nextInt(100) % 10 == 0) {
 			// The two rare items have an equal chance to be spawned
 			// A bit brittle, but OK since only two rares
 			if (random.nextInt(100) % 2 == 0) {
@@ -249,7 +257,6 @@ public class BattleResolver extends Entity {
 				d.transferToInventory(ring);
 			} else {
 				Anduril anduril = new Anduril(getDungeon(), player.getPosition());
-
 				anduril.setCollectableState(CollectableState.INVENTORY);
 				d.transferToInventory(anduril);
 			}
