@@ -276,6 +276,19 @@ public class ResponseHelp {
 
         return true;
     }
+
+    public static boolean inventoryContains(String wantedItem, DungeonResponse res1) {
+        ArrayList<ItemResponse> inventory = new ArrayList<>(res1.getInventory());
+        for (ItemResponse item : inventory) {
+            if (item.getType().equals(wantedItem)) return true;
+        }
+        return false;
+    }
+
+    public static int inventorySize(DungeonResponse res1) {
+        ArrayList<ItemResponse> inventory = new ArrayList<>(res1.getInventory());
+        return inventory.size();
+    }
     
     public static boolean entityInDungeon(EntityResponse res1, DungeonResponse res2) {
     	for (EntityResponse eres : res2.getEntities()) {
