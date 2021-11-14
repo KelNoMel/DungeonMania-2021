@@ -42,6 +42,11 @@ public class BattleComponent extends Component {
 		health -= damage;
 	}
 
+	// Heals hp
+	public void heal(int negDamage) {
+		health += negDamage;
+	}
+
 	public boolean isAlive() {
 		if (getEntity().getState() == EntityState.ACTIVE) {
 			return true;

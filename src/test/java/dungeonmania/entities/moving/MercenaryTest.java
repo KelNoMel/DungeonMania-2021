@@ -32,7 +32,10 @@ public class MercenaryTest {
         // Spawn!
         d = mania.tick(null, Direction.DOWN);
 
-        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 0), true), d));
+        assertTrue(
+    		ResponseHelp.entityInDungeon(new EntityResponse("", "mercenary", new Position(0, 0), true), d) ||
+    		ResponseHelp.entityInDungeon(new EntityResponse("", "assassin", new Position(0, 0), true), d)
+		);
     }
 
     @Test

@@ -163,9 +163,16 @@ public class BattleResolver extends Entity {
 				} else {
 					// player uses weapon on enemy
 					playersDamage = playerBattleState.getScaledAttackDamage(singleAttacks.get(0).getDamage()) / 5;
-					if (attackFighter(enemyBattleState, playersDamage)) {
-						// weapon durabability--;
-						singleAttacks.get(0).useItem();
+					if (isAnduril(singleAttacks.get(0).getEntity())) {
+						if (attackWithAnduril(enemyBattleState, playersDamage, true)) {
+							// weapon durabability--;
+							singleAttacks.get(0).useItem();
+						}
+					} else {
+						if (attackFighter(enemyBattleState, playersDamage)) {
+							// weapon durabability--;
+							singleAttacks.get(0).useItem();
+						}
 					}
 				}
 
@@ -254,7 +261,7 @@ public class BattleResolver extends Entity {
 
 	public static boolean isEnemy(Entity e) {
 		if (
-			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
+			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAIState().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
 			|| e instanceof ZombieToast
 			|| e instanceof Hydra
@@ -266,11 +273,19 @@ public class BattleResolver extends Entity {
 
 	public static boolean isAlly(Entity e) {
 		if (
-			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
+			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAIState().getName().equals("MercAlly")) 
 		) {
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean isHydra(Entity e) {
+		return e.getType().equals("hydra");
+	}
+
+	public static boolean isAnduril(Entity e) {
+		return e.getType().equals("anduril");
 	}
 
 	private List<Entity> getEnemiesToBattle(Entity entity) {
@@ -280,11 +295,16 @@ public class BattleResolver extends Entity {
 	}
 
 	private boolean attackFighter(BattleComponent fighterBattleState, int damage) {
+		return attackWithAnduril(fighterBattleState, damage, false);
+	}
+
+	private boolean attackWithAnduril(BattleComponent fighterBattleState, int damage, boolean isAnduril) {
 		// if this fighter died in a previous encounter skip this attack
 		if (!fighterBattleState.isAlive()) return false;
 		// pre-battle health
 		String fighterPreAttackHealth = fighterBattleState.getHealthAsString();
 		Entity fighter = fighterBattleState.getEntity();
+		
 		// pre-battle
 		if (isPlayer(fighter)) {
 			System.out.println("Player health was: " + fighterPreAttackHealth);
@@ -293,8 +313,18 @@ public class BattleResolver extends Entity {
 		} else if (isAlly(fighter)) {
 			System.out.println("Ally health was: " + fighterPreAttackHealth);
 		}
+		
 		// fighter gets attacked
-		fighterBattleState.dealDamage(damage);
+		Random roll = new Random();
+		if (isHydra(fighter) && !isAnduril) {
+			if (roll.nextInt(100) % 2 == 0) {
+				fighterBattleState.dealDamage(damage);
+			} else {
+				fighterBattleState.heal(damage);
+			}
+		} else {
+			fighterBattleState.dealDamage(damage);
+		}
 		
 		// If fighter is zero health, kill entity
 		if (fighterBattleState.getHealth() <= 0) {

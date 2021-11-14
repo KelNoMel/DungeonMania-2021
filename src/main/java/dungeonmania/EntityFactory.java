@@ -32,8 +32,9 @@ public class EntityFactory {
     	for (int i = 0; i < numEntities; i++) {
     		JSONObject loadJSON = entityArray.getJSONObject(i);
     		Entity constructedEntity = constructEntity(loadJSON, loadingDungeon);
-    		
-    		constructedEntity.loadJSON(loadJSON);
+    		if (constructedEntity != null) {
+    			constructedEntity.loadJSON(loadJSON);    			
+    		}
     		
     		if (inventory) loadingDungeon.transferToInventory(constructedEntity);
     	}
@@ -137,6 +138,9 @@ public class EntityFactory {
 			case "spider_spawner":
 				// TODO load spawner info from save
 				return new SpiderSpawner(loadingDungeon, pos);
+			case "hydra_spawner":
+				// TODO load spawner info from save
+				return new HydraSpawner(loadingDungeon, pos);
 			case "zombie_toast_spawner":
 				// TODO load spawner info from save
 				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer));

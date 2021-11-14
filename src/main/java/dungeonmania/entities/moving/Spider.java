@@ -8,6 +8,7 @@ import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
+import dungeonmania.components.aistates.AIRunAway;
 import dungeonmania.components.aistates.AISpiderHostile;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
@@ -24,11 +25,22 @@ public class Spider extends Entity {
 	public Spider(Dungeon dungeon, Position position) {
 		super(dungeon, "spider", position, false, EntityUpdateOrder.OTHER);
 		aiComponent.registerState(new AISpiderHostile(aiComponent, this));
+		aiComponent.registerState(new AIRunAway(aiComponent, this, moveComponent));
 		aiComponent.changeState("SpiderHostile");
 	}
 
 	protected void inputEntity(InputState inputState) {}
-	protected void updateEntity() {}
+	protected void updateEntity() {
+		String playerState = getDungeon().getPlayer().getStatus();
+		switch (playerState) {
+			case "invincible":
+				aiComponent.changeState("enemyRunAway");
+				break;
+			default:
+			aiComponent.changeState("SpiderHostile");
+			break;
+		}
+	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
