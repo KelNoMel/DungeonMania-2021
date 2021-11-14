@@ -65,13 +65,13 @@ public class MoveComponent extends Component {
 		
 		// Only move if permission given
 		if (permission) {
-			return moveLocation;
+			return moveGhost(entityToMove);
 		}
 		return entityToMove.getPosition();
 	}
 
 	// Checks whether or not current set move is allowed
-	private Boolean canIMove(Entity entityToMove) {
+	public Boolean canIMove(Entity entityToMove) {
 		Position moveLocation = moveGhost(entityToMove);
 
 		// Spider can pretty much move anywhere, (boulder checking is in its' ai)

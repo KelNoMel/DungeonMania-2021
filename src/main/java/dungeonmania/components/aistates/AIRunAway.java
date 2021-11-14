@@ -1,21 +1,26 @@
 package dungeonmania.components.aistates;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
-import dungeonmania.entities.moving.enemyenary;
+import dungeonmania.components.MoveComponent;
+import dungeonmania.entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class AIRunAway extends AIState {
 
 	private Entity enemy;
+    private MoveComponent eMoveComponent;
 	
-	public AIRunAway(AIComponent owner, Entity enemy) {
+	public AIRunAway(AIComponent owner, Entity enemy, MoveComponent eMoveComponent) {
 		super(owner);
 		this.enemy = enemy;
+        this.eMoveComponent = eMoveComponent;
 	}
 	
 	public void processInput(InputState inputState) {
@@ -27,11 +32,11 @@ public class AIRunAway extends AIState {
         // Note: Doesn't factor in swamps/make use of Djikstra's algo. KISS
         Random rand = new Random();
         while (options.size() > 0) {
-            int randomPickIndex = rand.nextInt(options.size())
-            Direction option = list.get(randomPickIndex);
-            enemy.moveComponent.setMoveDirection(option);
+            int randomPickIndex = rand.nextInt(options.size());
+            Direction option = options.get(randomPickIndex);
+            eMoveComponent.setMoveDirection(option);
             // Check if this option is valid, choose it if so
-            if (enemy.moveComponent.canIMove(enemy)) {
+            if (eMoveComponent.canIMove(enemy)) {
                 break;
             }
         }
@@ -39,7 +44,7 @@ public class AIRunAway extends AIState {
 
     // Gets player location and returns directions that don't bring the enemy closer
     public List<Direction> weighOptions(Position player, Position enemy) {
-        List<Direction> options = new List<Direction>();
+        List<Direction> options = new ArrayList<Direction>();
         // Go left or right
         if (player.getX() > enemy.getX()) {
             options.add(Direction.LEFT);
