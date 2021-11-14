@@ -28,12 +28,32 @@ public class Dijkstras {
         this.dungeon = dungeon;
     }
 
+    /*
+    function Dijkstras(grid, source):
+    let dist be a Map<Position, Double>
+    let prev be a Map<Position, Position>
+
+    for each Position p in grid:
+        dist[p] := infinity
+        previous[p] := null
+    dist[source] := 0
+
+    let queue be a Queue<Position> of every position in grid
+    while queue is not empty:
+        u := next node in queue with the smallest dist
+        for each cardinal neighbour v of u:
+            if dist[u] + cost(u, v) < dist[v]:
+                dist[v] := dist[u] + cost(u, v)
+                previous[v] := u
+    return previous
+    */
+
     public Map<Position, Position> dijkstras(Position source) {
 
         List<Position> grid = new ArrayList<>();
 
         XCOORD: for (int i = source.getX() - radius; i <= source.getX() + radius; i++ ) {
-            YCOORD: for (int j = source.getY()-radius; j <= source.getY() + radius; j++ ) {
+            YCOORD: for (int j = source.getY() - radius; j <= source.getY() + radius; j++ ) {
                 Position p = new Position (i, j);
                 List<Entity> entList = dungeon.getEntitiesAtPosition(p);
                 for (Entity e: entList) {
@@ -43,18 +63,15 @@ public class Dijkstras {
             }
         }
        
-
-        dist.put(source, Double.valueOf(0));
         Queue<Position> q = new PriorityQueue<>();    
         for (Position p : grid) {
             dist.put(p, Double.valueOf(Double.POSITIVE_INFINITY));
             prev.put(p, null);
             q.add(p);
         }
+        dist.replace(source, Double.valueOf(Double.POSITIVE_INFINITY), Double.valueOf(0));
 
         while (!q.isEmpty()) {
-            // Position u = getSmallestDist(q, source);
-            // q.remove(u);
             Position u = q.remove();
             if (u == null) continue;
 
