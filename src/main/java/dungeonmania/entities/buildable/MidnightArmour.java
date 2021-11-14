@@ -7,8 +7,6 @@ import dungeonmania.InputState;
 import dungeonmania.util.Position;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.WeaponComponent;
-import dungeonmania.entities.Entity;
-import dungeonmania.entities.moving.ZombieToast;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
 import dungeonmania.components.BattleItemComponent;
@@ -30,12 +28,7 @@ public class MidnightArmour extends Buildable {
 		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}
 
-	protected void inputEntity(InputState inputState) {
-		Dungeon d = getDungeon();
-		for (Entity e : d.getEntities()) {
-			if (e instanceof ZombieToast) { return; }
-		}
-	}
+	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {}
 

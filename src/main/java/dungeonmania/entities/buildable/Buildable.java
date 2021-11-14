@@ -24,7 +24,7 @@ public abstract class Buildable extends Entity {
        
 		super(dungeon, type, position, isInteractable, EntityUpdateOrder.OTHER);
         this.player = dungeon.getPlayer();
-		List<Ingredient> ingredients = recipe.checkRequirements(player);
+		List<Ingredient> ingredients = recipe.checkRequirements(player, getType());
 		if (ingredients == null) {
 			throw new InvalidActionException("player does not have sufficient items to craft the buildable");
 		}
@@ -33,7 +33,7 @@ public abstract class Buildable extends Entity {
 
 	public static List<String> response(Player player) {
 		return new ArrayList<>(BuildableEnum.stream()
-            .filter(e -> e.getRecipe().checkRequirements(player) != null)
+            .filter(e -> e.getRecipe().checkRequirements(player, e.getType()) != null)
             .map(e->e.getType())
             .collect(Collectors.toList()));
 	}

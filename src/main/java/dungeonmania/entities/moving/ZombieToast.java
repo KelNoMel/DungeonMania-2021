@@ -40,8 +40,10 @@ public class ZombieToast extends Entity {
 				aiComponent.changeState("enemyRunAway");
 				break;
 			default:
-			aiComponent.changeState("ZombieHostile");
-			break;
+				if (!aiComponent.getAIState().getName().equals("RandomHostile")) {
+					aiComponent.changeState("RandomHostile");					
+				}
+				break;
 		}
 	}
 	

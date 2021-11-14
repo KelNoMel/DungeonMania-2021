@@ -147,7 +147,9 @@ public class Player extends Entity {
 	}
 
 	public void build(String buildable) {
-		inventory.add(BuildableFactory.build(buildable, getDungeon()));
+		
+		Entity builtEntity = BuildableFactory.build(buildable, getDungeon());
+		getDungeon().transferToInventory(builtEntity);
 	}
 
 	public void addToInventory(Entity item) {

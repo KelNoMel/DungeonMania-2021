@@ -38,7 +38,7 @@ public class AIRandomHostile extends AIState {
     }
 
     public void onExit() {
-        
+        System.out.println("out??");
     }
 
     public String getName() {
