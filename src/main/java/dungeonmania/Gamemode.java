@@ -24,7 +24,7 @@ public enum Gamemode {
     	case "hard":
     		return HARD;
     	default:
-    		throw new IllegalArgumentException();
+    		throw new IllegalArgumentException("Invalid gamemode string ;(");
     	}
     }
 }

@@ -27,6 +27,12 @@ public class DungeonManiaController {
 	///                              Game Management                             ///
 	////////////////////////////////////////////////////////////////////////////////
     
+    public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String gameMode) throws IllegalArgumentException {
+    	game = Dungeon.generateDungeon(xStart, yStart, xEnd, yEnd, gameMode);
+    	return game.response();
+    }
+
+    
     /**
      * Creates a new game, where dungeonName is the name of the dungeon map (corresponding to
      * a JSON file stored in the model) and gameMode is one of "standard", "peaceful" or "hard".
