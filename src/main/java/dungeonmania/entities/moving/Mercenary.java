@@ -44,7 +44,7 @@ public class Mercenary extends Entity {
 	protected void updateEntity() {
 		String playerState = getDungeon().getPlayer().getStatus();
 		// Don't change AI state if ally
-		if (aiComponent.getAISate().getName().equals("MercAlly")) {
+		if (aiComponent.getAIState().getName().equals("MercAlly")) {
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class Mercenary extends Entity {
 	}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
-		baseJSON.put("aiState", aiComponent.getAISate().getName());
+		baseJSON.put("aiState", aiComponent.getAIState().getName());
 	}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
 		startState = null;

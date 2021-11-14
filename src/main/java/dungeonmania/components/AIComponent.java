@@ -74,7 +74,7 @@ public class AIComponent extends Component {
         stateMap.put(state.getName(), state);
     }
 
-    public AIState getAISate() { return currentState; }
+    public AIState getAIState() { return currentState; }
 
 	public void loadJSONComponentSpecific(JSONObject entityData) {
 		if (entityData.has("currentState")) {

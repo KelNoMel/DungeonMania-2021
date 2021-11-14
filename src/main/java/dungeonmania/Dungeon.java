@@ -138,6 +138,11 @@ public class Dungeon {
     	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
+    	
+    	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "hydra_spawner"), this);
+    	}
+    	
     	// Should be singleton??
     	if (entities.numEntitiesOfType(BattleResolver.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);
@@ -503,7 +508,9 @@ public class Dungeon {
 		}
 		
 		// if maze[end] is a wall:
-		if (getCoord(maze, end) == false) {
+		// TODO edge case that is never fulfilled?
+		
+		/*if (getCoord(maze, end) == false) {
 			// maze[end] = empty
 			setCoord(maze, end, true);
 			
@@ -527,7 +534,7 @@ public class Dungeon {
 				// maze[neighbour] = empty
 				setCoord(maze, neighbour, true);
 			}
-		}
+		}*/
 		
 		return maze;
 	}

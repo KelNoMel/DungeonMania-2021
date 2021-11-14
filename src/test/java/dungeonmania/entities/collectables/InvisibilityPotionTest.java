@@ -33,15 +33,26 @@ public class InvisibilityPotionTest {
 	@Test
 	public void testInvisiblePotionConsumption() {
 		DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("invisibility-potion-pickup","standard");
-        DungeonResponse d = mania.tick(null, Direction.RIGHT);
+		DungeonResponse d = mania.newGame("invisibility-potion-pickup","standard");
+        
+		String potId = getPotId(d);
 		
+		mania.tick(null, Direction.RIGHT);
         mania.tick(null, Direction.RIGHT);
-		mania.tick("invisibility_potion", Direction.RIGHT);
+		mania.tick(potId, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
 		mania.tick(null, Direction.RIGHT);
         d = mania.tick(null, Direction.RIGHT);
 		assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(7, 0), false), d));
+	}
+	
+	private String getPotId(DungeonResponse d) {
+        for (EntityResponse r : d.getEntities()) {
+        	if (r.getType().equals("invisibility_potion")) {
+        		return r.getId();
+        	}
+        }
+        return null;
 	}
 }

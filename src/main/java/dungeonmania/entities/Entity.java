@@ -139,6 +139,7 @@ public abstract class Entity {
     public Dungeon getDungeon() { return dungeon; }
     public String getId() { return id; }
     public String getType() { return type; }
+    public void setType(String newType) { type = newType; }
     public void toggleDisplay(boolean display) { this.shouldDisplay = display; }
     public List<Component> getComponents() { return components; }
     

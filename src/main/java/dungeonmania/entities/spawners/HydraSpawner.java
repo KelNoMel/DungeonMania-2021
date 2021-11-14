@@ -7,12 +7,10 @@ import dungeonmania.util.Position;
 
 public class HydraSpawner extends Spawner {
 
-    public HydraSpawner(Dungeon dungeon, String type, Position position, int tickSpawnRate) {
-        super(dungeon, type, position, tickSpawnRate);
-        if (dungeon.getGamemode() == Gamemode.HARD) changeSpawnRate(50);
+    public HydraSpawner(Dungeon dungeon, Position position) {
+        super(dungeon, "hydra_spawner", position, 50);
     }
 
-    @Override
     public boolean spawnEntity() {
         if (getDungeon().getGamemode() == Gamemode.HARD) {
             new Hydra(getDungeon(), getPosition());
