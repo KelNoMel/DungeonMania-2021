@@ -47,6 +47,8 @@ public class AIMercHostile extends AIState {
 		Position nextPos;
 
 		if (Position.distanceBetween(p.getPosition(), merc.getPosition()) <= 5) {
+			System.out.println(p.getPosition());
+			System.out.println(merc.getPosition());
 			Dijkstras shortestPath = new Dijkstras(merc.getDungeon(), merc);
 			nextPos = shortestPath.getNextPosition(merc.getPosition(), p.getPosition());
 			mercToNext = Position.calculatePositionBetween(nextPos, merc.getPosition());

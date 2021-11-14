@@ -132,4 +132,9 @@ public final class Position implements Comparable<Position> {
         // TODO: for dijkstras, this should probs be movement factor (ticks needed to stay on this tile) but should be fine regardless?
         return 0;
     }
+
+    public static boolean sameLocation (Position a, Position b) {
+        return withinRange(a, b, 0.0);
+    }
+
 }

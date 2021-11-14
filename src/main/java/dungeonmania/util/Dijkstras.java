@@ -69,7 +69,7 @@ public class Dijkstras {
             prev.put(p, null);
             q.add(p);
         }
-        dist.replace(source, Double.valueOf(Double.POSITIVE_INFINITY), Double.valueOf(0));
+        dist.replace(new Position(source.getX(), source.getY()), Double.valueOf(0));
 
         while (!q.isEmpty()) {
             Position u = q.remove();
@@ -85,7 +85,7 @@ public class Dijkstras {
 
                 if (dist.get(u) + cost(u) < dist.get(v)) {
                     dist.put(v , dist.get(u) + cost(u)); 
-                    prev.put(v, u);
+                    prev.replace(v, u);
                 }
             }
 
@@ -102,16 +102,16 @@ public class Dijkstras {
 
     public Position getNextPosition (Position source, Position dest) {
         dijkstras(source);
-        System.out.println(prev);
 
-        return getNextHelper(source, dest);
+        return getNextHelper(source, new Position(dest.getX(), dest.getY()));
     }
 
     private Position getNextHelper(Position source, Position dest) {
         if (prev.get(dest) == null) {
             return null;
         }
-        if (source.equals(prev.get(dest))) return dest;
+        if (Position.sameLocation(source, prev.get(dest))) return dest;
+        //if (source.equals(prev.get(dest))) return dest;
         return getNextHelper(source, prev.get(dest));
     }
 
