@@ -60,6 +60,18 @@ public class MoveComponent extends Component {
 	
 	// Entity moves considering boulders, walls and other blockables
 	private Position moveNormal(Entity entityToMove) {
+		// Check if normal move is valid, with current direction
+		Boolean permission = canIMove(entityToMove);
+		
+		// Only move if permission given
+		if (permission) {
+			return moveLocation;
+		}
+		return entityToMove.getPosition();
+	}
+
+	// Checks whether or not current set move is allowed
+	private Boolean canIMove(Entity entityToMove) {
 		Position moveLocation = moveGhost(entityToMove);
 		
 		List<Entity> moveEntities = entityToMove.getDungeon().getEntitiesAtPosition(moveLocation);
@@ -88,9 +100,9 @@ public class MoveComponent extends Component {
 		
 		// Only move if move space is not covered by a wall or an unmovable boulder
 		if (!(isWall) && boulderMoved && doorUnlocked) {
-			return moveLocation;
+			return true;
 		}
-		return entityToMove.getPosition();
+		return false;
 	}
 
 	public void setMoveDirection(Direction moveDirection) {
