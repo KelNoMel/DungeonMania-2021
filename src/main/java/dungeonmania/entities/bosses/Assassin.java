@@ -22,11 +22,5 @@ public class Assassin extends Mercenary {
     }
 
 	protected void inputEntity(InputState inputState) {
-        // List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
-        // for (Entity e : entities) {
-        //     if (e instanceof Player) {
-        //         battleComponent.setAttackDamage(attackDamage);
-        //     }
-        // }
     }
 }
