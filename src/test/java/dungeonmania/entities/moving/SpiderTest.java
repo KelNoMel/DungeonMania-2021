@@ -78,7 +78,82 @@ public class SpiderTest {
         
         res = mania.tick(null, Direction.RIGHT);
         assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+	}
+	
+	@Test
+	public void testSpiderMovementBoulderReverse() {
+		DungeonManiaController mania = new DungeonManiaController();
 
+		DungeonResponse res = mania.newGame("spider2","peaceful");
+        assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "spider", new Position(0, 2), false), res));
+        
+        // Cycle forward
+        res = mania.tick(null, Direction.UP);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+				
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 1)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 2)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 3)));
 
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 3)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 3)));
+
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 2)));
+
+        // Hit boulder
+        // Reverse
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 2)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 3)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 3)));
+
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 3)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 2)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 1)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+
+        // Hit boulder
+        // unreverse
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 1)));
+	
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 1)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 2)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(1, 3)));
+
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(0, 3)));
+        
+        res = mania.tick(null, Direction.RIGHT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 3)));
+        
+        res = mania.tick(null, Direction.LEFT);
+        assertTrue(ResponseHelp.getEntityOfType(res, "spider").getPosition().equals(new Position(-1, 2)));
 	}
 }

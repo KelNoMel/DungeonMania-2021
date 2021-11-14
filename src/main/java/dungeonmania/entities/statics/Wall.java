@@ -10,8 +10,8 @@ import dungeonmania.util.Position;
 
 public class Wall extends Entity {
 
-	public Wall(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "wall", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Wall(Dungeon dungeon, Position position) {
+		super(dungeon, "wall", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void updateEntity() {}

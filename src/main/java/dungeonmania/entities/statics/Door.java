@@ -21,8 +21,8 @@ public class Door extends Entity {
 
 	private int linkedKeyNumber;
 	
-	public Door(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "door", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Door(Dungeon dungeon, Position position) {
+		super(dungeon, "door", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

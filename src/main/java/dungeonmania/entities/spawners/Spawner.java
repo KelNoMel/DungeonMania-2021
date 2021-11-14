@@ -3,7 +3,6 @@ package dungeonmania.entities.spawners;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.GameMode;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
@@ -14,8 +13,8 @@ public abstract class Spawner extends Entity {
 	private int tickSpawnRate;
 	private int ticksUntilNextSpawn;
 	
-	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, type, position, false, EntityUpdateOrder.SPAWNER, entitySpecificData);
+	public Spawner(Dungeon dungeon, String type, Position position, int tickSpawnRate) {
+		super(dungeon, type, position, true, EntityUpdateOrder.SPAWNER);
 		toggleDisplay(false);
 		this.tickSpawnRate = tickSpawnRate;
 		ticksUntilNextSpawn = tickSpawnRate;
@@ -23,16 +22,34 @@ public abstract class Spawner extends Entity {
 
 	public void inputEntity(InputState inputState) {}
 	
-	public abstract void spawnEntity();
+	public void changeSpawnRate(int newSpawnRate) {
+		tickSpawnRate = newSpawnRate;
+		ticksUntilNextSpawn = newSpawnRate;
+	}
+	
+	public abstract boolean spawnEntity();
 	public void updateEntity() {
 		ticksUntilNextSpawn--;
 		if (ticksUntilNextSpawn <= 0) {
-			spawnEntity();
-			ticksUntilNextSpawn = tickSpawnRate;
+			if (spawnEntity()) ticksUntilNextSpawn = tickSpawnRate;
 		}
 	}
 	
 	public int getSpawnRate() { return tickSpawnRate; }
 	public void setSpawnRate(int tickSpawnRate) { this.tickSpawnRate = tickSpawnRate; }
-
+	
+	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		baseJSON.put("spawnRate", tickSpawnRate);
+		baseJSON.put("nextSpawn", ticksUntilNextSpawn);
+	}
+	
+	protected void loadJSONEntitySpecific(JSONObject entityData) {
+		if (entityData.has("spawnRate")) {
+			tickSpawnRate = entityData.getInt("spawnRate");
+		}
+		if (entityData.has("nextSpawn")) {
+			ticksUntilNextSpawn = entityData.getInt("nextSpawn");
+		}
+	}
+	
 }

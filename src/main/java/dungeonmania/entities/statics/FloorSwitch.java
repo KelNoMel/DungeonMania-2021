@@ -4,9 +4,9 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.entities.redstone.RedstoneComponent;
 import dungeonmania.util.Position;
 
 public class FloorSwitch extends Entity {
@@ -14,8 +14,8 @@ public class FloorSwitch extends Entity {
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 1);
 	private boolean isTriggered;
 	
-	public FloorSwitch(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "switch", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public FloorSwitch(Dungeon dungeon, Position position) {
+		super(dungeon, "switch", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {}

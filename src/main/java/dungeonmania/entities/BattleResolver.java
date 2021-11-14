@@ -12,15 +12,14 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
-import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
-import dungeonmania.components.Component;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.WeaponComponent;
 import dungeonmania.components.ArmourComponent;
 import dungeonmania.components.AttackTypeEnum;
 import dungeonmania.entities.collectables.rare.TheOneRing;
+import dungeonmania.entities.bosses.Hydra;
 import dungeonmania.entities.collectables.rare.Anduril;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.entities.moving.Spider;
@@ -32,8 +31,8 @@ public class BattleResolver extends Entity {
 	private final Double allySupportRange = 2.0;
 	private final Double mercFrenzyRange = 2.0;
 
-	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER, entitySpecificData);
+	public BattleResolver(Dungeon dungeon, Position position) {
+		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER);
 		toggleDisplay(false);
 	}
 
@@ -192,7 +191,11 @@ public class BattleResolver extends Entity {
 				}
 
 				// player gets attacked
-				attackFighter(playerBattleState, enemysDamage);
+				if (getDungeon().getGamemode().asString().equals("peaceful")) {
+					continue;
+				} else {
+					attackFighter(playerBattleState, enemysDamage);
+				}
 			}
 		}
 	}
@@ -226,19 +229,21 @@ public class BattleResolver extends Entity {
 
 	private void rewardRares() {
 		Random random = new Random();
-		Player player = getDungeon().getPlayer();
+		Dungeon d = getDungeon();
+		Player player = d.getPlayer();
 		// Chances of getting a rare item 1/5, subject to change
 		if (random.nextInt(100) % 5 == 0) {
 			// The two rare items have an equal chance to be spawned
 			// A bit brittle, but OK since only two rares
 			if (random.nextInt(100) % 2 == 0) {
-				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
+				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition());
 				ring.setCollectableState(CollectableState.INVENTORY);
-				player.addToInventory(ring);
+				d.transferToInventory(ring);
 			} else {
-				Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
+				Anduril anduril = new Anduril(getDungeon(), player.getPosition());
+
 				anduril.setCollectableState(CollectableState.INVENTORY);
-				player.addToInventory(anduril);
+				d.transferToInventory(anduril);
 			}
 		}
 	}
@@ -252,6 +257,7 @@ public class BattleResolver extends Entity {
 			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
 			|| e instanceof ZombieToast
+			|| e instanceof Hydra
 		) {
 			return true;
 		}
@@ -352,7 +358,7 @@ public class BattleResolver extends Entity {
 	 */
 	private void frenzyMercanaries(Player player) {
 		Dungeon dungeon = getDungeon();
-		List<Mercenary> mercs = dungeon.getEntitiesByType(Mercenary.class)
+		List<Mercenary> mercs = dungeon.getEntities().getEntitiesByType(Mercenary.class)
 			.stream().map(e -> (Mercenary)e).collect(Collectors.toList());
 		for (Mercenary merc : mercs) {
 			if (Position.withinRange(player.getPosition(), merc.getPosition(), mercFrenzyRange)) {

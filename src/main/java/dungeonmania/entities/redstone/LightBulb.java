@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.response.models.EntityResponse;
@@ -13,8 +14,8 @@ public class LightBulb extends Entity {
 
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 1);
 	
-	public LightBulb(Dungeon dungeon, Position position, JSONObject entityData) {
-		super(dungeon, "light_bulb", position, false, EntityUpdateOrder.OTHER, entityData);
+	public LightBulb(Dungeon dungeon, Position position) {
+		super(dungeon, "light_bulb", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {}

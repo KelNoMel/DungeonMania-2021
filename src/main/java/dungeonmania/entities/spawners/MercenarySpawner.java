@@ -1,25 +1,45 @@
 package dungeonmania.entities.spawners;
 
-import org.json.JSONObject;
-
 import dungeonmania.Dungeon;
-import dungeonmania.GameMode;
+import dungeonmania.entities.BattleResolver;
+import dungeonmania.entities.Entity;
+import dungeonmania.entities.bosses.Assassin;
+import dungeonmania.EntityFactory;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
 
 public class MercenarySpawner extends Spawner {
 
-	public MercenarySpawner(Dungeon dungeon, Position position, int tickSpawnRate, JSONObject entitySpecificData) {
-		super(dungeon, "mercenary_spawner", position, tickSpawnRate, entitySpecificData);
+	static private final int maxMercenaries = 2;
+	
+	public MercenarySpawner(Dungeon dungeon, Position position) {
+		super(dungeon, "mercenary_spawner", position, 40);
 	}
 
-	public void spawnEntity() {
-		if (getDungeon().getGameMode() != GameMode.PEACEFUL) {
-			new Mercenary(getDungeon(), getPosition(), new JSONObject());
+	public boolean spawnEntity() {
+		Dungeon d = getDungeon();
+		
+		// Only spawn when at least one enemy
+		// No enemies?
+		boolean noEnemies = true;
+		for (Entity e : d.getEntities()) {
+			if (BattleResolver.isEnemy(e)) {
+				noEnemies = false;
+			}
 		}
+		if (noEnemies) return false;
+		
+		if (d.getEntities().numEntitiesOfType(Mercenary.class) < maxMercenaries) {
+			Position spawnLayer = getPosition().asLayer(EntityFactory.movingLayer);
+
+			int percent = (int) Math.ceil(Math.random() * 100);
+			if (percent <= 30) {
+				new Assassin(d, spawnLayer);
+			} else {
+				new Mercenary(d, spawnLayer);
+			}
+			return true;
+		}
+		return false;
 	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-
 }

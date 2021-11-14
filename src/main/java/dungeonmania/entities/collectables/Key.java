@@ -18,8 +18,8 @@ public class Key extends Entity {
 	private int keyNumber;
 	private String colour;
 	
-	public Key(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "key", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Key(Dungeon dungeon, Position position) {
+		super(dungeon, "key", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

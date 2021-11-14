@@ -7,7 +7,6 @@ import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.collectables.Treasure;
 
 // For all items that can be used (consume, craft, place)
 public class ConsumableComponent extends Component {
@@ -34,7 +33,6 @@ public class ConsumableComponent extends Component {
             }
         }
 
-
         if (input == null) System.out.println("input was null in ConsumableComponent");
         if (input.getItemUsed() == null) System.out.println("item used was null in ConsumableComponent");
 
@@ -59,7 +57,18 @@ public class ConsumableComponent extends Component {
     
     public void updateComponent() {}
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("durability")) {
+    		curDurability = entityData.getInt("durability");
+    	}
+		if (entityData.has(null)) {
+    		numObjUsed = entityData.getInt("numUsed");
+    	}
+	}
+	
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("durability", curDurability);
+		entityJSON.put("numUsed", numObjUsed);		
+	}
 
 }

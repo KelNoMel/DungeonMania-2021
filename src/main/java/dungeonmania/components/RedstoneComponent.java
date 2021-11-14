@@ -1,4 +1,4 @@
-package dungeonmania.entities.redstone;
+package dungeonmania.components;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import org.json.JSONObject;
 
 import dungeonmania.InputState;
-import dungeonmania.components.Component;
 import dungeonmania.entities.Entity;
 
 public class RedstoneComponent extends Component {
@@ -18,7 +17,6 @@ public class RedstoneComponent extends Component {
 	public RedstoneComponent(Entity owningEntity, int updateOrder) {
 		super(owningEntity, updateOrder);
 		
-		// TODO FIX GET ENTITIES IN RADDIUS
 		List<Entity> cardinallyAdjacent = owningEntity.getDungeon().getEntitiesInRadius(owningEntity.getPosition(), 1.0);
 		cardinallyAdjacent.remove(owningEntity);
 		for (Entity adj : cardinallyAdjacent) {
@@ -43,8 +41,17 @@ public class RedstoneComponent extends Component {
 	public void processInput(InputState inputState) {}
 	public void updateComponent() {}
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("power")) {
+			this.powerLevel = entityData.getInt("power");
+			System.out.println("loaded in");
+		} else {
+			System.out.println("nope");
+		}
+	}
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("power", powerLevel);
+	}
 	
 	public void powerOn() {
 		increasePower(16, this);
@@ -59,7 +66,7 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void increasePower(int newPower, RedstoneComponent settingComponent) {
-		System.out.println("Increasing power at " + getEntity().getPosition() + " to " + newPower);
+//		System.out.println("Increasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		powerLevel = newPower;
@@ -74,7 +81,7 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void decreasePower(int newPower, RedstoneComponent settingComponent, List<RedstoneComponent> repropagaters) {
-		System.out.println("Decreasing power at " + getEntity().getPosition() + " to " + newPower);
+//		System.out.println("Decreasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		int previousPower = powerLevel;

@@ -2,11 +2,8 @@ package dungeonmania.components;
 
 import org.json.JSONObject;
 
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
-import dungeonmania.components.Component;
 
 public class ArmourComponent extends Component {
     // TODO force the entity to be of type BattleItem
@@ -42,6 +39,13 @@ public class ArmourComponent extends Component {
 
     public int getArmour() { return armour; }
 
-    public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+    public void loadJSONComponentSpecific(JSONObject entityData) {
+    	if (entityData.has("armour")) {
+    		armour = entityData.getInt("armour");
+    	}
+    }
+    
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("armour", armour);
+	}
 }

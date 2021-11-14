@@ -18,8 +18,8 @@ public class InvisibilityPotion extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 	
-	public InvisibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "invisibility_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public InvisibilityPotion(Dungeon dungeon, Position position) {
+		super(dungeon, "invisibility_potion", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	// Player gets invisibility status, can override other effects

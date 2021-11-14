@@ -17,8 +17,8 @@ public class HealthPotion extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 	
-	public HealthPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "health_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public HealthPotion(Dungeon dungeon, Position position) {
+		super(dungeon, "health_potion", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	// When health potion gets used, player restores health

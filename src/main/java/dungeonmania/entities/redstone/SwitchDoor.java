@@ -4,11 +4,9 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.RedstoneComponent;
 import dungeonmania.entities.Entity;
-import dungeonmania.entities.EntityState;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.entities.collectables.Key;
-import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
@@ -16,12 +14,11 @@ import dungeonmania.util.Position;
  * Door block parts of the map until they are opened with their unique key.
  */
 public class SwitchDoor extends Entity {
-	private boolean isUnlocked;
 	
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 1);
 	
-	public SwitchDoor(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "switch_door", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public SwitchDoor(Dungeon dungeon, Position position) {
+		super(dungeon, "switch_door", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {}

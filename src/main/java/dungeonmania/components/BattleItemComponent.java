@@ -4,10 +4,7 @@ import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
-import dungeonmania.Dungeon;
 import dungeonmania.InputState;
-import dungeonmania.components.Component;
-import dungeonmania.util.Position;
 
 public class BattleItemComponent extends Component {
     private int durability;
@@ -33,7 +30,14 @@ public class BattleItemComponent extends Component {
 
     public void updateComponent() {}
 
-    public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+    public void loadJSONComponentSpecific(JSONObject entityData) {
+    	if (entityData.has("durability")) {
+    		durability = entityData.getInt("durability");
+    	}
+    }
+    
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("durability", durability);
+	}
 
 }

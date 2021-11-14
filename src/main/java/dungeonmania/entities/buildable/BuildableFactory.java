@@ -1,9 +1,6 @@
 package dungeonmania.entities.buildable;
 
-import org.json.JSONObject;
-
 import dungeonmania.Dungeon;
-import dungeonmania.components.CollectableState;
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Position;
 
@@ -14,13 +11,13 @@ public class BuildableFactory {
 		Position pos = new Position(0, 0);
         switch(buildable) {
 			case "bow":
-                return new Bow(dungeon, pos.asLayer(0), new JSONObject());
+                return new Bow(dungeon, pos.asLayer(0));
 			case "shield":
-                return new Shield(dungeon, pos.asLayer(0), new JSONObject());
+                return new Shield(dungeon, pos.asLayer(0));
 			case "sceptre":
-                return new Sceptre(dungeon, pos.asLayer(0), new JSONObject());
+                return new Sceptre(dungeon, pos.asLayer(0));
 			case "midnight_armour":
-                return new MidnightArmour(dungeon, pos.asLayer(0), new JSONObject());
+                return new MidnightArmour(dungeon, pos.asLayer(0));
 			default:
 				throw new IllegalArgumentException(buildable + " is not buildable type that has been implemented");
 		}

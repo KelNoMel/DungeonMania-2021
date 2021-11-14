@@ -3,6 +3,7 @@ package dungeonmania;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -78,11 +79,20 @@ public class EntityList extends ArrayList<Entity> {
 	}
 	
 	public void transferEntity(EntityList dest, Entity transferEntity) throws InvalidParameterException {
-		if (!contains(transferEntity)) {
+		boolean mainContain = contains(transferEntity);
+		boolean newContain = newEntities.contains(transferEntity);
+		
+		if (!mainContain && !newContain) {
 			throw new InvalidParameterException("This array does not contain this entity");
 		}
+		
 		dest.add(transferEntity);
-		deadEntities.add(transferEntity);
+		if (mainContain) {
+			deadEntities.add(transferEntity);
+		} else {
+			newEntities.remove(transferEntity);
+		}
+		
 	}
 	
 	public JSONArray toJSON() {
@@ -92,4 +102,20 @@ public class EntityList extends ArrayList<Entity> {
 		}
 		return entities;
 	}
+	
+	// Returns a list of enitities by a certain type
+	// Not used now
+	public List<Entity> getEntitiesByType(Class<?> classType) {
+		List<Entity> entTypeList = new ArrayList<>();
+		for (Entity e : this) {
+			if (classType.isInstance(e)) {
+				entTypeList.add(e);
+			}
+		}
+		return entTypeList;
+	}
+	
+	public int numEntitiesOfType(Class<?> classType) {
+    	return getEntitiesByType(classType).size();
+    }
 }

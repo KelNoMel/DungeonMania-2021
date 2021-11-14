@@ -2,7 +2,7 @@ package dungeonmania;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,12 +20,22 @@ public class DungeonManiaController {
 	private Dungeon game;
     
     public DungeonManiaController() {
-    	FileLoader.initialiseSaves();
+    	try {
+			Files.createDirectories(FileLoader.getSavePath());
+		} catch (IOException e) {
+			System.out.println("Unable to initialise saves folder");
+		}
     }
 
 	////////////////////////////////////////////////////////////////////////////////
 	///                              Game Management                             ///
 	////////////////////////////////////////////////////////////////////////////////
+    
+    public DungeonResponse generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String gameMode) throws IllegalArgumentException {
+    	game = Dungeon.generateDungeon(xStart, yStart, xEnd, yEnd, gameMode);
+    	return game.response();
+    }
+
     
     /**
      * Creates a new game, where dungeonName is the name of the dungeon map (corresponding to
@@ -41,12 +51,17 @@ public class DungeonManiaController {
         return game.response();
     }
     
-    private static File getSaveFile(String saveName) throws IllegalArgumentException {
-		try {
-			return FileLoader.getSavePath().resolve(saveName + ".json").toFile();
-		} catch (URISyntaxException e) {
-			throw new IllegalArgumentException("Invalid save name");
-		}
+    private static File getLoadFile(String saveName) throws IllegalArgumentException {
+		// Is file valid?
+    	if (FileLoader.isValidSave(saveName)) {
+    		return FileLoader.getSavePath().resolve(saveName + ".json").toFile();    		
+    	} else {
+    		throw new IllegalArgumentException("Invalid save name");    		
+    	}
+	}
+    
+    private static File getSaveFile(String saveName) {
+		return FileLoader.getSavePath().resolve(saveName + ".json").toFile();    		
 	}
     
     // TODO
@@ -56,7 +71,7 @@ public class DungeonManiaController {
      * @return
      * @throws IllegalArgumentException If id is not a valid game id
      */
-    public DungeonResponse saveGame(String saveName) throws IllegalArgumentException {
+    public DungeonResponse saveGame(String saveName) {
 		if (game == null) return null;
     	game.saveGame(getSaveFile(saveName));
     	return game.response();
@@ -69,7 +84,7 @@ public class DungeonManiaController {
      * @throws IllegalArgumentException If id is not a valid game id
      */
     public DungeonResponse loadGame(String loadName) throws IllegalArgumentException {
-		game = new Dungeon(getSaveFile(loadName));
+		game = new Dungeon(getLoadFile(loadName));
     	return game.response();
     }
 

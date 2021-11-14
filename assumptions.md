@@ -52,3 +52,9 @@ Battles
 - A bow is a weapon that can be used as many extra times as their are bows in the inventory
 - An item will deteriorate after x many battles instead of counting by tick as it is possible multiple battles occur in a single tick
 
+Spawning
+- Mercenaries spawn every 40 ticks
+- Spiders spawn every 30 ticks
+- A maximum of two mercenaries can be on the map at any one time
+- A maximum of four spiders can be on the map at any one time
+- A maximum of three zombies can be on the map at any one time

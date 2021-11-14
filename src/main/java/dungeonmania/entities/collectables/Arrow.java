@@ -15,8 +15,8 @@ public class Arrow extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
 
-	public Arrow(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "arrow", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Arrow(Dungeon dungeon, Position position) {
+		super(dungeon, "arrow", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

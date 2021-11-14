@@ -3,19 +3,15 @@ package dungeonmania.entities.collectables;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.EntityList;
 import dungeonmania.InputState;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
 import dungeonmania.components.ConsumableComponent;
-import dungeonmania.entities.redstone.RedstoneComponent;
+import dungeonmania.components.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityState;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
-
-import java.util.ArrayList;
 
 public class Bomb extends Entity {
 
@@ -26,8 +22,8 @@ public class Bomb extends Entity {
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 3);
 
 
-	public Bomb(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "bomb", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Bomb(Dungeon dungeon, Position position) {
+		super(dungeon, "bomb", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	// When bomb is used, it is placed on the same position as the player
