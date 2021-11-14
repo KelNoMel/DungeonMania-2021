@@ -5,9 +5,11 @@ import org.json.JSONObject;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
-import dungeonmania.components.BattleComponent;
+import dungeonmania.components.AttackTypeEnum;
+import dungeonmania.components.BattleItemComponent;
 import dungeonmania.components.CollectableComponent;
 import dungeonmania.components.CollectableState;
+import dungeonmania.components.WeaponComponent;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
