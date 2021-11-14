@@ -3,16 +3,16 @@ package dungeonmania.battles;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
+//import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
-import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
 
 public class AllyBattleTest {
     @Test
@@ -38,21 +38,28 @@ public class AllyBattleTest {
         do {
             mania = new DungeonManiaController();
             mania.newGame("ally-support-none","standard");
-            // player fights 2 mercenaries
+            // player fights mercenary
             d = mania.tick(null, Direction.RIGHT);
+            // mercenary is dead
             assertEquals(null, ResponseHelp.getEntityOfType(d, "mercenary"));
-            // health now 40hp
+            // player picks up 3 armour
+            d = mania.tick(null, Direction.RIGHT);
+            assertNotEquals(null, ResponseHelp.getItemOfType(d, "armour"));
+            // health now 70hp
 
             // exit test if interfering items are repeatedly found
             attemptCounter++;
             if (attemptCounter >= maxRandomAttempts) return;
-        } while (ResponseHelp.inventorySize(d) != 0);
-        // no items in inventory
+        } while (ResponseHelp.inventorySize(d) != 3);
+        // only armour in inventory
         mania.tick(null, Direction.NONE);
         mania.tick(null, Direction.NONE);
-        // player dies fighting the assassin
         d = mania.tick(null, Direction.NONE);
+        // player dies fighting the assassin
         assertEquals(null, ResponseHelp.getEntityOfType(d, "player"));
+        // assassin lives
+        assertNotEquals(null, ResponseHelp.getEntityOfType(d, "assassin"));
+
 	}
 
     @Test
@@ -64,32 +71,61 @@ public class AllyBattleTest {
         do {
             mania = new DungeonManiaController();
             mania.newGame("ally-support","standard");
-            // player fights 2 mercenaries and picks up sun_stone
+            // player fights mercenary
             d = mania.tick(null, Direction.RIGHT);
-            assertEquals(null, ResponseHelp.getEntityOfType(d, "mercenary"));
+            // player picks up 3 armour and sunstone
+            d = mania.tick(null, Direction.RIGHT);
+            assertNotEquals(null, ResponseHelp.getItemOfType(d, "armour"));
             assertNotEquals(null, ResponseHelp.getItemOfType(d, "sun_stone"));
-            // health now 40hp
-
+            // health now 70hp
+            
             // exit test if interfering items are repeatedly found
             attemptCounter++;
             if (attemptCounter >= maxRandomAttempts) return;
-        } while (ResponseHelp.inventorySize(d) != 1);
-        // only sun_stone in inventory
-        mania.tick(null, Direction.NONE);
+        } while (ResponseHelp.inventorySize(d) != 4);
+        // only 3 armour and sun_stone in inventory
         // bribe mercenary
-
-
+        String mercID = ResponseHelp.getEntityOfType(d, "mercenary").getId();
+        mania.interact(mercID);
         mania.tick(null, Direction.NONE);
-        // player dies fighting the assassin but so does the assassin
+        // player dies fighting the assassin
+        // assassin dies by getting attacked by both the player and the ally
         d = mania.tick(null, Direction.NONE);
         assertEquals(null, ResponseHelp.getEntityOfType(d, "player"));
+        assertEquals(null, ResponseHelp.getEntityOfType(d, "assassin"));
 	}
 
     @Test
 	public void testPlayerLivesAndKillsEnemyWtihAllies() {
-		DungeonManiaController mania = new DungeonManiaController();
-		mania.newGame("team-battle","standard");
-        DungeonResponse d = mania.tick(null, Direction.RIGHT);
+        DungeonManiaController mania;
+        DungeonResponse d;
+        int maxRandomAttempts = 100;
+        int attemptCounter = 0;
+        do {
+            mania = new DungeonManiaController();
+            mania.newGame("team-battle","standard");
+            // player fights mercenary
+            d = mania.tick(null, Direction.RIGHT);
+            // player picks up 3 armour and sunstone
+            d = mania.tick(null, Direction.RIGHT);
+            assertNotEquals(null, ResponseHelp.getItemOfType(d, "armour"));
+            assertNotEquals(null, ResponseHelp.getItemOfType(d, "sun_stone"));
+            // health now 70hp
+            
+            // exit test if interfering items are repeatedly found
+            attemptCounter++;
+            if (attemptCounter >= maxRandomAttempts) return;
+        } while (ResponseHelp.inventorySize(d) != 4);
+        // only 3 armour and sun_stone in inventory
+        List<String> mercenaryIds = ResponseHelp.getAllEntityOfTypeIds(d, "mercenary");
+        // bribe mercenary
+        mania.interact(mercenaryIds.get(0));
+        // bribe second mercenary
+        mania.interact(mercenaryIds.get(1));
+        // player kills assassin with support of 2 allies
+        d = mania.tick(null, Direction.NONE);
+        assertNotEquals(null, ResponseHelp.getEntityOfType(d, "player"));
+        assertEquals(null, ResponseHelp.getEntityOfType(d, "assassin"));
 	}
 
 

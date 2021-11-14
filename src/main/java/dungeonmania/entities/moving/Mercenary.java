@@ -15,11 +15,13 @@ import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Mercenary extends Entity {
-	
+	final static int attackDamage = 10;
+	final static int maxHealth = 30;
+
 	private String startState;
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, maxHealth, attackDamage);
 	
 	public Mercenary(Dungeon dungeon, Position position) {
 		super(dungeon, "mercenary", position, true, EntityUpdateOrder.OTHER);
