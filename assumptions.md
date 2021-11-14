@@ -1,12 +1,34 @@
+Peaceful Mode
+- Rare items still drop for battles
 
 Portals
 - Portals teleport entities directly onto their corresponding portal
 - Only two portals of a specific colour can exist at any time (as in the Portal games)
 - Portals read in as JSON will always come in pairs, solo portals will not be fed in
 
+Damage Algorithm
+- Enemy Health = (Enemy Health - ((Character Damage + Weapon Damage) * Character Health))/5
+- Character Health = (Character Health - (Enemy Damage * Enemy Health))/(10+Armour)
 
 Shield:
 - Increase the dividend the player takes damage with
+- Durability - 5
+- Damage Reduction - 50
+- Algorithm for damage reduction: 
+
+Armour:
+- Durability - 4
+- Damage Reduction - 4
+Sword:
+- Damage - 3
+- Durability - 3
+
+Rare Items
+- 
+
+Anduril:
+- Durability - Integer.max
+- Damage - 50
 
 Potions
 - Players cannot consume more than one potion a tick
@@ -25,11 +47,11 @@ Invisible Potion
 Invincible Potion
 - The effect of the potion lasts 10 ticks starting from the consumption tick
 - Players will still initiate a battle, but it will be auto-resolved. Players can therefore still receive rare items when invincible
-- Zombie and Mercenary will run away, Spider will keep its circling pattern
+- Zombie and Mercenary will run away, Spider will also break circling pattern to run away
 
 Bomb
 - The player receives no damage from exploding bombs
-- Blast range is a 5x5 grid surrounding the bomb position
+- Blast range is a 3x3 grid surrounding the bomb position
 
 The One True Ring
 - Revives the player in the same position
@@ -58,3 +80,7 @@ Spawning
 - A maximum of two mercenaries can be on the map at any one time
 - A maximum of four spiders can be on the map at any one time
 - A maximum of three zombies can be on the map at any one time
+
+Redstone
+- The signal strength of redstone decreases per tile from the source
+
