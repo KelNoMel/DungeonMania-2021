@@ -15,12 +15,12 @@ import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Spider extends Entity {
-	final int maxHealth = 3;
-	final int damage = 3;
+	final int maxHealth = 5;
+	final int damage = 5;
 
 	public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.GHOST);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 5, 5);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, maxHealth, damage);
 	
 	public Spider(Dungeon dungeon, Position position) {
 		super(dungeon, "spider", position, false, EntityUpdateOrder.OTHER);
