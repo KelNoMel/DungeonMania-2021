@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
@@ -43,12 +46,40 @@ public class BattleItemsTest {
     //     mania.tick(null, Direction.RIGHT);
     // }
 
-    // @Test
-    // public void testBowDurability() {
-    //     DungeonManiaController mania = new DungeonManiaController();
-    //     mania.newGame("","standard");
-    //     mania.tick(null, Direction.RIGHT);
-    // }
+    @Test
+    public void testBowBasic() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("bow-vs-assassin","standard");
+        mania.tick(null, Direction.RIGHT);
+        assertDoesNotThrow(() -> mania.build("bow"));
+        DungeonResponse d = mania.tick(null, Direction.NONE);
+        // player kills assassin
+        assertEquals(null, ResponseHelp.getEntityOfType(d, "assassin"));
+    }
+
+    @Test
+    public void testBowDurability() {
+        DungeonManiaController mania = new DungeonManiaController();
+        mania.newGame("bow-vs-horde","standard");
+        mania.tick(null, Direction.RIGHT);
+        // build bow
+        assertDoesNotThrow(() -> mania.build("bow"));
+        DungeonResponse d = mania.tick(null, Direction.NONE);
+        // player heals
+        List<String> potionIds = ResponseHelp.getAllItemOfTypeIds(d, "health_potion");
+        System.out.println(potionIds);
+        // use potion and kill assassin
+        mania.tick(potionIds.get(0), Direction.NONE);
+        // use potion and kill assassin
+        mania.tick(potionIds.get(1), Direction.NONE);
+
+        // player kills third assassin
+        d = mania.tick(null, Direction.NONE);
+        d = mania.tick(null, Direction.NONE);
+        assertEquals(null, ResponseHelp.getEntityOfType(d, "assassin"));
+        // bow is now broken
+        assertEquals(null, ResponseHelp.getItemOfType(d, "bow"));
+    }
 
     // @Test
 	// public void testSwordDurability() {

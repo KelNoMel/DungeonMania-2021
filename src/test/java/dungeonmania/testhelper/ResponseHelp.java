@@ -354,6 +354,24 @@ public class ResponseHelp {
         return wantedEntities;
     }
 
+    /**
+     * Get all ids of matching type in the DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return all ids with a matching type
+     */
+    public static List<String> getAllItemOfTypeIds (DungeonResponse dgnRes,
+        String type) {
+        List<ItemResponse> items = dgnRes.getInventory();
+        List<String> ids = new ArrayList<>();
+        for (ItemResponse item : items) {
+            if (item.getType().equals(type)) {
+                ids.add(item.getId());
+            }
+        }
+        return ids;
+    }
+    
 
     /**
      * Get an ItemResponse of the first instance with a matching type in the

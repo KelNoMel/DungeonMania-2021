@@ -17,8 +17,10 @@ public class BattleItemComponent extends Component {
     
     public void useItem() {
         durability--;
+        System.out.println("durability is now " + durability);
         if (durability <= 0) {
             getEntity().setState(EntityState.DEAD);
+            System.out.println("battle item set to dead");
         }
     }
 
