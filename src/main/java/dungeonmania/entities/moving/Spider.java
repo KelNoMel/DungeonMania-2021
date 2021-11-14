@@ -33,12 +33,12 @@ public class Spider extends Entity {
 	protected void updateEntity() {
 		String playerState = getDungeon().getPlayer().getStatus();
 		switch (playerState) {
-			case "normal":
-				aiComponent.changeState("SpiderHostile");
-				break;
 			case "invincible":
 				aiComponent.changeState("enemyRunAway");
 				break;
+			default:
+			aiComponent.changeState("SpiderHostile");
+			break;
 		}
 	}
 	
