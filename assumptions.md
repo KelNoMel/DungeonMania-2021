@@ -1,5 +1,6 @@
 Peaceful Mode
 - Rare items still drop for battles
+- Equipment drops in durability still
 
 Portals
 - Portals teleport entities directly onto their corresponding portal
@@ -30,7 +31,7 @@ Item drops
 - When a rare item drops, it has an equal 50% chance to be either the one true ring or andurasil
 - Item drops are immediately deposited into the players inventory and are not dropped onto the dungeon map
 
-Anduril:
+Andurasil:
 - Durability - Integer.max
 - Damage - 50
 
@@ -56,10 +57,12 @@ Invincible Potion
 Bomb
 - The player receives no damage from exploding bombs
 - Blast range is a 3x3 grid surrounding the bomb position
+- Bomb cannot set off a chain reaction with other bombs
 
 The One True Ring
 - Revives the player in the same position
-- If the enemy hasn't moved on, this means that the battle will still continue
+- The player revives in the middle of battle, so he will continue fighting the enemy that killed him
+- This means if it was a simple mob, he should now win, if it was a tough boss, he could still die a second time
 
 Mercenary
 - The player requires one coin to bribe them
@@ -73,6 +76,7 @@ Battles
 - Enemies attack first
 - Players cannot use items during battle except for one true ring (yet to be implemented)
 - Ally mercs will not share player bonuses like shields and swords
+- Allies attack seperately from the player
 - A player attacks full force with as many of damage items on every battle they go into. As you don't actually know if an attack will finish the enemy (The Double-tap rule)
 - A sword can be used once in a battle and you can't use fist and a sword
 - A bow is a weapon that can be used as many extra times as their are bows in the inventory
@@ -88,3 +92,5 @@ Spawning
 Redstone
 - The signal strength of redstone decreases per tile from the source
 
+Sceptre
+- You cannot bribe someone under mind control
