@@ -22,9 +22,7 @@ public class DungeonManiaController {
     public DungeonManiaController() {
     	try {
 			Files.createDirectories(FileLoader.getSavePath());
-		} catch (IOException e) {
-			System.out.println("Unable to initialise saves folder");
-		}
+		} catch (IOException e) {}
     }
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +62,6 @@ public class DungeonManiaController {
 		return FileLoader.getSavePath().resolve(saveName + ".json").toFile();    		
 	}
     
-    // TODO
     /**
      * Saves the current game state with the given ID.
      * @param saveName
@@ -105,7 +102,6 @@ public class DungeonManiaController {
 	///                             Game State Change                            ///
 	////////////////////////////////////////////////////////////////////////////////
     
- // TODO
     /**
      * Ticks the game state. When a tick occurs:
      * 1. The player moves in the specified direction one square
@@ -122,7 +118,6 @@ public class DungeonManiaController {
     	return game.response();
     }
     
-    // TODO
     /**
      * Ticks the game state. When a tick occurs:
      * 1. The player moves in the specified direction one square
@@ -150,7 +145,6 @@ public class DungeonManiaController {
         return game.response();
     }
     
-    // TODO
     /**
      * Interacts with a mercenary (where the character bribes the mercenary) or a zombie spawner, where
      * the character destroys the spawner.

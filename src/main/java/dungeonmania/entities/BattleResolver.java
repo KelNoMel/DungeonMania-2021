@@ -145,7 +145,6 @@ public class BattleResolver extends Entity {
 
 					if (weapon.getType().equals(AttackTypeEnum.EXTRA)) {
 						// queue all extra attacks
-						System.out.println("Bow is added to queue");
 						extraAttacks.add(weapon);
 					} else if (singleAttacks.size() == 0) {
 						// add single per round weapon to the queue over fists
@@ -313,15 +312,6 @@ public class BattleResolver extends Entity {
 		String fighterPreAttackHealth = fighterBattleState.getHealthAsString();
 		Entity fighter = fighterBattleState.getEntity();
 		
-		// pre-battle
-		if (isPlayer(fighter)) {
-			System.out.println("Player health was: " + fighterPreAttackHealth);
-		} else if (isEnemy(fighter)) {
-			System.out.println("Enemy health was: " + fighterPreAttackHealth);
-		} else if (isAlly(fighter)) {
-			System.out.println("Ally health was: " + fighterPreAttackHealth);
-		}
-		
 		// fighter gets attacked
 		Random roll = new Random();
 		if (isHydra(fighter) && !isAnduril) {
@@ -349,14 +339,7 @@ public class BattleResolver extends Entity {
 		
 		// animation
 		battleAnimation(fighter, fighterBattleState, fighterPreAttackHealth);
-		// post-battle
-		if (isPlayer(fighter)) {
-			System.out.println("Player health is now: " + fighterBattleState.getHealthAsString());
-		} else if (isEnemy(fighter)) {
-			System.out.println("Enemy health is now: " + fighterBattleState.getHealthAsString());
-		} else if (isAlly(fighter)) {
-			System.out.println("Ally health is now: " + fighterBattleState.getHealthAsString());
-		}
+
 		// weapon / other was successfully used
 		return true;
 	}
@@ -405,8 +388,7 @@ public class BattleResolver extends Entity {
 			}
 		}
 	}
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

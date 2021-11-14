@@ -1,13 +1,7 @@
 package dungeonmania.entities.bosses;
 
-import java.util.List;
-
 import dungeonmania.Dungeon;
-import dungeonmania.InputState;
-import dungeonmania.entities.Entity;
-import dungeonmania.entities.Player;
 import dungeonmania.entities.moving.Mercenary;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
@@ -19,8 +13,5 @@ public class Assassin extends Mercenary {
         battleComponent.setHealth(maxHealth);    
         setType("assassin");
         battleComponent.setAttackDamage(attackDamage);
-    }
-
-	protected void inputEntity(InputState inputState) {
     }
 }

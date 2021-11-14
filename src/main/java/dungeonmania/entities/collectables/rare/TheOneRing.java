@@ -19,14 +19,12 @@ public class TheOneRing extends Entity {
 		super(dungeon, "the_one_ring", position, false, EntityUpdateOrder.OTHER);
 	}
 
-	protected void inputEntity(InputState inputState) {
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 
-	}
-
-	protected void updateEntity() {
-
-	}
-
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
 	public boolean revive() {
 		Player p = getDungeon().getPlayer();
 		// Automatically revives the player at hp <= 0, should override battleComponent saying player is dead
@@ -45,8 +43,4 @@ public class TheOneRing extends Entity {
 	public void setCollectableState(CollectableState state) {
 		collectableComp.setCollectableState(state);
 	}
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
 }

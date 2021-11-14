@@ -86,14 +86,11 @@ public class Player extends Entity {
 				}
 				// Bribe away!
 				if (playerSunStone.size() > 0) {
-					System.out.println("Mercanary has been bribed the sun stone");
 					bribeMercenary.aiComponent.changeState("MercAlly");
 				} else if (playerTreasure.size() > 0) {
-					System.out.println("Mercanary has been bribed using gold");
 					playerTreasure.get(0).setState(EntityState.DEAD);
 					bribeMercenary.aiComponent.changeState("MercAlly");
 				} else if (playerSceptre.size() > 0 ) {
-					System.out.println("Mercanary is being controlled with a sceptre");
 					bribeMercenary.aiComponent.temporaryChangeState("MercAlly", Sceptre.MINDCONTROL_TIME);
 				}
 				break;
@@ -147,7 +144,9 @@ public class Player extends Entity {
 	}
 
 	public void build(String buildable) {
-		inventory.add(BuildableFactory.build(buildable, getDungeon()));
+		
+		Entity builtEntity = BuildableFactory.build(buildable, getDungeon());
+		getDungeon().transferToInventory(builtEntity);
 	}
 
 	public void addToInventory(Entity item) {
@@ -237,7 +236,7 @@ public class Player extends Entity {
 		return null;
 	}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("inventory", inventory.toJSON());
 	}
 

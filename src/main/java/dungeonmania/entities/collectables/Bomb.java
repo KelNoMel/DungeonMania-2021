@@ -15,15 +15,13 @@ import dungeonmania.util.Position;
 
 public class Bomb extends Entity {
 
-
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	// Durability is 999 so entity doesn't die when placed
-	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 999, 1);
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 3);
-
 
 	public Bomb(Dungeon dungeon, Position position) {
 		super(dungeon, "bomb", position, false, EntityUpdateOrder.OTHER);
+		// Durability is 999 so entity doesn't die when placed
+		new ConsumableComponent(this, 2, 999, 1);
 	}
 
 	// When bomb is used, it is placed on the same position as the player
@@ -59,7 +57,7 @@ public class Bomb extends Entity {
 		}
 	}
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 }

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.moving.ZombieToast;
 
 /**
  * Strongly typed tuple structure for keeping buildable resource requirements
@@ -18,8 +19,13 @@ public class Recipe {
         this.recipe = recipe;
     }
 
-    protected List<Ingredient> checkRequirements(Player player) {
-		List<Ingredient> ingredients = new ArrayList<>();
+    protected List<Ingredient> checkRequirements(Player player, String type) {
+		if (type.equals("midnight_armour") &&
+				player.getDungeon().getEntities().numEntitiesOfType(ZombieToast.class) > 0) {
+			return null;
+		}
+    	
+    	List<Ingredient> ingredients = new ArrayList<>();
 
         for (List<Ingredient> recipeStep : recipe) {
             boolean hasRequirementsflag = false;

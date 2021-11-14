@@ -19,7 +19,6 @@ public class FloorSwitch extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {}
-
 	protected void updateEntity() {
 		boolean hasboulder = false;
 		for (Entity entity : getDungeon().getEntitiesAtPosition(getPosition())) {
@@ -35,11 +34,11 @@ public class FloorSwitch extends Entity {
 		}
 	}
 
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	
 	public boolean isTriggered() {
 		return isTriggered;
-	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
+	}	
 }
  

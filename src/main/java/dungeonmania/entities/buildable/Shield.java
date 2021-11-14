@@ -25,6 +25,13 @@ public class Shield extends Buildable {
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		armourComponent = new ArmourComponent(this, 3, armour);
 	}
+	
+	public Shield(Dungeon dungeon) {
+		super(dungeon, "shield", new Position(0,0), false);
+		collectableComponent = new CollectableComponent(this, 1, CollectableState.INVENTORY);
+		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
+		armourComponent = new ArmourComponent(this, 3, armour);
+	}
 
 	protected void inputEntity(InputState inputState) {}
 	protected void updateEntity() {}
@@ -32,6 +39,6 @@ public class Shield extends Buildable {
 	// remove shield after taking the final hit
 	// shield observes the player battling (each battle / each time the player is attacked)
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

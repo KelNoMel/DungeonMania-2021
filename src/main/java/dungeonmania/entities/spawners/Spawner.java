@@ -22,23 +22,14 @@ public abstract class Spawner extends Entity {
 
 	public void inputEntity(InputState inputState) {}
 	
-	public void changeSpawnRate(int newSpawnRate) {
-		tickSpawnRate = newSpawnRate;
-		ticksUntilNextSpawn = newSpawnRate;
-	}
-	
-	public abstract boolean spawnEntity();
 	public void updateEntity() {
 		ticksUntilNextSpawn--;
 		if (ticksUntilNextSpawn <= 0) {
 			if (spawnEntity()) ticksUntilNextSpawn = tickSpawnRate;
 		}
 	}
-	
-	public int getSpawnRate() { return tickSpawnRate; }
-	public void setSpawnRate(int tickSpawnRate) { this.tickSpawnRate = tickSpawnRate; }
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
+		
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("spawnRate", tickSpawnRate);
 		baseJSON.put("nextSpawn", ticksUntilNextSpawn);
 	}
@@ -51,5 +42,14 @@ public abstract class Spawner extends Entity {
 			ticksUntilNextSpawn = entityData.getInt("nextSpawn");
 		}
 	}
+
+	public void changeSpawnRate(int newSpawnRate) {
+		tickSpawnRate = newSpawnRate;
+		ticksUntilNextSpawn = newSpawnRate;
+	}
 	
+	public abstract boolean spawnEntity();
+	
+	public int getSpawnRate() { return tickSpawnRate; }
+	public void setSpawnRate(int tickSpawnRate) { this.tickSpawnRate = tickSpawnRate; }
 }

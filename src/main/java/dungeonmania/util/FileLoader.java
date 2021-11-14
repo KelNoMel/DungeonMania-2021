@@ -86,14 +86,12 @@ public final class FileLoader {
 	public static boolean isValidSave(String checkName) {
 		try {
 			for (String saveName : listSaves()) {
-				System.out.println("Testing " + saveName + " against " + checkName);
 				if (saveName.equals(checkName)) {
 					return true;
 				}
 			}
 			return false;
 		} catch (IOException e) {
-			System.out.println("Problem with supplied file loader");
 			return false;
 		}
 	}

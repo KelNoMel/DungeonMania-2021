@@ -25,22 +25,14 @@ public class Door extends Entity {
 		super(dungeon, "door", position, false, EntityUpdateOrder.OTHER);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-	}
-
-	public String getDoorId() {
-		return doorId;
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 
 	/**
 	 * Save the door and it's corresponding keynumber in a json uniquely 
 	 * recognisable format.
 	 */
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("key", linkedKeyNumber);
 		baseJSON.put("locked", isUnlocked);
 	}
@@ -55,6 +47,10 @@ public class Door extends Entity {
 		} else {
 			isUnlocked = false;
 		}
+	}
+	
+	public String getDoorId() {
+		return doorId;
 	}
 
 	@Override

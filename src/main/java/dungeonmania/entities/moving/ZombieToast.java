@@ -29,9 +29,7 @@ public class ZombieToast extends Entity {
 		aiComponent.changeState("RandomHostile");
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
+	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {
 		String playerState = getDungeon().getPlayer().getStatus();
@@ -40,12 +38,14 @@ public class ZombieToast extends Entity {
 				aiComponent.changeState("enemyRunAway");
 				break;
 			default:
-			aiComponent.changeState("ZombieHostile");
-			break;
+				if (!aiComponent.getAIState().getName().equals("RandomHostile")) {
+					aiComponent.changeState("RandomHostile");					
+				}
+				break;
 		}
 	}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 }

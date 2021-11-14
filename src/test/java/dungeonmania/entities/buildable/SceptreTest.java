@@ -10,10 +10,8 @@ import org.junit.jupiter.api.Test;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
 
 public class SceptreTest {
     @Test

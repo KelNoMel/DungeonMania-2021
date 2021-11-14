@@ -7,12 +7,13 @@ import org.json.JSONObject;
 
 import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.redstone.ActivationLogic;
 
 public class RedstoneComponent extends Component {
 
 	private List<RedstoneComponent> adjRedstone = new ArrayList<>();
-	
 	private int powerLevel;
+	private ActivationLogic activationLogic;
 	
 	public RedstoneComponent(Entity owningEntity, int updateOrder) {
 		super(owningEntity, updateOrder);
@@ -34,23 +35,23 @@ public class RedstoneComponent extends Component {
 		if (!adjRedstone.contains(adj)) adjRedstone.add(adj);
 	}
 	
-	private void removeAdjacent(RedstoneComponent adj) {
-		adjRedstone.remove(adj);
-	}
-	
 	public void processInput(InputState inputState) {}
 	public void updateComponent() {}
 
 	public void loadJSONComponentSpecific(JSONObject entityData) {
 		if (entityData.has("power")) {
 			this.powerLevel = entityData.getInt("power");
-			System.out.println("loaded in");
-		} else {
-			System.out.println("nope");
+		}
+		
+		if (entityData.has("logic")) {
+			activationLogic = ActivationLogic.createLogic(entityData.getString("logic"));
 		}
 	}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
+	public void saveJSONComponentSpecific(JSONObject entityJSON) {
 		entityJSON.put("power", powerLevel);
+		if (activationLogic != null) {
+			entityJSON.put("logic", activationLogic.getLogic());
+		}
 	}
 	
 	public void powerOn() {
@@ -66,7 +67,6 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void increasePower(int newPower, RedstoneComponent settingComponent) {
-//		System.out.println("Increasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		powerLevel = newPower;
@@ -81,7 +81,6 @@ public class RedstoneComponent extends Component {
 	}
 	
 	private void decreasePower(int newPower, RedstoneComponent settingComponent, List<RedstoneComponent> repropagaters) {
-//		System.out.println("Decreasing power at " + getEntity().getPosition() + " to " + newPower);
 		newPower = calcPowerLevel(newPower);
 		
 		int previousPower = powerLevel;
@@ -111,39 +110,42 @@ public class RedstoneComponent extends Component {
 	}
 	
 	public boolean isActivated() {
-//		if (activationLogic == null) {
-		if (powerLevel > 0) return true;
-//		}
-		return false;
 		
-		/*
+		if (powerLevel > 0) return true;
+		
+		return false;
+	}
+		/*boolean logicFulfilled = false;
 		switch (activationLogic) {
 			case AND:
-				if (numAdjActivated() >= 2) return true;
+				if (numAdjActivated() >= 2) logicFulfilled = true;
 				break;
 			case OR:
-				if (numAdjActivated() >= 1) return true;
+				if (numAdjActivated() >= 1) logicFulfilled = true;
 				break;
 			case XOR:
-				if (numAdjActivated() == 1) return true;
+				if (numAdjActivated() == 1) logicFulfilled = true;
 				break;
 			case NOT:
-				if (numAdjActivated() == 0) return true;
+				if (numAdjActivated() == 0) logicFulfilled = true;
 				break;
 			case COAND:
 				if (numAdjActivated() >= 2) {
 					//TODO
-					return true;
+					logicFulfilled = true;
 				}
 				break;
 			default:
-				if (powerLevel > 0) return true;
+				logicFulfilled = true;
+		}
+		
+		if (logicFulfilled && powerLevel > 0) {
+			return true;
 		}
 		return false;
-		*/
 	}
 	
-	/*private int numAdjActivated() {
+	private int numAdjActivated() {
 		int numActivated = 0;
 		for (RedstoneComponent adjComp : adjRedstone) {
 			if (adjComp.isActivated()) {

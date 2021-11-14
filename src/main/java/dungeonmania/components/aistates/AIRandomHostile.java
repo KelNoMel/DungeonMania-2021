@@ -29,17 +29,10 @@ public class AIRandomHostile extends AIState {
         return Direction.values()[pick];
     }
 
-    public void updateState() {
-        //System.out.println("Zombie Hostile");
-    }
+    public void updateState() {}
 
-    public void onEnter() {
-        
-    }
-
-    public void onExit() {
-        
-    }
+    public void onEnter() {}
+    public void onExit() {}
 
     public String getName() {
         return "RandomHostile";

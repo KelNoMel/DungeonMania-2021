@@ -1,0 +1,24 @@
+{
+    "entities": [
+        {
+            "x": 0,
+            "y": 0,
+            "type": "player"
+        },
+        {
+            "x": 1,
+            "y": 0,
+            "type": "armour"
+        },
+		{
+            "x": 2,
+            "y": 0,
+            "type": "sun_stone"
+        },
+        {
+            "x": 4,
+            "y": 0,
+            "type": "zombie_toast"
+        }
+    ]
+}

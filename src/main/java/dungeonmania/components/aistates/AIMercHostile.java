@@ -37,12 +37,9 @@ public class AIMercHostile extends AIState {
 		merc.moveComponent.setMoveDirection(mercMoveDirection);
 	}
 
-	public void updateState() {
-		//System.out.println("Hostile");
-	}
+	public void updateState() {}
 
 	public void onEnter() {}
-
 	public void onExit() {}
 
 	public String getName() {

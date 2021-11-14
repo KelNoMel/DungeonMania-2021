@@ -147,8 +147,6 @@ public class DungeonTest {
         
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
-        System.out.println(saveResponse.getGoals());
-        System.out.println(loadResponse.getGoals());
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
         removeSaves();
     }
@@ -157,8 +155,17 @@ public class DungeonTest {
     public void testLotsOfStuff() {
         DungeonManiaController mania = new DungeonManiaController();
         mania.newGame("alotofstuff","peaceful");
+        
+        mania.tick(null, Direction.UP);
+        
+        mania.build("bow");
+        mania.build("shield");
+        mania.build("sceptre");
+        mania.build("midnight_armour");
+        
         DungeonResponse saveResponse = mania.saveGame("SaveFile");
         DungeonResponse loadResponse = mania.loadGame("SaveFile");
+        
         assertTrue(ResponseHelp.dungeonEqual(saveResponse, loadResponse));
         removeSaves();
     }

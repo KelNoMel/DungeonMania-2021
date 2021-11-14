@@ -30,11 +30,18 @@ public class Bow extends Buildable {
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}
+	
+	public Bow(Dungeon dungeon) {
+		super(dungeon, "bow", new Position(0,0), false);
+		collectableComponent = new CollectableComponent(this, 1, CollectableState.INVENTORY);
+		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
+		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
+	}
 			
 	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

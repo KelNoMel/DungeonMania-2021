@@ -2,20 +2,15 @@ package dungeonmania.battles;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
-import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
 
 public class BattleItemsTest {
     // @Test
@@ -67,7 +62,7 @@ public class BattleItemsTest {
         DungeonResponse d = mania.tick(null, Direction.NONE);
         // player heals
         List<String> potionIds = ResponseHelp.getAllItemOfTypeIds(d, "health_potion");
-        System.out.println(potionIds);
+
         // use potion and kill assassin
         mania.tick(potionIds.get(0), Direction.NONE);
         // use potion and kill assassin

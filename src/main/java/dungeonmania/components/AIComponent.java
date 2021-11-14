@@ -20,16 +20,14 @@ public class AIComponent extends Component {
     
     public void processInput(InputState inputState) {
 		if (currentState == null) return;
-    	// garbage dirt-brain level pathfinding
+
 		currentState.processInput(inputState);
         
-        // switch back to previous state
         if (prevState != null) {
             temporaryCooldown--;
             if (temporaryCooldown <= 0) {
                 currentState = prevState;
                 prevState = null;
-//                System.out.println(getEntity().getType() + " has changed back to " + getEntity().getComponent(AIComponent.class).getAISate().getName());
             }
         }
 	}
@@ -38,6 +36,21 @@ public class AIComponent extends Component {
     	if (currentState == null) return;
     	currentState.updateState();
 	}
+    
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {
+    	entityJSON.put("currentState", currentState.getName());
+    	entityJSON.put("cooldown", temporaryCooldown);
+    }
+    
+    public void loadJSONComponentSpecific(JSONObject entityData) {
+    	if (entityData.has("currentState")) {
+    		changeState(entityData.getString("currentState"));
+    	}
+    	
+    	if (entityData.has("cooldown")) {
+    		temporaryCooldown = entityData.getInt("cooldown");
+    	}
+    }
     
     /**
      * Transition between states
@@ -75,20 +88,4 @@ public class AIComponent extends Component {
     }
 
     public AIState getAIState() { return currentState; }
-
-	public void loadJSONComponentSpecific(JSONObject entityData) {
-		if (entityData.has("currentState")) {
-    		changeState(entityData.getString("currentState"));
-    	}
-		
-		if (entityData.has("cooldown")) {
-    		temporaryCooldown = entityData.getInt("cooldown");
-    	}
-		
-	}
-
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("currentState", currentState.getName());
-		entityJSON.put("cooldown", temporaryCooldown);
-	}
 }

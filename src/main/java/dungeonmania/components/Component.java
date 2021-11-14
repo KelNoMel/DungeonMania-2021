@@ -19,24 +19,19 @@ public abstract class Component {
         owningEntity.addComponent(this);
     }
 
-    public Entity getEntity() {
-        return owningEntity;
-    }
-    
-	////////////////////////////////////////////////////////////////////////////////
-	///                               Run Component                              ///
-	////////////////////////////////////////////////////////////////////////////////
-    
     public abstract void processInput(InputState inputState);
-    
     public abstract void updateComponent();
     
-    public int getUpdateOrder() {
-        return updateOrder;
-    }
+    public abstract void loadJSONComponentSpecific(JSONObject entityData);
+    public abstract void saveJSONComponentSpecific(JSONObject entityJSON);
 
-	public abstract void loadJSONComponentSpecific(JSONObject entityData);
-	public abstract void addJSONComponentSpecific(JSONObject entityJSON);
+    public Entity getEntity() {
+    	return owningEntity;
+    }
+    
+	public int getUpdateOrder() {
+		return updateOrder;
+	}
 
     public boolean isExpired() {
         return expired;

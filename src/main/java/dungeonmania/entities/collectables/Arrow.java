@@ -12,22 +12,16 @@ import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Arrow extends Entity {
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	private ConsumableComponent consumableComp = new ConsumableComponent(this, 1, 1, 1);
-
 	public Arrow(Dungeon dungeon, Position position) {
 		super(dungeon, "arrow", position, false, EntityUpdateOrder.OTHER);
+		new CollectableComponent(this, 1, CollectableState.MAP);
+		new ConsumableComponent(this, 1, 1, 1);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 }

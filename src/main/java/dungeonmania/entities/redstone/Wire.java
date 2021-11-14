@@ -21,8 +21,8 @@ public class Wire extends Entity {
 	protected void inputEntity(InputState inputState) {}
 	protected void updateEntity() {}
 
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
 
 	@Override
 	public EntityResponse response() {

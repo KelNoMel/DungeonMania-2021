@@ -56,24 +56,24 @@ public class Portal extends Entity {
 		teleportedEntities.clear();
 	}
 	
-	private Portal getCorrespondingPortal() {
-		if (getId().equals(portalLinks.get(colour).p1.getId())) {
-			return portalLinks.get(colour).p2;
-		} else {
-			return portalLinks.get(colour).p1;
-		}
-	}
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {
 		baseJSON.put("colour", colour);
 	}
 	
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
 		colour = entitySpecificData.getString("colour");
-
+		
 		// Create a new portal link, and link this to the other portal of the same colour if link already exists
 		if (portalLinks.putIfAbsent(colour, new PortalLink(this, null)) != null) {
 			portalLinks.get(colour).p2 = this;
+		}
+	}
+	
+	private Portal getCorrespondingPortal() {
+		if (getId().equals(portalLinks.get(colour).p1.getId())) {
+			return portalLinks.get(colour).p2;
+		} else {
+			return portalLinks.get(colour).p1;
 		}
 	}
 	

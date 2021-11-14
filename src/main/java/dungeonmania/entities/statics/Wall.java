@@ -15,10 +15,8 @@ public class Wall extends Entity {
 	}
 
 	protected void updateEntity() {}
-
 	protected void inputEntity(InputState inputState) {}
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
 }

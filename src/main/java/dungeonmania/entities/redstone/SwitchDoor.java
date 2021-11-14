@@ -28,14 +28,12 @@ public class SwitchDoor extends Entity {
 	 * Save the door and it's corresponding keynumber in a json uniquely 
 	 * recognisable format.
 	 */
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	
 	/**
 	 * Load in the json using the our defined format.
 	 */
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-
-	
 	
 	public EntityResponse response() {
 		if (isUnlocked()) {
