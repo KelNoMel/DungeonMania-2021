@@ -14,8 +14,8 @@ public class Treasure extends Entity {
 
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	
-	public Treasure(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "treasure", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Treasure(Dungeon dungeon, Position position) {
+		super(dungeon, "treasure", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

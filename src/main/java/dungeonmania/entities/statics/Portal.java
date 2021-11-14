@@ -32,8 +32,8 @@ public class Portal extends Entity {
 	// Entities teleported already this tick
 	private List<Entity> teleportedEntities = new ArrayList<>();
 	
-	public Portal(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "portal", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Portal(Dungeon dungeon, Position position) {
+		super(dungeon, "portal", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {}

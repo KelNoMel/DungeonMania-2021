@@ -21,8 +21,8 @@ public class Sword extends Entity {
 	public BattleItemComponent battleItemComponent;
 	public WeaponComponent weaponComponent;
 
-	public Sword(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
-		super(dungeon, "sword", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Sword(Dungeon dungeon, Position position, CollectableState collectableState) {
+		super(dungeon, "sword", position, false, EntityUpdateOrder.OTHER);
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.SINGLE);

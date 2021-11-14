@@ -118,6 +118,7 @@ public class Dungeon {
     	gamemode = Gamemode.getGamemode(fileData.getString("gamemode"));
     	Portal.clearPortalLinks();
     	EntityFactory.loadEntities(fileData.getJSONArray("entities"), this, entities);
+    	entities.removeDeadEntities();
     	loadOther();
     	dungeonGoal = loadGoalFromFile(fileData);
     	dungeonId = fileData.getString("dungeon-id");
@@ -192,11 +193,11 @@ public class Dungeon {
 		
 		// Retrieve all data to save
 		JSONObject saveData = new JSONObject();
-		saveData.put("entities", entities.toJSON());
-		saveData.put("goal-condition", dungeonGoal.toJSON());
-		saveData.put("gamemode", gamemode.asString());
-		saveData.put("dungeon-name", dungeonName);
 		saveData.put("dungeon-id", dungeonId);
+		saveData.put("dungeon-name", dungeonName);
+		saveData.put("entities", entities.toJSON());
+		saveData.put("gamemode", gamemode.asString());
+		saveData.put("goal-condition", dungeonGoal.toJSON());
 		
 		try {
 			// Write the file
@@ -437,16 +438,16 @@ public class Dungeon {
 				Position newEntityPos = new Position(x,y);
 				if (!getCoord(maze, newEntityPos)) {
 					// Add wall to map
-					new Wall(generatedDungeon, newEntityPos, new JSONObject());
+					new Wall(generatedDungeon, newEntityPos);
 				}
 			}
 		}
 		
 		// Add player to start
-		new Player(generatedDungeon, start, new JSONObject());
+		new Player(generatedDungeon, start);
 
 		// Add goal to end
-		new Exit(generatedDungeon, end, new JSONObject());
+		new Exit(generatedDungeon, end);
 		
 		// Generate spawners
 		generatedDungeon.loadOther();
@@ -460,13 +461,11 @@ public class Dungeon {
 	private static ArrayList<ArrayList<Boolean>> randomisedPrims(int width, int height, Position start, Position end) {
 		// let maze be a 2D array of booleans (of size width and height) default false
 		// You should presume all game maps are 50 by 50.
-		int numSquares = 0;
 		ArrayList<ArrayList<Boolean>> maze = new ArrayList<>();
 		for (int i = 0; i <= width; i++) {
 			maze.add(new ArrayList<>());
 			for (int j = 0; j <= height; j++) {
 				maze.get(i).add(false);
-				numSquares++;
 			}
 		}
 		

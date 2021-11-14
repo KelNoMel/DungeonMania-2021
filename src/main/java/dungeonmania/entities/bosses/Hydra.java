@@ -3,7 +3,6 @@ package dungeonmania.entities.bosses;
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
-import dungeonmania.components.AIState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
@@ -26,8 +25,8 @@ public class Hydra extends Entity {
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
 
     
-    public Hydra(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "hydra", position, true, EntityUpdateOrder.OTHER, entitySpecificData);
+    public Hydra(Dungeon dungeon, Position position) {
+		super(dungeon, "hydra", position, true, EntityUpdateOrder.OTHER);
     }
 
     @Override

@@ -15,8 +15,8 @@ import dungeonmania.util.Position;
 public class TheOneRing extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
-	public TheOneRing(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "the_one_ring", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public TheOneRing(Dungeon dungeon, Position position) {
+		super(dungeon, "the_one_ring", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

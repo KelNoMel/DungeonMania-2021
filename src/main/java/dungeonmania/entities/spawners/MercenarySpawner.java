@@ -1,7 +1,5 @@
 package dungeonmania.entities.spawners;
 
-import org.json.JSONObject;
-
 import dungeonmania.Dungeon;
 import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
@@ -14,11 +12,11 @@ public class MercenarySpawner extends Spawner {
 
 	static private final int maxMercenaries = 2;
 	
-	public MercenarySpawner(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "mercenary_spawner", position, 40, entitySpecificData);
+	public MercenarySpawner(Dungeon dungeon, Position position) {
+		super(dungeon, "mercenary_spawner", position, 40);
 	}
 
-	public void spawnEntity() {
+	public boolean spawnEntity() {
 		Dungeon d = getDungeon();
 		
 		// Only spawn when at least one enemy
@@ -29,21 +27,19 @@ public class MercenarySpawner extends Spawner {
 				noEnemies = false;
 			}
 		}
-		if (noEnemies) return;
+		if (noEnemies) return false;
 		
 		if (d.getEntities().numEntitiesOfType(Mercenary.class) < maxMercenaries) {
 			Position spawnLayer = getPosition().asLayer(EntityFactory.movingLayer);
 
 			int percent = (int) Math.ceil(Math.random() * 100);
 			if (percent <= 30) {
-				new Assassin(d, spawnLayer, new JSONObject());
+				new Assassin(d, spawnLayer);
 			} else {
-				new Mercenary(d, spawnLayer, new JSONObject());
+				new Mercenary(d, spawnLayer);
 			}
+			return true;
 		}
+		return false;
 	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-
 }

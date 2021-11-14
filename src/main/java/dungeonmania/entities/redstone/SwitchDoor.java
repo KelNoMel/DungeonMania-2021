@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
 import dungeonmania.InputState;
+import dungeonmania.components.RedstoneComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.response.models.EntityResponse;
@@ -16,8 +17,8 @@ public class SwitchDoor extends Entity {
 	
 	public RedstoneComponent redstoneComponent = new RedstoneComponent(this, 1);
 	
-	public SwitchDoor(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "switch_door", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public SwitchDoor(Dungeon dungeon, Position position) {
+		super(dungeon, "switch_door", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {}

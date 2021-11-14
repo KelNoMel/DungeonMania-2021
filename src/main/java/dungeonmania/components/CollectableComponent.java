@@ -67,6 +67,17 @@ public class CollectableComponent extends Component {
 	public CollectableState getCollectableState() { return collectableState; }
 	public void setCollectableState(CollectableState collectableState) { this.collectableState = collectableState; }
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("collectState")) {
+    		collectableState = CollectableState.stateFromString(entityData.getString("collectState"));
+    	}
+		if (entityData.has("placed")) {
+    		hasBeenPlaced = entityData.getBoolean("placed");
+    	}
+	}
+	
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("collectState", collectableState.getName());
+		entityJSON.put("placed", hasBeenPlaced);
+	}
 }

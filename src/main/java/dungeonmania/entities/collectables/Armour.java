@@ -20,8 +20,8 @@ public class Armour extends Entity {
 	public BattleItemComponent battleItemComponent;
 	public ArmourComponent armourComponent;
 	
-	public Armour(Dungeon dungeon, Position position, CollectableState collectableState, JSONObject entitySpecificData) {
-		super(dungeon, "armour", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Armour(Dungeon dungeon, Position position, CollectableState collectableState) {
+		super(dungeon, "armour", position, false, EntityUpdateOrder.OTHER);
 		collectableComponent = new CollectableComponent(this, 1, collectableState);
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		armourComponent = new ArmourComponent(this, 3, armour);

@@ -9,9 +9,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.w3c.dom.ls.LSException;
-import org.w3c.dom.ls.LSSerializer;
-
 public final class FileLoader {
     /**
      * Loads a resource file given a certain path that is relative to resources/

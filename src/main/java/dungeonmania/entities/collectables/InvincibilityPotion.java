@@ -20,8 +20,8 @@ public class InvincibilityPotion extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
 
-	public InvincibilityPotion(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "invincibility_potion", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public InvincibilityPotion(Dungeon dungeon, Position position) {
+		super(dungeon, "invincibility_potion", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	// Player gets the invincible status, can override other effects

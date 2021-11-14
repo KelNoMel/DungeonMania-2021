@@ -17,8 +17,8 @@ public class MidnightArmour extends Buildable {
 	public BattleItemComponent battleItemComponent;
 	public ArmourComponent armourComponent;
 
-	public MidnightArmour(Dungeon dungeon, Position position, JSONObject entitySpecificData)  {
-		super(dungeon,  BuildableEnum.MIDNIGHT_ARMOUR.getType(), position, false, BuildableEnum.MIDNIGHT_ARMOUR.getRecipe(), entitySpecificData);
+	public MidnightArmour(Dungeon dungeon, Position position)  {
+		super(dungeon,  BuildableEnum.MIDNIGHT_ARMOUR.getType(), position, false, BuildableEnum.MIDNIGHT_ARMOUR.getRecipe());
 		battleItemComponent = new BattleItemComponent(this, 1, totalDurability);
 		armourComponent = new ArmourComponent(this, 2, armour);
 	}

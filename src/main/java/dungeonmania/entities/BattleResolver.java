@@ -9,7 +9,6 @@ import java.util.Random;
 import org.json.JSONObject;
 
 import dungeonmania.Dungeon;
-import dungeonmania.Gamemode;
 import dungeonmania.InputState;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.BattleItemComponent;
@@ -32,8 +31,8 @@ public class BattleResolver extends Entity {
 	private final Double allySupportRange = 2.0;
 	private final Double mercFrenzyRange = 2.0;
 
-	public BattleResolver(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER, entitySpecificData);
+	public BattleResolver(Dungeon dungeon, Position position) {
+		super(dungeon, "battle_resolver", position, false, EntityUpdateOrder.BATTLERESOLVER);
 		toggleDisplay(false);
 	}
 
@@ -237,11 +236,11 @@ public class BattleResolver extends Entity {
 			// The two rare items have an equal chance to be spawned
 			// A bit brittle, but OK since only two rares
 			if (random.nextInt(100) % 2 == 0) {
-				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition(), new JSONObject());
+				TheOneRing ring = new TheOneRing(getDungeon(), player.getPosition());
 				ring.setCollectableState(CollectableState.INVENTORY);
 				d.transferToInventory(ring);
 			} else {
-				Anduril anduril = new Anduril(getDungeon(), player.getPosition(), new JSONObject());
+				Anduril anduril = new Anduril(getDungeon(), player.getPosition());
 
 				anduril.setCollectableState(CollectableState.INVENTORY);
 				d.transferToInventory(anduril);
