@@ -145,6 +145,7 @@ public class BattleResolver extends Entity {
 
 					if (weapon.getType().equals(AttackTypeEnum.EXTRA)) {
 						// queue all extra attacks
+						System.out.println("Bow is added to queue");
 						extraAttacks.add(weapon);
 					} else if (singleAttacks.size() == 0) {
 						// add single per round weapon to the queue over fists

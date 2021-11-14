@@ -12,7 +12,7 @@ import dungeonmania.components.BattleItemComponent;
 
 public class Shield extends Buildable {
 	final private int totalDurability = 5;
-	final private int armour = 2;
+	final private int armour = 50;
 	
 	public CollectableComponent collectableComponent;
 	public BattleItemComponent battleItemComponent;

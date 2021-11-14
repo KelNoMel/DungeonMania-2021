@@ -1,0 +1,70 @@
+{
+    "entities": [
+        {
+            "x": 1,
+            "y": 1,
+            "type": "player"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "wood"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "arrow"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "arrow"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "arrow"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "armour"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "armour"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "armour"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "health_potion"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "health_potion"
+        },
+        
+        {
+            "x": 4,
+            "y": 1,
+            "type": "assassin"
+        },
+        {
+            "x": 6,
+            "y": 1,
+            "type": "assassin"
+        },
+        {
+            "x": 7,
+            "y": 1,
+            "type": "assassin"
+        }
+    ]
+}

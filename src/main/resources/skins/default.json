@@ -18,6 +18,7 @@
         "boulder": "images/tileset/entities/boulder_00.png",
         "bow": "images/tileset/items/bow_0.png",
         "shield": "images/tileset/items/shield.png",
+        "armour": "images/tileset/items/armour.png",
         "player": "images/tileset/entities/entity.png",
         "bomb": "images/tileset/items/bomb.png",
         "wood": "images/tileset/entities/box_wood.png",

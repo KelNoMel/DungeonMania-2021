@@ -8,17 +8,17 @@
         {
             "x": 1,
             "y": 0,
-            "type": "treasure",
+            "type": "treasure"
         },
 		{
             "x": 2,
             "y": 0,
-            "type": "the_one_ring",
+            "type": "the_one_ring"
         },
         {
             "x": 5,
             "y": 0,
-            "type": "assassin",
+            "type": "assassin"
         }
     ]
 }

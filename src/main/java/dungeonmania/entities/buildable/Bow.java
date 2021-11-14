@@ -18,7 +18,7 @@ import dungeonmania.components.WeaponComponent;
 public class Bow extends Buildable {
 	
 	final private int totalDurability = 3;
-	final private int damage = 4;
+	final private int damage = 5;
 
 	public CollectableComponent collectableComponent;
 	public BattleItemComponent battleItemComponent;

@@ -11,19 +11,16 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
+    final static int attackDamage = 25;
+	final static int maxHealth = 265;
 
     public Assassin(Dungeon dungeon, Position position) {
         super(dungeon, position);
-        battleComponent.setHealth(150);    
+        battleComponent.setHealth(maxHealth);    
         setType("assassin");
+        battleComponent.setAttackDamage(attackDamage);
     }
 
 	protected void inputEntity(InputState inputState) {
-        List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
-        for (Entity e : entities) {
-            if (e instanceof Player) {
-                battleComponent.setAttackDamage(15);
-            }
-        }
     }
 }

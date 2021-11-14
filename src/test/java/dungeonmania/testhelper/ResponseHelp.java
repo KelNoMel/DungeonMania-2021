@@ -276,6 +276,19 @@ public class ResponseHelp {
 
         return true;
     }
+
+    public static boolean inventoryContains(String wantedItem, DungeonResponse res1) {
+        ArrayList<ItemResponse> inventory = new ArrayList<>(res1.getInventory());
+        for (ItemResponse item : inventory) {
+            if (item.getType().equals(wantedItem)) return true;
+        }
+        return false;
+    }
+
+    public static int inventorySize(DungeonResponse res1) {
+        ArrayList<ItemResponse> inventory = new ArrayList<>(res1.getInventory());
+        return inventory.size();
+    }
     
     public static boolean entityInDungeon(EntityResponse res1, DungeonResponse res2) {
     	for (EntityResponse eres : res2.getEntities()) {
@@ -304,6 +317,61 @@ public class ResponseHelp {
         }
         return null;
     }
+
+    /**
+     * Get all ids of matching type in the DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return all ids with a matching type
+     */
+    public static List<String> getAllEntityOfTypeIds (DungeonResponse dgnRes,
+        String type) {
+        List<EntityResponse> entities = dgnRes.getEntities();
+        List<String> ids = new ArrayList<>();
+        for (EntityResponse entity : entities) {
+            if (entity.getType().equals(type)) {
+                ids.add(entity.getId());
+            }
+        }
+        return ids;
+    }
+
+    /**
+     * Get all EntityResponse of matching type in the DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return all EntityResponse with a matching type
+     */
+    public static List<EntityResponse> getAllEntityOfType (DungeonResponse dgnRes,
+        String type) {
+        List<EntityResponse> entities = dgnRes.getEntities();
+        List<EntityResponse> wantedEntities = new ArrayList<>();
+        for (EntityResponse entity : entities) {
+            if (entity.getType().equals(type)) {
+                wantedEntities.add(entity);
+            }
+        }
+        return wantedEntities;
+    }
+
+    /**
+     * Get all ids of matching type in the DungeonResponse
+     * @param dgnRes the DungeonResponse that is searched
+     * @param type the type that is being searched for
+     * @return all ids with a matching type
+     */
+    public static List<String> getAllItemOfTypeIds (DungeonResponse dgnRes,
+        String type) {
+        List<ItemResponse> items = dgnRes.getInventory();
+        List<String> ids = new ArrayList<>();
+        for (ItemResponse item : items) {
+            if (item.getType().equals(type)) {
+                ids.add(item.getId());
+            }
+        }
+        return ids;
+    }
+    
 
     /**
      * Get an ItemResponse of the first instance with a matching type in the

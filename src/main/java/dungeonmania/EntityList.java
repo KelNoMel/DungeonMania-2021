@@ -37,7 +37,7 @@ public class EntityList extends ArrayList<Entity> {
 		updatingActors = false;
 		
     	for (Entity e : this) {
-    		if (e.getState() == EntityState.DEAD) {
+			if (e.getState() == EntityState.DEAD) {
     			deadEntities.add(e);
     		}
     	}

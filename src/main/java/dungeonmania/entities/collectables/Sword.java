@@ -14,8 +14,8 @@ import dungeonmania.util.Position;
 import dungeonmania.components.BattleItemComponent;
 
 public class Sword extends Entity {
-	final private int totalDurability = 7;
-	final private int damage = 7;
+	final private int totalDurability = 3;
+	final private int damage = 3;
 
 	public CollectableComponent collectableComponent;
 	public BattleItemComponent battleItemComponent;
