@@ -10,7 +10,7 @@ import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIMercAlly;
 import dungeonmania.components.aistates.AIMercHostile;
-import dungeonmania.components.aistates.AIMercConfused;
+import dungeonmania.components.aistates.AIRandomHostile;
 import dungeonmania.components.aistates.AIRunAway;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
@@ -27,7 +27,7 @@ public class Mercenary extends Entity {
 		super(dungeon, "mercenary", position, true, EntityUpdateOrder.OTHER);
 		aiComponent.registerState(new AIMercHostile(aiComponent, this));
 		aiComponent.registerState(new AIMercAlly(aiComponent, this));
-		aiComponent.registerState(new AIMercConfused(aiComponent, this));
+		aiComponent.registerState(new AIRandomHostile(aiComponent, moveComponent));
 		aiComponent.registerState(new AIRunAway(aiComponent, this, moveComponent));
 		if (startState == null) {
 			aiComponent.changeState("MercHostile");			
@@ -53,7 +53,7 @@ public class Mercenary extends Entity {
 				aiComponent.changeState("enemyRunAway");
 				break;
 			case "invisible":
-				aiComponent.changeState("MercConfused");
+				aiComponent.changeState("RandomHostile");
 				break;
 			default:
 				aiComponent.changeState("MercHostile");
