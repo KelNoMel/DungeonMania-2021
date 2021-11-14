@@ -6,26 +6,28 @@ import dungeonmania.Dungeon;
 import dungeonmania.InputState;
 import dungeonmania.util.Position;
 import dungeonmania.components.CollectableComponent;
+import dungeonmania.components.WeaponComponent;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.moving.ZombieToast;
 import dungeonmania.components.ArmourComponent;
-import dungeonmania.components.BattleComponent;
+import dungeonmania.components.AttackTypeEnum;
 import dungeonmania.components.BattleItemComponent;
 
 public class MidnightArmour extends Buildable {
 	final private int totalDurability = 5;  // TODO: make this infinite by adjusting ArmourComponent
 	final private int armour = 25;
+	final private int damage = 10;
 	
 	public CollectableComponent collectableComponent;
 	public BattleItemComponent battleItemComponent;
 	public ArmourComponent armourComponent;
-	public BattleComponent battleComponent;
+	public WeaponComponent weaponComponent;
 
 	public MidnightArmour(Dungeon dungeon, Position position, JSONObject entitySpecificData)  {
 		super(dungeon,  BuildableEnum.MIDNIGHT_ARMOUR.getType(), position, false, BuildableEnum.MIDNIGHT_ARMOUR.getRecipe(), entitySpecificData);
 		battleItemComponent = new BattleItemComponent(this, 1, totalDurability);
 		armourComponent = new ArmourComponent(this, 2, armour);
-		battleComponent = new BattleComponent(this, 3, 30, 10);
+		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}
 
 	protected void inputEntity(InputState inputState) {
