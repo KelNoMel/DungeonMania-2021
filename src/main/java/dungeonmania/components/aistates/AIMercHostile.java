@@ -41,11 +41,20 @@ public class AIMercHostile extends AIState {
 	
 	public void processInput(InputState inputState) {
 		Direction mercMoveDirection = inputState.getMovementDirection();
-		// Actual pathfinding should also work with the following line???
+		// check if within radius of player 
 		Player p = merc.getDungeon().getPlayer();
-		Dijkstras shortestPath = new Dijkstras(merc.getDungeon(), merc);
-		Position nextPos = shortestPath.getNextPosition(merc.getPosition(), p.getPosition());
-		Position mercToNext = Position.calculatePositionBetween(nextPos, merc.getPosition());
+		Position mercToNext;
+		Position nextPos;
+
+		if (Position.distanceBetween(p.getPosition(), merc.getPosition()) <= 5) {
+			Dijkstras shortestPath = new Dijkstras(merc.getDungeon(), merc);
+			nextPos = shortestPath.getNextPosition(merc.getPosition(), p.getPosition());
+			mercToNext = Position.calculatePositionBetween(nextPos, merc.getPosition());
+		} else {
+			mercToNext = Position.calculatePositionBetween(merc.getDungeon().getPlayer().getPosition(), merc.getPosition());
+			nextPos = merc.getDungeon().getPlayer().getPosition();
+		}
+		
 		// Move to right if on top of player
 		if (merc.getPosition().equals(nextPos)) {
 			mercMoveDirection = Direction.RIGHT;

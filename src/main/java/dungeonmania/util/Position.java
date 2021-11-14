@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * See Section 7.1
  */
-public final class Position {
+public final class Position implements Comparable<Position> {
 	
 	public static final double epsilon = 0.001;
 	public static boolean withinRange(Position p1, Position p2, Double distance) {
@@ -125,5 +125,11 @@ public final class Position {
         adjacentPositions.add(new Position(x-1, y+1));
         adjacentPositions.add(new Position(x-1, y));
         return adjacentPositions;
+    }
+
+    @Override
+    public int compareTo(Position o) {
+        // TODO: for dijkstras, this should probs be movement factor (ticks needed to stay on this tile) but should be fine regardless?
+        return 0;
     }
 }

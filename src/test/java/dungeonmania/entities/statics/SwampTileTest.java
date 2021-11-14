@@ -19,7 +19,7 @@ public class SwampTileTest {
         // just testing that it is storing correct movement factor and that it is created properly right now
 
         DungeonManiaController mania = new DungeonManiaController();
-        mania.newGame("swamp","Peaceful");
+        mania.newGame("swamp","peaceful");
         
         DungeonResponse moveResponse = mania.tick(null, Direction.RIGHT);
         assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", new Position(1,0), false), moveResponse));

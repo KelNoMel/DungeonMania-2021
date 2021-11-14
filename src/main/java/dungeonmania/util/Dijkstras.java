@@ -29,10 +29,11 @@ public class Dijkstras {
     }
 
     public Map<Position, Position> dijkstras(Position source) {
+
         List<Position> grid = new ArrayList<>();
 
-        XCOORD: for (int i = -radius; i <= radius; i++ ) {
-            YCOORD: for (int j = -radius; j <= radius; j++ ) {
+        XCOORD: for (int i = source.getX() - radius; i <= source.getX() + radius; i++ ) {
+            YCOORD: for (int j = source.getY()-radius; j <= source.getY() + radius; j++ ) {
                 Position p = new Position (i, j);
                 List<Entity> entList = dungeon.getEntitiesAtPosition(p);
                 for (Entity e: entList) {
@@ -42,6 +43,7 @@ public class Dijkstras {
             }
         }
        
+
         dist.put(source, Double.valueOf(0));
         Queue<Position> q = new PriorityQueue<>();    
         for (Position p : grid) {
@@ -51,15 +53,21 @@ public class Dijkstras {
         }
 
         while (!q.isEmpty()) {
-            Position u = getSmallestDist(q, source);
-            q.remove(u);
-            OUTER_LOOP: for (Position v : u.getAdjacentPositions()) { // TODO: ensure it is still within range
-                // make sure we're not adding walls
+            // Position u = getSmallestDist(q, source);
+            // q.remove(u);
+            Position u = q.remove();
+            if (u == null) continue;
+
+            OUTER_LOOP: for (Position v : u.getAdjacentPositions()) { 
+                // ensure it is still within range
+                if (!Position.withinRange(v, source, (double)radius)) continue OUTER_LOOP;
+                // ensure we're not adding walls
                 for (Entity e : dungeon.getEntitiesAtPosition(v)) {
                     if (e instanceof Wall) continue OUTER_LOOP;
                 }
+
                 if (dist.get(u) + cost(u) < dist.get(v)) {
-                    dist.put(v , dist.get(u) + cost(u));
+                    dist.put(v , dist.get(u) + cost(u)); 
                     prev.put(v, u);
                 }
             }
@@ -77,26 +85,22 @@ public class Dijkstras {
 
     public Position getNextPosition (Position source, Position dest) {
         dijkstras(source);
+        System.out.println(prev);
+
         return getNextHelper(source, dest);
     }
 
     private Position getNextHelper(Position source, Position dest) {
+        if (prev.get(dest) == null) {
+            return null;
+        }
         if (source.equals(prev.get(dest))) return dest;
         return getNextHelper(source, prev.get(dest));
     }
 
-    private Position getSmallestDist (Queue<Position> q, Position src) {
-        Position temp = null;
-        int distance = 0;
-        for (Position p: q) {
-            if (dist.get(p) < Double.valueOf(distance)) // TODO: 
-                temp = p;
-        }
-        return temp;
-    }
-
-    private double cost (Position src) { // check for swamp tiles 
-        // return current time remaining || swamp tile time || 1 (for normal tiles)
+    // Returns ticks needed to move off current position
+    // current time remaining || swamp tile time || 1 (for normal tiles)
+    private double cost (Position src) { 
         for (Entity e : dungeon.getEntitiesAtPosition(src)) {
             if (e instanceof SwampTile ) {
                 SwampTile st = (SwampTile) e;
