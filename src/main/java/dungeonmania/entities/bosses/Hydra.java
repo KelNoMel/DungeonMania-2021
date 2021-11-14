@@ -22,7 +22,7 @@ public class Hydra extends Entity {
 
     public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, 150, 20);
     
     public Hydra(Dungeon dungeon, Position position) {
 		super(dungeon, "hydra", position, true, EntityUpdateOrder.OTHER);
