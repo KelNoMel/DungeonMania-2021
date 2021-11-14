@@ -14,11 +14,10 @@ import dungeonmania.util.Position;
 
 public class HealthPotion extends Entity {
 
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	private ConsumableComponent consumableComp = new ConsumableComponent(this, 2, 1, 1);
-	
 	public HealthPotion(Dungeon dungeon, Position position) {
 		super(dungeon, "health_potion", position, false, EntityUpdateOrder.OTHER);
+		new CollectableComponent(this, 1, CollectableState.MAP);
+		new ConsumableComponent(this, 2, 1, 1);
 	}
 
 	// When health potion gets used, player restores health
@@ -32,11 +31,9 @@ public class HealthPotion extends Entity {
 		}
 	}
 
-	protected void updateEntity() {
-		
-	}
+	protected void updateEntity() {}
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 }

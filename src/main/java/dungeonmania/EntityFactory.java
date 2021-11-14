@@ -108,13 +108,13 @@ public class EntityFactory {
 				
 			/// Buildable
 			case "bow":
-				return new Bow(loadingDungeon, pos.asLayer(itemLayer));
+				return new Bow(loadingDungeon);
 			case "shield":
-				return new Shield(loadingDungeon, pos.asLayer(itemLayer));
+				return new Shield(loadingDungeon);
 			case "sceptre":
-				return new Sceptre(loadingDungeon, pos.asLayer(itemLayer));
+				return new Sceptre(loadingDungeon);
 			case "midnight_armour":
-				return new MidnightArmour(loadingDungeon, pos.asLayer(itemLayer));
+				return new MidnightArmour(loadingDungeon);
 
 			// Redstone
 			case "wire":
@@ -136,21 +136,17 @@ public class EntityFactory {
 			case "mercenary_spawner":
 				return new MercenarySpawner(loadingDungeon, pos);
 			case "spider_spawner":
-				// TODO load spawner info from save
 				return new SpiderSpawner(loadingDungeon, pos);
 			case "hydra_spawner":
-				// TODO load spawner info from save
 				return new HydraSpawner(loadingDungeon, pos);
 			case "zombie_toast_spawner":
-				// TODO load spawner info from save
 				return new ZombieToastSpawner(loadingDungeon, pos.asLayer(bottomLayer));
 			
 			case "battle_resolver":
 				return new BattleResolver(loadingDungeon, pos);
 			
-				// Type is not correct or has not been implemented
+			// Type is not correct or has not been implemented
 			default:
-				System.out.println(entityType + " could not be loaded");
 				return null;
 		}
 	}

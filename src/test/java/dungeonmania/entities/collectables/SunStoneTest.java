@@ -10,8 +10,6 @@ import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.testhelper.ResponseHelp;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
-
 
 public class SunStoneTest {
     @Test

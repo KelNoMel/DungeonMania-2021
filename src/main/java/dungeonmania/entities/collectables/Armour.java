@@ -35,9 +35,8 @@ public class Armour extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {}
-
 	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

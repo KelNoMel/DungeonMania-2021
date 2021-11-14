@@ -12,20 +12,14 @@ import dungeonmania.util.Position;
 
 public class Treasure extends Entity {
 
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
-	
 	public Treasure(Dungeon dungeon, Position position) {
 		super(dungeon, "treasure", position, false, EntityUpdateOrder.OTHER);
+		new CollectableComponent(this, 1, CollectableState.MAP);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

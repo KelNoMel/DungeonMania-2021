@@ -150,12 +150,12 @@ public abstract class Entity {
     	entityJSON.put("type", type);
     	
     	for (Component c : components) {
-    		c.addJSONComponentSpecific(entityJSON);
+    		c.saveJSONComponentSpecific(entityJSON);
     	}
-    	addJSONEntitySpecific(entityJSON);
+    	saveJSONEntitySpecific(entityJSON);
     	return entityJSON;
     }
-    public abstract void addJSONEntitySpecific(JSONObject baseJSON);
+    public abstract void saveJSONEntitySpecific(JSONObject baseJSON);
     
     public boolean withinRange(Entity e, int distance) {
 		return Math.abs(Position.distanceBetween(position, e.getPosition()) - distance) <= Position.epsilon;

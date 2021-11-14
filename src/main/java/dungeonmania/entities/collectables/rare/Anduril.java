@@ -21,25 +21,17 @@ public class Anduril extends Entity {
 	public BattleItemComponent battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 	public WeaponComponent weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.SINGLE);
 
-	
-
 	public Anduril(Dungeon dungeon, Position position) {
 		super(dungeon, "anduril", position, false, EntityUpdateOrder.OTHER);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void updateEntity() {}
+	protected void inputEntity(InputState inputState) {}
+	
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 	public void setCollectableState(CollectableState state) {
 		collectableComp.setCollectableState(state);
-	}
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
+	}	
 }

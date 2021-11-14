@@ -15,31 +15,27 @@ public class BattleItemComponent extends Component {
         
     }
     
-    public void useItem() {
-        durability--;
-        System.out.println("durability is now " + durability);
-        if (durability <= 0) {
-            getEntity().setState(EntityState.DEAD);
-            System.out.println("battle item set to dead");
-        }
-    }
-
-    public boolean isBroken() {
-        return getEntity().getState().equals(EntityState.DEAD);
-    }
-
     public void processInput(InputState inputState) {}
-
     public void updateComponent() {}
-
+    
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {
+    	entityJSON.put("durability", durability);
+    }
+    
     public void loadJSONComponentSpecific(JSONObject entityData) {
     	if (entityData.has("durability")) {
     		durability = entityData.getInt("durability");
     	}
     }
     
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("durability", durability);
-	}
+    public void useItem() {
+        durability--;
+        if (durability <= 0) {
+            getEntity().setState(EntityState.DEAD);
+        }
+    }
 
+    public boolean isBroken() {
+        return getEntity().getState().equals(EntityState.DEAD);
+    }
 }

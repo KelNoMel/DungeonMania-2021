@@ -14,8 +14,7 @@ public class EffectComponent extends Component {
         super(owningEntity, updateOrder);
     }
 
-    public void processInput(InputState input) {
-    }
+    public void processInput(InputState input) {}
     
     // Tick down the component to zero.
     // When timer is zero, reset the status to normal and remove the component
@@ -27,14 +26,13 @@ public class EffectComponent extends Component {
         }
     }
 
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {
+    	entityJSON.put("timer", timer);
+    }
+    
     public void loadJSONComponentSpecific(JSONObject entityData) {
     	if (entityData.has("timer")) {
     		timer = entityData.getInt("timer");
     	}
     }
-    
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("timer", timer);
-	}
-
 }

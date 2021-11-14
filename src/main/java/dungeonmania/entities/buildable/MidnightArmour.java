@@ -28,10 +28,17 @@ public class MidnightArmour extends Buildable {
 		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
 	}
 
+	public MidnightArmour(Dungeon dungeon) {
+		super(dungeon, "midnight_armour", new Position(0,0), false);
+		battleItemComponent = new BattleItemComponent(this, 1, totalDurability);
+		armourComponent = new ArmourComponent(this, 2, armour);
+		weaponComponent = new WeaponComponent(this, 3, damage, AttackTypeEnum.EXTRA);
+	}
+
 	protected void inputEntity(InputState inputState) {}
 
 	protected void updateEntity() {}
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

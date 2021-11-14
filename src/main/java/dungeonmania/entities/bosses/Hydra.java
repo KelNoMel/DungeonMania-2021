@@ -6,15 +6,10 @@ import dungeonmania.components.AIComponent;
 import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
-import dungeonmania.components.aistates.AIMercAlly;
 import dungeonmania.components.aistates.AIRandomHostile;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
-import dungeonmania.entities.Player;
-import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
-
-import java.util.List;
 
 import org.json.JSONObject;
 
@@ -63,5 +58,5 @@ public class Hydra extends Entity {
     }
 
     @Override
-    public void addJSONEntitySpecific(JSONObject baseJSON) {}
+    public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 }

@@ -33,12 +33,10 @@ public class ConsumableComponent extends Component {
             }
         }
 
-        if (input == null) System.out.println("input was null in ConsumableComponent");
-        if (input.getItemUsed() == null) System.out.println("item used was null in ConsumableComponent");
-
         // Item is in inventory, matches input item type and
         // not enough of the item is used yet
         if (player.getInventory().contains(getEntity()) // && input != null // TODO: should fix error below but need to check reprecussions
+            && !(input.getItemUsed() == null)
             && input.getItemUsed().equals(getEntity().getId())      // TODO: rare null exception was seen here
             && frequency <= numObjUsed) {
             
@@ -51,12 +49,15 @@ public class ConsumableComponent extends Component {
                     getEntity().setState(EntityState.DEAD);
                 }
         }
-
-
     }
     
     public void updateComponent() {}
 
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {
+    	entityJSON.put("durability", curDurability);
+    	entityJSON.put("numUsed", numObjUsed);		
+    }
+    
 	public void loadJSONComponentSpecific(JSONObject entityData) {
 		if (entityData.has("durability")) {
     		curDurability = entityData.getInt("durability");
@@ -66,9 +67,4 @@ public class ConsumableComponent extends Component {
     	}
 	}
 	
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("durability", curDurability);
-		entityJSON.put("numUsed", numObjUsed);		
-	}
-
 }

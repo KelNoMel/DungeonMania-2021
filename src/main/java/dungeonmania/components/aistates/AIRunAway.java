@@ -25,8 +25,6 @@ public class AIRunAway extends AIState {
 	
 	public void processInput(InputState inputState) {
 		// Default movement, at least better than moving towards the player
-        Direction enemyMoveDirection = Direction.NONE;
-		
 		List<Direction> options = weighOptions(enemy.getDungeon().getPlayer().getPosition(), enemy.getPosition());
 		// Pick a random direction out of options list (They should all in theory equally move the enemy further away from player)
         // Note: Doesn't factor in swamps/make use of Djikstra's algo. KISS
@@ -41,7 +39,6 @@ public class AIRunAway extends AIState {
                 break;
             }
         }
-        enemyMoveDirection = Direction.NONE;
 	}
 
     // Gets player location and returns directions that don't bring the enemy closer
@@ -70,12 +67,9 @@ public class AIRunAway extends AIState {
         return options;
     }
 
-	public void updateState() {
-		//System.out.println("Scared");
-	}
+	public void updateState() {}
 
 	public void onEnter() {}
-
 	public void onExit() {}
 
 	public String getName() {

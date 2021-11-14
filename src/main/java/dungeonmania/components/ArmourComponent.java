@@ -6,8 +6,8 @@ import dungeonmania.InputState;
 import dungeonmania.entities.Entity;
 
 public class ArmourComponent extends Component {
-    // TODO force the entity to be of type BattleItem
-    private int armour;
+
+	private int armour;
 
     public ArmourComponent(Entity owningEntity, int updateOrder, int armour) {
         super(owningEntity, updateOrder);
@@ -22,30 +22,29 @@ public class ArmourComponent extends Component {
     }
 
     public void processInput(InputState inputState) {}
-    
     public void updateComponent() {}
 
-    public void useItem() {
-        getBattleItem().useItem();
-     }
- 
-    public boolean isBroken() {
-        return getBattleItem().isBroken();
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {
+    	entityJSON.put("armour", armour);
     }
-
-    private BattleItemComponent getBattleItem() {
-        return getEntity().getComponent(BattleItemComponent.class);
-    }
-
-    public int getArmour() { return armour; }
-
+    
     public void loadJSONComponentSpecific(JSONObject entityData) {
     	if (entityData.has("armour")) {
     		armour = entityData.getInt("armour");
     	}
     }
     
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("armour", armour);
-	}
+    public void useItem() {
+    	getBattleItem().useItem();
+    }
+    
+    public boolean isBroken() {
+    	return getBattleItem().isBroken();
+    }
+    
+    private BattleItemComponent getBattleItem() {
+    	return getEntity().getComponent(BattleItemComponent.class);
+    }
+    
+    public int getArmour() { return armour; }
 }

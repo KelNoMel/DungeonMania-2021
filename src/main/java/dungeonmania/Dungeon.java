@@ -63,15 +63,12 @@ public class Dungeon {
         this.dungeonName = dungeonName;
     	this.gamemode = Gamemode.getGamemode(gamemode);
     	
-    	// Load file
     	JSONObject dungeonJSON = readDungeonJSON(dungeonName);
     	
-    	// Add the entities
     	Portal.clearPortalLinks();
         EntityFactory.loadEntities(dungeonJSON.getJSONArray("entities"), this, entities);        
         loadOther();
         
-		// Adds goals and sets goal condition
 		dungeonGoal = loadGoalFromFile(dungeonJSON);
     	
     	dungeonId = Dungeon.createId();
@@ -108,11 +105,8 @@ public class Dungeon {
     	try {
 			fileData = new JSONObject(new String(Files.readAllBytes(loadFile.toPath())));
 		} catch (IOException e) {
-			System.out.println("Unable to read/load file " + loadFile.toPath() + " information");
 			throw new IllegalArgumentException("Unable to create the dungeon from the selected file");
 		}
-    	
-    	System.out.println(fileData.toString(2));
     	
     	dungeonName = fileData.getString("dungeon-name");
     	gamemode = Gamemode.getGamemode(fileData.getString("gamemode"));
@@ -192,7 +186,6 @@ public class Dungeon {
 			saveFile.delete();
 			saveFile.createNewFile();
 		} catch (IOException e) {
-			System.out.println("File save error 1");
 			return;
 		}
 		
@@ -210,10 +203,8 @@ public class Dungeon {
 			writer.write(saveData.toString(4));
 			writer.close();
 		} catch (IOException e) {
-			System.out.println("File save error 2");
 			return;
 		}
-		System.out.println("Saved game at location " + saveFile.getPath());
 	}
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -243,7 +234,6 @@ public class Dungeon {
 	///                             Dungeon Response                             ///
 	////////////////////////////////////////////////////////////////////////////////
 
-	// TODO
 	/**
 	 * Get the types of buildables possible
 	 * @return list of strings for each type of buildable
@@ -252,7 +242,6 @@ public class Dungeon {
 		return Buildable.response(getPlayer());
 	}
     
-	// TODO: add goals, animations
     /**
      * Create a DungeonResponse for the current Dungeon
      * @return DungeonResponse describing the currennt state of the game

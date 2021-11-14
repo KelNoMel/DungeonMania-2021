@@ -13,11 +13,15 @@ public class Sceptre extends Buildable {
 	public Sceptre(Dungeon dungeon, Position position)  {
 		super(dungeon,  BuildableEnum.SCEPTRE.getType(), position, false, BuildableEnum.SCEPTRE.getRecipe());
 	}
+	
+	public Sceptre(Dungeon dungeon) {
+		super(dungeon, "sceptre", new Position(0,0), true);
+	}
 
 	protected void inputEntity(InputState inputState) {}
 	protected void updateEntity() {}
 
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }
 

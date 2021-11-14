@@ -35,8 +35,10 @@ public class WeaponComponent extends Component {
     }
 
     public void processInput(InputState inputState) {}
-    
     public void updateComponent() {} 
+    
+    public void saveJSONComponentSpecific(JSONObject entityJSON) {}
+    public void loadJSONComponentSpecific(JSONObject entityData) {}
 
     public void useItem() {
        getBattleItem().useItem();
@@ -52,7 +54,4 @@ public class WeaponComponent extends Component {
 
     public int getDamage() { return damage; }
     public AttackTypeEnum getType() { return attackType; }
-
-    public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

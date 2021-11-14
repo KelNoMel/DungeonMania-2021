@@ -14,13 +14,11 @@ public class Exit extends Entity {
 		super(dungeon, "exit", position, false, EntityUpdateOrder.OTHER);
 	}
 
-	protected void inputEntity(InputState inputState) {
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 
-	}
-
-	protected void updateEntity() {
-
-	}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 
 	public Boolean playerAtExit() {
 		if (getDungeon().getPlayer().getPosition().equals(getPosition())) {
@@ -28,8 +26,4 @@ public class Exit extends Entity {
 		}
 		return false;
 	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
 }

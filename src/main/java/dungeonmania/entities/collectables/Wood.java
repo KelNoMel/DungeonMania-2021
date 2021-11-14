@@ -12,21 +12,15 @@ import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class Wood extends Entity {
-	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
 	public Wood(Dungeon dungeon, Position position) {
 		super(dungeon, "wood", position, false, EntityUpdateOrder.OTHER);
+		new CollectableComponent(this, 1, CollectableState.MAP);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
 }

@@ -21,13 +21,11 @@ public class Boulder extends Entity {
 		super(dungeon, "boulder", position, false, EntityUpdateOrder.OTHER);
 	}
 
-	protected void inputEntity(InputState inputState) {
-
-	}
-
-	protected void updateEntity() {
-
-	}
+	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
+	
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
+	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 	
 	/**
 	 * Push a boulder in a direction if the path is not blocked
@@ -49,8 +47,4 @@ public class Boulder extends Entity {
 		
 		return true;
 	}
-	
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
-	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-	
 }

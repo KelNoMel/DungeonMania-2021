@@ -103,8 +103,6 @@ public class EntityList extends ArrayList<Entity> {
 		return entities;
 	}
 	
-	// Returns a list of enitities by a certain type
-	// Not used now
 	public List<Entity> getEntitiesByType(Class<?> classType) {
 		List<Entity> entTypeList = new ArrayList<>();
 		for (Entity e : this) {

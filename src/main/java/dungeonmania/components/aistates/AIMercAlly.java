@@ -40,9 +40,7 @@ public class AIMercAlly extends AIState {
 		merc.moveComponent.setMoveDirection(mercMoveDirection);
 	}
 
-	public void updateState() {
-		//System.out.println("Ally!");
-	}
+	public void updateState() {}
 
 	public void onEnter() {
 		merc.setInteractable(false);

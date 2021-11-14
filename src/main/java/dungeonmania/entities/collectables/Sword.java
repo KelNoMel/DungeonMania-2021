@@ -29,11 +29,8 @@ public class Sword extends Entity {
 	}
 
 	protected void inputEntity(InputState inputState) {}
+	protected void updateEntity() {}
 
-	protected void updateEntity() {
-
-	}
-
-	public void addJSONEntitySpecific(JSONObject baseJSON) {}
+	public void saveJSONEntitySpecific(JSONObject baseJSON) {}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
 }

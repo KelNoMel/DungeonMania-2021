@@ -22,6 +22,24 @@ public class BattleComponent extends Component {
 	public void processInput(InputState inputState) {}
 	public void updateComponent() {}
 	
+	public void saveJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("maxHealth", maxHealth);
+		entityJSON.put("health", health);
+		entityJSON.put("attackDamage", attackDamage);
+	}
+	
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("maxHealth")) {
+    		maxHealth = entityData.getInt("maxHealth");
+    	}
+		if (entityData.has("health")) {
+    		health = entityData.getInt("health");
+    	}
+		if (entityData.has("attackDamage")) {
+    		attackDamage = entityData.getInt("attackDamage");
+    	}
+	}
+	
 	// Algorithm for damage given scaled by health
 	public int getScaledAttackDamage(int weaponDamage) {
 		return (int) Math.ceil(health * (attackDamage + weaponDamage));
@@ -56,23 +74,5 @@ public class BattleComponent extends Component {
 	
 	public String getHealthAsString() {
 		return String.format("%.1f", (float)health / (float)maxHealth);
-	}
-
-	public void loadJSONComponentSpecific(JSONObject entityData) {
-		if (entityData.has("maxHealth")) {
-    		maxHealth = entityData.getInt("maxHealth");
-    	}
-		if (entityData.has("health")) {
-    		health = entityData.getInt("health");
-    	}
-		if (entityData.has("attackDamage")) {
-    		attackDamage = entityData.getInt("attackDamage");
-    	}
-	}
-	
-	public void addJSONComponentSpecific(JSONObject entityJSON) {
-		entityJSON.put("maxHealth", maxHealth);
-		entityJSON.put("health", health);
-		entityJSON.put("attackDamage", attackDamage);
 	}
 }

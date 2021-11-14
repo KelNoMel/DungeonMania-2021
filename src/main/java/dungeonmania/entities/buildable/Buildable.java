@@ -30,6 +30,11 @@ public abstract class Buildable extends Entity {
 		}
 		useRequirements(ingredients);
     }
+    
+    public Buildable(Dungeon dungeon, String type, Position position, boolean isInteractable) throws InvalidActionException {
+		super(dungeon, type, position, isInteractable, EntityUpdateOrder.OTHER);
+        this.player = dungeon.getPlayer();
+    }
 
 	public static List<String> response(Player player) {
 		return new ArrayList<>(BuildableEnum.stream()

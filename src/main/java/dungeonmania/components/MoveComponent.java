@@ -23,9 +23,7 @@ public class MoveComponent extends Component {
 		this.movementType = movementType;
 	}
 
-	public void processInput(InputState inputState) {
-		
-	}
+	public void processInput(InputState inputState) {}
 
 	public void updateComponent() {
 		if (moveDirection == null) return;
@@ -53,6 +51,9 @@ public class MoveComponent extends Component {
 		parentEntity.setPosition(newPosition);
 	}
 	
+	public void saveJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {}
+	
 	// Entity moves ignoring blocking entities like walls or boulders
 	private Position moveGhost(Entity entityToMove) {
 		return entityToMove.getPosition().translateBy(moveDirection);
@@ -69,7 +70,6 @@ public class MoveComponent extends Component {
 		}
 		return entityToMove.getPosition();
 	}
-
 	// Checks whether or not current set move is allowed
 	public Boolean canIMove(Entity entityToMove) {
 		Position moveLocation = moveGhost(entityToMove);
@@ -117,7 +117,4 @@ public class MoveComponent extends Component {
 	public void setType(MovementType movementType) {
 		this.movementType = movementType;
 	}
-
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }

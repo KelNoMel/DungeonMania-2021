@@ -17,10 +17,8 @@ public class PlayerComponent extends Component {
 		player.moveComponent.setMoveDirection(inputState.getMovementDirection());
 	}
 
-	public void updateComponent() {
-		
-	}
+	public void updateComponent() {}
 
+	public void saveJSONComponentSpecific(JSONObject entityJSON) {}
 	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
 }
