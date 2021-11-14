@@ -14,7 +14,7 @@ import dungeonmania.util.Position;
 
 public class Armour extends Entity {
 	final private int totalDurability = 6;
-	final private int armour = 4;
+	final private int armour = 30;
 
 	public CollectableComponent collectableComponent;
 	public BattleItemComponent battleItemComponent;
