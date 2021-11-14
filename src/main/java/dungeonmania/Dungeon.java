@@ -503,7 +503,9 @@ public class Dungeon {
 		}
 		
 		// if maze[end] is a wall:
-		if (getCoord(maze, end) == false) {
+		// TODO edge case that is never fulfilled?
+		
+		/*if (getCoord(maze, end) == false) {
 			// maze[end] = empty
 			setCoord(maze, end, true);
 			
@@ -527,7 +529,7 @@ public class Dungeon {
 				// maze[neighbour] = empty
 				setCoord(maze, neighbour, true);
 			}
-		}
+		}*/
 		
 		return maze;
 	}
