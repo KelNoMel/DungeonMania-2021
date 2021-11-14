@@ -9,6 +9,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.redstone.SwitchDoor;
 import dungeonmania.entities.statics.Boulder;
 import dungeonmania.entities.statics.Door;
+import dungeonmania.entities.statics.SwampTile;
 import dungeonmania.entities.statics.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -57,9 +58,23 @@ public class MoveComponent extends Component {
 	private Position moveGhost(Entity entityToMove) {
 		return entityToMove.getPosition().translateBy(moveDirection);
 	}
+
+	private SwampTile getSwamp(Entity entityToMove) {
+		for (Entity e : entityToMove.getDungeon().getEntitiesAtPosition(entityToMove.getPosition())) {
+			if (e instanceof SwampTile) return (SwampTile)e;
+		}
+		return null;
+	}
 	
 	// Entity moves considering boulders, walls and other blockables
 	private Position moveNormal(Entity entityToMove) {
+		SwampTile swampTile = getSwamp(entityToMove);
+		
+		if(swampTile != null && swampTile.getMover(entityToMove)) { // TODO: double check 
+			// Don't move
+			return entityToMove.getPosition();
+		}
+		
 		Position moveLocation = moveGhost(entityToMove);
 		
 		List<Entity> moveEntities = entityToMove.getDungeon().getEntitiesAtPosition(moveLocation);

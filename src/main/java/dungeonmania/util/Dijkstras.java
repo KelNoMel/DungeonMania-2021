@@ -53,7 +53,7 @@ public class Dijkstras {
         while (!q.isEmpty()) {
             Position u = getSmallestDist(q, source);
             q.remove(u);
-            OUTER_LOOP: for (Position v : u.getAdjacentPositions()) {
+            OUTER_LOOP: for (Position v : u.getAdjacentPositions()) { // TODO: ensure it is still within range
                 // make sure we're not adding walls
                 for (Entity e : dungeon.getEntitiesAtPosition(v)) {
                     if (e instanceof Wall) continue OUTER_LOOP;
@@ -66,6 +66,23 @@ public class Dijkstras {
 
         }
         return prev;
+    }
+
+    /**
+     * Find the next position to travel such that it is the shortest path to the given destination
+     * @param source current position
+     * @param dest destination position
+     * @return 
+     */
+
+    public Position getNextPosition (Position source, Position dest) {
+        dijkstras(source);
+        return getNextHelper(source, dest);
+    }
+
+    private Position getNextHelper(Position source, Position dest) {
+        if (source.equals(prev.get(dest))) return dest;
+        return getNextHelper(source, prev.get(dest));
     }
 
     private Position getSmallestDist (Queue<Position> q, Position src) {

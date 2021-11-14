@@ -52,3 +52,8 @@ Battles
 - A bow is a weapon that can be used as many extra times as their are bows in the inventory
 - An item will deteriorate after x many battles instead of counting by tick as it is possible multiple battles occur in a single tick
 
+
+
+
+Swamp tiles:
+- When a moving entity is on a swamp tile, regardless of whether it has movement direction or if the direction changes, the timer on the tile counts down. 
