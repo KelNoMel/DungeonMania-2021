@@ -32,8 +32,9 @@ public class EntityFactory {
     	for (int i = 0; i < numEntities; i++) {
     		JSONObject loadJSON = entityArray.getJSONObject(i);
     		Entity constructedEntity = constructEntity(loadJSON, loadingDungeon);
-    		
-    		constructedEntity.loadJSON(loadJSON);
+    		if (constructedEntity != null) {
+    			constructedEntity.loadJSON(loadJSON);    			
+    		}
     		
     		if (inventory) loadingDungeon.transferToInventory(constructedEntity);
     	}
