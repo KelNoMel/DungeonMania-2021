@@ -1,12 +1,39 @@
+Peaceful Mode
+- Rare items still drop for battles
+- Equipment drops in durability still
 
 Portals
 - Portals teleport entities directly onto their corresponding portal
 - Only two portals of a specific colour can exist at any time (as in the Portal games)
 - Portals read in as JSON will always come in pairs, solo portals will not be fed in
 
+Damage Algorithm
+- Enemy Health = (Enemy Health - ((Character Damage + Weapon Damage) * Character Health))/5
+- Character Health = (Character Health - (Enemy Damage * Enemy Health))/(10+Armour)
 
 Shield:
 - Increase the dividend the player takes damage with
+- Durability - 5
+- Damage Reduction - 50
+- Algorithm for damage reduction: 
+
+Armour:
+- Durability - 4
+- Damage Reduction - 4
+Sword:
+- Damage - 3
+- Durability - 3
+
+Item drops
+- Armour drops 20% of the time when killing mercenaries
+- Dropped Armour Durability ranges from 1-10
+- Rare item drops are 10% for all enemies
+- When a rare item drops, it has an equal 50% chance to be either the one true ring or andurasil
+- Item drops are immediately deposited into the players inventory and are not dropped onto the dungeon map
+
+Andurasil:
+- Durability - Integer.max
+- Damage - 50
 
 Potions
 - Players cannot consume more than one potion a tick
@@ -25,15 +52,17 @@ Invisible Potion
 Invincible Potion
 - The effect of the potion lasts 10 ticks starting from the consumption tick
 - Players will still initiate a battle, but it will be auto-resolved. Players can therefore still receive rare items when invincible
-- Zombie and Mercenary will run away, Spider will keep its circling pattern
+- Zombie and Mercenary will run away, Spider will also break circling pattern to run away
 
 Bomb
 - The player receives no damage from exploding bombs
-- Blast range is a 5x5 grid surrounding the bomb position
+- Blast range is a 3x3 grid surrounding the bomb position
+- Bomb cannot set off a chain reaction with other bombs
 
 The One True Ring
 - Revives the player in the same position
-- If the enemy hasn't moved on, this means that the battle will still continue
+- The player revives in the middle of battle, so he will continue fighting the enemy that killed him
+- This means if it was a simple mob, he should now win, if it was a tough boss, he could still die a second time
 
 Mercenary
 - The player requires one coin to bribe them
@@ -47,6 +76,7 @@ Battles
 - Enemies attack first
 - Players cannot use items during battle except for one true ring (yet to be implemented)
 - Ally mercs will not share player bonuses like shields and swords
+- Allies attack seperately from the player
 - A player attacks full force with as many of damage items on every battle they go into. As you don't actually know if an attack will finish the enemy (The Double-tap rule)
 - A sword can be used once in a battle and you can't use fist and a sword
 - A bow is a weapon that can be used as many extra times as their are bows in the inventory
@@ -58,3 +88,9 @@ Spawning
 - A maximum of two mercenaries can be on the map at any one time
 - A maximum of four spiders can be on the map at any one time
 - A maximum of three zombies can be on the map at any one time
+
+Redstone
+- The signal strength of redstone decreases per tile from the source
+
+Sceptre
+- You cannot bribe someone under mind control
