@@ -13,8 +13,8 @@ import dungeonmania.util.Position;
 public class Anduril extends Entity {
 	private CollectableComponent collectableComp = new CollectableComponent(this, 1, CollectableState.MAP);
 
-	public Anduril(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "anduril", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Anduril(Dungeon dungeon, Position position) {
+		super(dungeon, "anduril", position, false, EntityUpdateOrder.OTHER);
 	}
 
 	protected void inputEntity(InputState inputState) {

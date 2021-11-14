@@ -32,7 +32,7 @@ public abstract class Entity {
     
     private List<Component> components = new ArrayList<Component>();
 
-    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, EntityUpdateOrder updateOrder, JSONObject entityData) {
+    public Entity(Dungeon dungeon, String type, Position position, boolean isInteractable, EntityUpdateOrder updateOrder) {
     	
     	this.dungeon = dungeon;
     	this.state = EntityState.ACTIVE;
@@ -43,7 +43,6 @@ public abstract class Entity {
         this.updateOrder = updateOrder.updateOrder();
         
         dungeon.addEntity(this);
-        loadJSON(entityData);
     }
     
 	////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +58,7 @@ public abstract class Entity {
         return UUID.randomUUID().toString();
     }
     
-    private void loadJSON(JSONObject entityData) {
+    public void loadJSON(JSONObject entityData) {
     	for (Component c : components) {
     		c.loadJSONComponentSpecific(entityData);
     	}

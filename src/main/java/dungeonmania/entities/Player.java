@@ -38,7 +38,7 @@ public class Player extends Entity {
 	public BattleComponent battleComponent = new BattleComponent(this, 3, MAX_HP, DMG);
 
 
-	private EntityList inventory;
+	private EntityList inventory = new EntityList();
 
 	// Hashmap that tracks which items are used in input tick
 	// Key is itemId, and value is itemType
@@ -48,8 +48,8 @@ public class Player extends Entity {
 	// Player states include: normal, invisible, invincible
 	public String status = "normal";
 
-	public Player(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "player", position, false, EntityUpdateOrder.PLAYER, entitySpecificData);
+	public Player(Dungeon dungeon, Position position) {
+		super(dungeon, "player", position, false, EntityUpdateOrder.PLAYER);
 		dungeon.getEntities().removeDeadEntities();
 		
 		if (dungeon.getGamemode() == Gamemode.HARD) battleComponent.setHealth(50);
@@ -244,7 +244,6 @@ public class Player extends Entity {
 	}
 
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) throws JSONException {
-		inventory = new EntityList();
 		if (entitySpecificData.has("inventory")) {
 			EntityFactory.loadEntities(entitySpecificData.getJSONArray("inventory"), getDungeon(), inventory);
 		}

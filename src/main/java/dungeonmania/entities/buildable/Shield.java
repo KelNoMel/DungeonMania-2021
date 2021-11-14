@@ -19,8 +19,8 @@ public class Shield extends Buildable {
 	public ArmourComponent armourComponent;
 
 	// if a buildable is found on the map
-	public Shield(Dungeon dungeon, Position position, JSONObject entitySpecificData)  {
-		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, BuildableEnum.SHIELD.getRecipe(), entitySpecificData);
+	public Shield(Dungeon dungeon, Position position)  {
+		super(dungeon,  BuildableEnum.SHIELD.getType(), position, false, BuildableEnum.SHIELD.getRecipe());
 		collectableComponent = new CollectableComponent(this, 1, CollectableState.INVENTORY);
 		battleItemComponent = new BattleItemComponent(this, 2, totalDurability);
 		armourComponent = new ArmourComponent(this, 3, armour);

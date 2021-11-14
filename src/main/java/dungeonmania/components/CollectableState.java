@@ -5,5 +5,25 @@ package dungeonmania.components;
  * is on the map or in the player's inventory.
  */
 public enum CollectableState {
-	MAP, INVENTORY
+	MAP("MAP"), INVENTORY("INVENTORY");
+	
+	private String name;
+	CollectableState(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public static CollectableState stateFromString(String name) {
+		switch (name) {
+			case "MAP":
+				return MAP;
+			case "INVENTORY":
+				return INVENTORY;
+			default:
+				return MAP;
+		}
+	}
 }

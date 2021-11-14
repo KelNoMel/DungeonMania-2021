@@ -53,6 +53,21 @@ public class BattleComponent extends Component {
 		return String.format("%.1f", (float)health / (float)maxHealth);
 	}
 
-	public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+	public void loadJSONComponentSpecific(JSONObject entityData) {
+		if (entityData.has("maxHealth")) {
+    		maxHealth = entityData.getInt("maxHealth");
+    	}
+		if (entityData.has("health")) {
+    		health = entityData.getInt("health");
+    	}
+		if (entityData.has("attackDamage")) {
+    		attackDamage = entityData.getInt("attackDamage");
+    	}
+	}
+	
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("maxHealth", maxHealth);
+		entityJSON.put("health", health);
+		entityJSON.put("attackDamage", attackDamage);
+	}
 }

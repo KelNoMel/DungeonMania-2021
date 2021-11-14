@@ -30,7 +30,14 @@ public class BattleItemComponent extends Component {
 
     public void updateComponent() {}
 
-    public void loadJSONComponentSpecific(JSONObject entityData) {}
-	public void addJSONComponentSpecific(JSONObject entityJSON) {}
+    public void loadJSONComponentSpecific(JSONObject entityData) {
+    	if (entityData.has("durability")) {
+    		durability = entityData.getInt("durability");
+    	}
+    }
+    
+	public void addJSONComponentSpecific(JSONObject entityJSON) {
+		entityJSON.put("durability", durability);
+	}
 
 }

@@ -22,8 +22,8 @@ public class Spider extends Entity {
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.GHOST);
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 5, 5);
 	
-	public Spider(Dungeon dungeon, Position position, JSONObject entitySpecificData) {
-		super(dungeon, "spider", position, false, EntityUpdateOrder.OTHER, entitySpecificData);
+	public Spider(Dungeon dungeon, Position position) {
+		super(dungeon, "spider", position, false, EntityUpdateOrder.OTHER);
 		aiComponent.registerState(new AISpiderHostile(aiComponent, this));
 		aiComponent.registerState(new AIRunAway(aiComponent, this, moveComponent));
 		aiComponent.changeState("SpiderHostile");

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import org.json.JSONObject;
-
 import dungeonmania.Dungeon;
 import dungeonmania.util.Position;
 import dungeonmania.entities.Entity;
@@ -22,10 +20,9 @@ import dungeonmania.InputState;
 public abstract class Buildable extends Entity {
     protected Player player;
 
-    public Buildable(Dungeon dungeon, String type, Position position,  
-        boolean isInteractable, Recipe recipe, JSONObject entitySpecificData) throws InvalidActionException {
+    public Buildable(Dungeon dungeon, String type, Position position, boolean isInteractable, Recipe recipe) throws InvalidActionException {
        
-		super(dungeon, type, position, isInteractable, EntityUpdateOrder.OTHER, entitySpecificData);
+		super(dungeon, type, position, isInteractable, EntityUpdateOrder.OTHER);
         this.player = dungeon.getPlayer();
 		List<Ingredient> ingredients = recipe.checkRequirements(player);
 		if (ingredients == null) {

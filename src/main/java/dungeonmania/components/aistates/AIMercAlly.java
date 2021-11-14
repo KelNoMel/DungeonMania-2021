@@ -44,9 +44,13 @@ public class AIMercAlly extends AIState {
 		//System.out.println("Ally!");
 	}
 
-	public void onEnter() {}
+	public void onEnter() {
+		merc.setInteractable(false);
+	}
 
-	public void onExit() {}
+	public void onExit() {
+		merc.setInteractable(true);
+	}
 
 	public String getName() {
 		return "MercAlly";
