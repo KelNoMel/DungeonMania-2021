@@ -242,7 +242,7 @@ public class BattleResolver extends Entity {
 		
 		// Mercenaries have a 1/5 chance to drop armour, random durability with a max of 10
 		if (random.nextInt(100) % 5 == 0 && enemy.getType().equals("mercenary")) {
-			Armour armour = new Armour(getDungeon(), player.getPosition(), CollectableState.INVENTORY, random.nextInt(10));
+			Armour armour = new Armour(getDungeon(), player.getPosition(), CollectableState.INVENTORY, (random.nextInt(9)+1));
 				d.transferToInventory(armour);
 		}
 		
@@ -256,7 +256,6 @@ public class BattleResolver extends Entity {
 				d.transferToInventory(ring);
 			} else {
 				Anduril anduril = new Anduril(getDungeon(), player.getPosition());
-
 				anduril.setCollectableState(CollectableState.INVENTORY);
 				d.transferToInventory(anduril);
 			}

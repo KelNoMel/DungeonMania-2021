@@ -23,8 +23,12 @@ Sword:
 - Damage - 3
 - Durability - 3
 
-Rare Items
-- 
+Item drops
+- Armour drops 20% of the time when killing mercenaries
+- Dropped Armour Durability ranges from 1-10
+- Rare item drops are 10% for all enemies
+- When a rare item drops, it has an equal 50% chance to be either the one true ring or andurasil
+- Item drops are immediately deposited into the players inventory and are not dropped onto the dungeon map
 
 Anduril:
 - Durability - Integer.max
