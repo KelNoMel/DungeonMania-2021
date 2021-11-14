@@ -273,6 +273,14 @@ public class BattleResolver extends Entity {
 		return false;
 	}
 
+	public static boolean isHydra(Entity e) {
+		return e.getType().equals("hydra");
+	}
+
+	public static boolean isAnduril(Entity e) {
+		return e.getType().equals("anduril");
+	}
+
 	private List<Entity> getEnemiesToBattle(Entity entity) {
 		return getDungeon().getEntitiesAtPosition(entity.getPosition()).stream()
 			.filter(e -> isEnemy(e))
@@ -320,6 +328,34 @@ public class BattleResolver extends Entity {
 			System.out.println("Ally health is now: " + fighterBattleState.getHealthAsString());
 		}
 		// weapon / other was successfully used
+		return true;
+	}
+
+	private boolean attackWithAnduril(BattleComponent fighterBattleState, int damage) {
+		// if this fighter died in a previous encounter skip this attack
+		if (!fighterBattleState.isAlive()) return false;
+		// pre-battle health
+		String fighterPreAttackHealth = fighterBattleState.getHealthAsString();
+		Entity fighter = fighterBattleState.getEntity();
+
+		// fighter gets attacked
+		fighterBattleState.dealDamage(damage);
+		
+		// If fighter is zero health, kill entity
+		if (fighterBattleState.getHealth() <= 0) {
+			fighterBattleState.getEntity().setState(EntityState.DEAD);
+			// If fighter is player, try to revive
+			if (isPlayer(fighter)) {
+				TheOneRing ring = fighter.getDungeon().getPlayer().retrieveTypeFromInventory(TheOneRing.class);
+				if (ring != null) {
+					ring.revive();
+				}
+				
+			}
+		}
+		
+		// animation
+		battleAnimation(fighter, fighterBattleState, fighterPreAttackHealth);
 		return true;
 	}
 
