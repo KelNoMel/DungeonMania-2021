@@ -15,10 +15,12 @@ import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends Entity {
+	final int maxHealth = 10;
+	final int damage = 10;
 
 	public AIComponent aiComponent = new AIComponent(this, 100);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
-	public BattleComponent battleComponent = new BattleComponent(this, 3, 10, 10);
+	public BattleComponent battleComponent = new BattleComponent(this, 3, maxHealth, damage);
 	
 	public ZombieToast(Dungeon dungeon, Position position) {
 		super(dungeon, "zombie_toast", position, false, EntityUpdateOrder.OTHER);
