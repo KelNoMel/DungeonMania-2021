@@ -7,7 +7,6 @@ import dungeonmania.entities.BattleResolver;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.bosses.Assassin;
 import dungeonmania.EntityFactory;
-import dungeonmania.Gamemode;
 import dungeonmania.entities.moving.Mercenary;
 import dungeonmania.util.Position;
 
