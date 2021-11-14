@@ -35,6 +35,7 @@ public class AIRunAway extends AIState {
             int randomPickIndex = rand.nextInt(options.size());
             Direction option = options.get(randomPickIndex);
             eMoveComponent.setMoveDirection(option);
+            options.remove(randomPickIndex);
             // Check if this option is valid, choose it if so
             if (eMoveComponent.canIMove(enemy)) {
                 break;
