@@ -420,7 +420,7 @@ public class Dungeon {
 	////////////////////////////////////////////////////////////////////////////////
 
 	public static Dungeon generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String inputMode) {
-		Dungeon generatedDungeon = new Dungeon(Dungeon.createId(), "name", Gamemode.getGamemode(inputMode));
+		Dungeon generatedDungeon = new Dungeon(Dungeon.createId(), "prim-dungeon", Gamemode.getGamemode(inputMode));
 
 		// Loads array as per provided prims algorithm
 		Position start = new Position(xStart, yStart);
