@@ -36,7 +36,7 @@ public class InvincibilityPotion extends Entity {
 			
 			// Effects of potion: Make all enemies go into afraid AI state
 			// Afraid AI: Run away from player, battle auto-resolves to win
-			EffectComponent effComponent = new EffectComponent(getDungeon().getPlayer(), 3);
+			new EffectComponent(getDungeon().getPlayer(), 3);
 			player.setStatus("invincible");
 		}
 	}
