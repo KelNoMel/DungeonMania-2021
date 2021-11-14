@@ -467,13 +467,11 @@ public class Dungeon {
 			for (int j = 0; j <= height; j++) {
 				maze.get(i).add(false);
 				numSquares++;
-				System.out.println(numSquares + " squares generated");
 			}
 		}
 		
 		// maze[start] = empty
 		setCoord(maze, start, true);
-		System.out.println("Setting " + start + " to empty");
 
 		// let options be a list of positions
 		List<Position> options;
@@ -492,7 +490,6 @@ public class Dungeon {
 			if (neighbours.size() > 0) {
 				// let neighbour = random from neighbours
 				Position neighbour = neighbours.remove(random(neighbours.size()));
-				System.out.println("  next-neighbour = " + neighbour);
 				
 				// maze[ next ] = empty (i.e. true)
 				setCoord(maze, next, true);
