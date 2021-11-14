@@ -1,0 +1,59 @@
+{
+    "dungeon-name": "default-goal",
+    "entities": [
+        {
+            "x": 0,
+            "y": 0,
+            "health": 100,
+            "maxHealth": 100,
+            "type": "player",
+            "inventory": [],
+            "attackDamage": 10
+        },
+        {
+            "placed": false,
+            "collectState": "MAP",
+            "x": 1,
+            "y": 0,
+            "type": "treasure"
+        },
+        {
+            "x": 1,
+            "y": 1,
+            "type": "boulder"
+        },
+        {
+            "x": 1,
+            "y": 2,
+            "power": 0,
+            "type": "switch"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "type": "exit"
+        },
+        {
+            "x": 0,
+            "spawnRate": 40,
+            "y": 0,
+            "nextSpawn": 40,
+            "type": "mercenary_spawner"
+        },
+        {
+            "x": 0,
+            "spawnRate": 30,
+            "y": 0,
+            "nextSpawn": 30,
+            "type": "spider_spawner"
+        },
+        {
+            "x": 0,
+            "y": 0,
+            "type": "battle_resolver"
+        }
+    ],
+    "goal-condition": {"default": "default"},
+    "dungeon-id": "e2ab0bef-c4d1-49bd-a2bd-2c80b4f0225a",
+    "gamemode": "peaceful"
+}

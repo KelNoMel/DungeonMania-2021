@@ -52,9 +52,11 @@ public class Dijkstras {
 
         List<Position> grid = new ArrayList<>();
 
+        // get grid for entities 
         XCOORD: for (int i = source.getX() - radius; i <= source.getX() + radius; i++ ) {
             YCOORD: for (int j = source.getY() - radius; j <= source.getY() + radius; j++ ) {
                 Position p = new Position (i, j);
+                // do not add position to grid if there is a blockage i.e. wall
                 List<Entity> entList = dungeon.getEntitiesAtPosition(p);
                 for (Entity e: entList) {
                     if (e instanceof Wall) continue YCOORD;
@@ -75,7 +77,8 @@ public class Dijkstras {
             Position u = q.remove();
             if (u == null) continue;
 
-            OUTER_LOOP: for (Position v : u.getAdjacentPositions()) { 
+            // for all neighnbour positions recalculate distance and requeue
+            OUTER_LOOP: for (Position v : u.getCardinalAdjacentPositions()) { 
                 // ensure it is still within range
                 if (!Position.withinRange(v, source, (double)radius)) continue OUTER_LOOP;
                 // ensure we're not adding walls
@@ -102,7 +105,7 @@ public class Dijkstras {
 
     public Position getNextPosition (Position source, Position dest) {
         dijkstras(source);
-
+        if (getNextHelper(source, new Position(dest.getX(), dest.getY())) == null) return ent.getPosition();
         return getNextHelper(source, new Position(dest.getX(), dest.getY()));
     }
 
@@ -125,6 +128,7 @@ public class Dijkstras {
                 if (timeRemaining == -1) {
                     return st.getMovementFactor();
                 } else {
+                    // TODO else if timeRemaining == 0 return 1?
                     return timeRemaining;
                 }
             }

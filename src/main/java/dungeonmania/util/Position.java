@@ -127,6 +127,19 @@ public final class Position implements Comparable<Position> {
         return adjacentPositions;
     }
 
+    // Return Adjacent positions in an array list with the following element positions:
+    // 0 1 2
+    // 7 p 3
+    // 6 5 4
+    public List<Position> getCardinalAdjacentPositions() {
+        List<Position> adjacentPositions = new ArrayList<>();
+        adjacentPositions.add(new Position(x  , y-1));
+        adjacentPositions.add(new Position(x+1, y));
+        adjacentPositions.add(new Position(x  , y+1));
+        adjacentPositions.add(new Position(x-1, y));
+        return adjacentPositions;
+    }
+
     @Override
     public int compareTo(Position o) {
         // TODO: for dijkstras, this should probs be movement factor (ticks needed to stay on this tile) but should be fine regardless?
