@@ -138,6 +138,11 @@ public class Dungeon {
     	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "spider_spawner"), this);
     	}
+    	
+    	if (entities.numEntitiesOfType(SpiderSpawner.class) == 0) {
+    		EntityFactory.constructEntity(newEntityJSON(0, 0, "hydra_spawner"), this);
+    	}
+    	
     	// Should be singleton??
     	if (entities.numEntitiesOfType(BattleResolver.class) == 0) {
     		EntityFactory.constructEntity(newEntityJSON(0, 0, "battle_resolver"), this);

@@ -7,6 +7,7 @@ import dungeonmania.components.BattleComponent;
 import dungeonmania.components.MoveComponent;
 import dungeonmania.components.MovementType;
 import dungeonmania.components.aistates.AIMercAlly;
+import dungeonmania.components.aistates.AIRandomHostile;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityUpdateOrder;
 import dungeonmania.entities.Player;
@@ -19,25 +20,22 @@ import org.json.JSONObject;
 
 public class Hydra extends Entity {
 
-    
     public AIComponent aiComponent = new AIComponent(this, 1);
 	public MoveComponent moveComponent = new MoveComponent(this, 2, MovementType.NORMAL);
 	public BattleComponent battleComponent = new BattleComponent(this, 3, 30, 10);
-
     
     public Hydra(Dungeon dungeon, Position position) {
 		super(dungeon, "hydra", position, true, EntityUpdateOrder.OTHER);
+		aiComponent.registerState(new AIRandomHostile(aiComponent, moveComponent));
+		aiComponent.changeState("RandomHostile");
     }
 
-    @Override
     protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {}
-
-    @Override
     protected void inputEntity(InputState inputState) {}
 
-    @Override
     protected void updateEntity() {
-        List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
+        /*List<Entity> entities = getDungeon().getEntitiesInRadius(getPosition(), 2.0);
+        
         for (Entity e : entities) {
             if (e instanceof Player) {
                 int percent = (int) Math.ceil(Math.random() * 100);
@@ -49,7 +47,7 @@ public class Hydra extends Entity {
             }
             // check to see if assassins/mercenary are allies
             if (e instanceof Mercenary || e instanceof Assassin) {
-                if (aiComponent.getAISate() instanceof AIMercAlly) {
+                if (aiComponent.getAIState() instanceof AIMercAlly) {
                     int percent = (int) Math.ceil(Math.random() * 100);
                     if (percent >= 50) {
                         battleComponent.setHealth(100);
@@ -58,7 +56,7 @@ public class Hydra extends Entity {
                     } 
                 }
             }
-        }
+        }*/
         
     }
 

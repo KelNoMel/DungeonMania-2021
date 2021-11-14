@@ -40,7 +40,7 @@ public class Mercenary extends Entity {
 	protected void updateEntity() {}
 	
 	public void addJSONEntitySpecific(JSONObject baseJSON) {
-		baseJSON.put("aiState", aiComponent.getAISate().getName());
+		baseJSON.put("aiState", aiComponent.getAIState().getName());
 	}
 	protected void loadJSONEntitySpecific(JSONObject entitySpecificData) {
 		startState = null;

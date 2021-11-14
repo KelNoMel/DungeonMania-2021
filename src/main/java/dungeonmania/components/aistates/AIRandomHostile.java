@@ -5,23 +5,23 @@ import java.util.Random;
 import dungeonmania.InputState;
 import dungeonmania.components.AIComponent;
 import dungeonmania.components.AIState;
-import dungeonmania.entities.moving.ZombieToast;
+import dungeonmania.components.MoveComponent;
 import dungeonmania.util.Direction;
 
-public class AIZombieHostile extends AIState {
-    private ZombieToast zombie;
+public class AIRandomHostile extends AIState {
     static private final Random randomiser = new Random();
-
-    public AIZombieHostile(AIComponent aiComponent, ZombieToast zombieToast) {
+    MoveComponent moveComponent;
+    
+    public AIRandomHostile(AIComponent aiComponent, MoveComponent moveComponent) {
         super(aiComponent);
-        this.zombie = zombieToast;
+        this.moveComponent = moveComponent; 
     }
 
     // move in random directions
     public void processInput(InputState inputState) {
         Direction zombieMoveDirection = generateRandom();
 
-        zombie.moveComponent.setMoveDirection(zombieMoveDirection);
+        moveComponent.setMoveDirection(zombieMoveDirection);
     }
 
     private static Direction generateRandom() {
@@ -42,7 +42,7 @@ public class AIZombieHostile extends AIState {
     }
 
     public String getName() {
-        return "ZombieHostile";
+        return "RandomHostile";
     }
     
 }

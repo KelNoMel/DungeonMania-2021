@@ -254,7 +254,7 @@ public class BattleResolver extends Entity {
 
 	public static boolean isEnemy(Entity e) {
 		if (
-			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
+			(e instanceof Mercenary && !((Mercenary)e).aiComponent.getAIState().getName().equals("MercAlly")) 
 			|| e instanceof Spider 
 			|| e instanceof ZombieToast
 			|| e instanceof Hydra
@@ -266,7 +266,7 @@ public class BattleResolver extends Entity {
 
 	public static boolean isAlly(Entity e) {
 		if (
-			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAISate().getName().equals("MercAlly")) 
+			(e instanceof Mercenary && ((Mercenary)e).aiComponent.getAIState().getName().equals("MercAlly")) 
 		) {
 			return true;
 		}
