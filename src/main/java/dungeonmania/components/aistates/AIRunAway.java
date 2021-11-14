@@ -41,6 +41,7 @@ public class AIRunAway extends AIState {
                 break;
             }
         }
+        enemyMoveDirection = Direction.NONE;
 	}
 
     // Gets player location and returns directions that don't bring the enemy closer
