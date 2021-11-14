@@ -40,6 +40,29 @@ public class PrimsTest {
         }
     }
 	
+	@Test
+    public void testPrimsAlgorithmEdgeCase() {
+        DungeonManiaController mania = new DungeonManiaController();
+        
+//        for (int i = 0; i < 100; i++) {
+//        	Position randStart = randPos();
+//        	Position randEnd = randPos();
+//        	
+//        	// Generate new dungeon for testing
+//        	DungeonResponse response = mania.generateDungeon(
+//        		randStart.getX(), randStart.getY(), randEnd.getX(), randEnd.getY(),
+//        		"peaceful"
+//    		);
+//        	
+//        	// Check there is a player at the start and an exit at the end
+//        	assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "player", randStart, false), response));
+//        	assertTrue(ResponseHelp.entityInDungeon(new EntityResponse("", "exit", randEnd, false), response));
+//        	
+//        	// Check you can get to the end
+//        	assertTrue(isPathBetweenPositions(response, randStart, randEnd));
+//        }
+    }
+	
 	private boolean isPathBetweenPositions(DungeonResponse d, Position start, Position end) {
 		if (start == end) return true;
 
